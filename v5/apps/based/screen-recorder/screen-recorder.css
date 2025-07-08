@@ -1,60 +1,121 @@
-.screen-recorder-controls {
-    padding: 16px;
+.screen-recorder-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 12px;
+    font-family: sans-serif;
+}
+
+.screen-recorder-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 12px;
 }
 
 .screen-recorder-status {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 18px;
+    gap: 8px;
+    font-size: 16px;
     font-family: monospace;
-}
-
-.indicator-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: gray;
-    transition: background 0.3s;
-}
-.indicator-dot.recording {
-    background: red;
-    animation: blink 1s infinite;
-}
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
 }
 
 .screen-recorder-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-}
-.screen-recorder-buttons button {
-    padding: 8px 14px;
-    font-size: 14px;
-    cursor: pointer;
+    justify-content: center;
+    gap: 8px;
 }
 
-#screen-recorder-preview {
-    padding: 16px;
+.screen-recorder-buttons button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-#screen-recorder-preview h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-size: 16px;
+
+#screen-recorder-live-preview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 10px;
+    width: 100%;
 }
+
+#screen-recorder-stop {
+    display: none;
+}
+
+#screen-recorder-download {
+    display: none;
+}
+
+.screen-recorder-live-preview-video,
+#screen-recorder-output,
+.screen-recorder-live-preview-screenshots {
+    flex: 1 1 280px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.screen-recorder-live-preview-video h3,
+#screen-recorder-output h3,
+.screen-recorder-live-preview-screenshots h3 {
+    font-size: 15px;
+    margin: 4px 0;
+    text-align: center;
+}
+
+#screen-recorder-live-video {
+    width: 100%;
+    max-height: 180px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#screen-recorder-output {
+    display: none;
+}
+
+#screen-recorder-output-video {
+    width: 100%;
+}
+
 .screenshot-gallery {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
+    justify-content: center;
 }
+
 .screen-recorder-screenshot {
-    max-width: 45%;
+    max-width: 100px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 4px;
+}
+
+.indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: gray;
+    transition: background 0.3s;
+}
+
+.indicator-dot.recording {
+    background: red;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
 }

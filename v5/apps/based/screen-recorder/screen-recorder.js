@@ -37,23 +37,23 @@ export default class ScreenRecorder {
             focusable: true,
             maximized: false,
             minimized: false,
-            onclose: () => this.cleanup()
+            onClose: () => this.cleanup()
         });
 
         this.bindUI();
+
+        this.startPreview();
         return this.win;
     }
 
     bindUI() {
-        // TODO: use jQuery to bind events
         // use this jQuery pattern $('#screen-recorder-start', this.win.content) to bind events
         $('#screen-recorder-start', this.win.content).on('click', () => this.startRecording());
-        document.getElementById('screen-recorder-preview').onclick = () => this.startPreview();
-        //document.getElementById('screen-recorder-start').onclick = () => this.startRecording();
-        document.getElementById('screen-recorder-stop').onclick = () => this.stopRecording();
-        document.getElementById('screen-recorder-download').onclick = () => this.downloadRecording();
-        document.getElementById('screen-recorder-screenshot').onclick = () => this.takeScreenshot();
-        document.getElementById('screen-recorder-preview-stop').onclick = () => this.stopPreview();
+        // $('#screen-recorder-preview', this.win.content).on('click', () => this.startPreview());
+        // $('#screen-recorder-preview-stop', this.win.content).on('click', () => this.stopPreview());
+        $('#screen-recorder-stop', this.win.content).on('click', () => this.stopRecording());
+        $('#screen-recorder-download', this.win.content).on('click', () => this.downloadRecording());
+        $('#screen-recorder-screenshot', this.win.content).on('click', () => this.takeScreenshot());
     }
 
     async startPreview() {
@@ -65,7 +65,6 @@ export default class ScreenRecorder {
                 liveVideo.srcObject = this.stream;
                 liveVideo.play();
 
-                this.togglePreviewUI(true);
             }
         } catch (err) {
             console.error('Error starting screen preview:', err);
@@ -82,7 +81,6 @@ export default class ScreenRecorder {
             this.stream = null;
         }
 
-        this.togglePreviewUI(false);
     }
 
     startRecording() {
@@ -110,13 +108,20 @@ export default class ScreenRecorder {
         this.toggleRecordingUI(true);
 
         console.log('Recording started');
+
+        $('#screen-recorder-start', this.win.content).hide();
+        $('#screen-recorder-stop', this.win.content).show();
+        $('#screen-recorder-output', this.win.content).hide();
+
     }
 
     stopRecording() {
         if (this.recorder && this.recorder.state !== 'inactive') {
             this.recorder.stop();
             console.log('Recording stopped');
-            this.toggleRecordingUI(false);
+            $('#screen-recorder-stop', this.win.content).hide();
+            $('#screen-recorder-start', this.win.content).show();
+            $('#screen-recorder-output', this.win.content).show();
         }
     }
 
@@ -124,7 +129,7 @@ export default class ScreenRecorder {
         this.videoBlob = new Blob(this.recordedChunks, { type: 'video/webm' });
         this.videoURL = URL.createObjectURL(this.videoBlob);
 
-        const container = document.getElementById('screen-recorder-preview-video');
+        const container = document.getElementById('screen-recorder-output-video');
         container.innerHTML = '';
 
         const video = document.createElement('video');
@@ -133,13 +138,6 @@ export default class ScreenRecorder {
         video.style.width = '100%';
         container.appendChild(video);
     }
-
-    togglePreviewUI(isPreviewing) {
-        document.getElementById('screen-recorder-preview').disabled = isPreviewing;
-        document.getElementById('screen-recorder-preview-stop').disabled = !isPreviewing;
-        document.getElementById('screen-recorder-screenshot').disabled = !isPreviewing;
-    }
-
 
     downloadRecording() {
         if (!this.videoBlob) return;
@@ -183,33 +181,32 @@ export default class ScreenRecorder {
         }
     }
 
-
     startTimer() {
-        alert('Starting timer');
-        const indicator = document.getElementById('screen-recorder-indicator');
-        const timer = document.getElementById('screen-recorder-timer');
+        const indicator = $('#screen-recorder-indicator', this.win.content);
+        const timer = $('#screen-recorder-timer', this.win.content);
         this.secondsElapsed = 0;
 
         this.timerInterval = setInterval(() => {
             this.secondsElapsed++;
             const min = String(Math.floor(this.secondsElapsed / 60)).padStart(2, '0');
             const sec = String(this.secondsElapsed % 60).padStart(2, '0');
-            timer.textContent = `${min}:${sec}`;
+            timer.text(`${min}:${sec}`);
         }, 1000);
 
-        indicator.classList.add('recording');
+        indicator.addClass('recording');
     }
 
     stopTimer() {
         clearInterval(this.timerInterval);
-        document.getElementById('screen-recorder-indicator').classList.remove('recording');
-        document.getElementById('screen-recorder-timer').textContent = '00:00';
+        $('#screen-recorder-indicator', this.win.content).removeClass('recording');
+        $('#screen-recorder-timer', this.win.content).text('00:00');
     }
 
     toggleRecordingUI(isRecording) {
-        //document.getElementById('screen-recorder-start').disabled = isRecording;
-        //document.getElementById('screen-recorder-stop').disabled = !isRecording;
-        //document.getElementById('screen-recorder-screenshot').disabled = !isRecording;
+        // hide screen-recorder-live-preview-video
+        $('#screen-recorder-live-preview-video', this.win.content).toggle(isRecording);
+        // show screen-recorder-output
+        $('#screen-recorder-output', this.win.content).toggle(!isRecording);
     }
 
     cleanup() {
@@ -217,5 +214,11 @@ export default class ScreenRecorder {
         if (this.stream) {
             this.stream.getTracks().forEach(track => track.stop());
         }
+        this.stream = null;
+        this.recorder = null;
+        this.recordedChunks = [];
+        this.videoBlob = null;
+        this.videoURL = null;
+        this.win = null;
     }
 }
