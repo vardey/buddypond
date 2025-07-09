@@ -105,6 +105,12 @@ export default class UI {
 
         });
 
+        $(d).on('click', '.open-link', function (e) {
+            let url = $(this).data('link');
+            console.log('open-link ' + url);
+            window.open(url, '_blank');
+        });
+
         return 'loaded ui';
     }
 

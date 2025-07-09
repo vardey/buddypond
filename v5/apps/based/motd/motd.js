@@ -40,7 +40,12 @@ export default class Motd {
         // Dynamically populate patch notes
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');
         const patchNotes = [
-
+            {
+                date: '7/4/25',
+                notes: [
+                    '<a class="motd-link" href="https://buddypond.com/coin" target="_blank">$BUDDYPOND Token Pre-Sale Launched</a>',
+                ]
+            },
             {
                 date: '6/30/25',
                 notes: [

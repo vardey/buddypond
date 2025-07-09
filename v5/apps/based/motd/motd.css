@@ -59,6 +59,16 @@
     /* ~5px */
 }
 
+.motd-link {
+    color: #8be9fd;
+    text-decoration: none;
+}
+
+.motd-link:hover {
+    text-decoration: underline;
+    color: #50fa7b;
+}
+
 .sidebar {
     flex: 1;
     background: #2a2a3c;
@@ -153,7 +163,7 @@
         /* ~1px */
         height: auto;
         /* Unchanged */
-        max-height: 60%;
+        max-height: 40vh;
         /* Reduced from 70vh to ensure sidebar visibility */
         padding: 0.625rem;
         /* ~10px, reduced for mobile */
@@ -195,7 +205,7 @@
         /* ~10px, unchanged */
         width: 100%;
         /* Unchanged, full width of sidebar */
-        justify-content: space-between;
+        justify-content: center;
         /* Distribute buttons evenly */
         height: 20vh;
     }

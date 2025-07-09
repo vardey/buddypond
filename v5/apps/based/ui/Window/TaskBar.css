@@ -211,7 +211,7 @@
         bottom: 0rem; /* ~8px */
         left: 0px; /* ~8px */
         transform: none;
-        display: flex;
+        display: none;
         gap: 0.5rem; /* ~8px */
         padding: 0; /* ~6px */
         margin: 0;

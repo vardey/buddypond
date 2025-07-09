@@ -32,14 +32,15 @@
 
 #loaderHolder {
   position: absolute;
-  left: 50%;
-  top: 33%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 #loader {
   position: relative;
-  left: -50%;
-  top: -33%;
   border: 16px solid #fff; /* Matrix Grey */
   border-top: 16px solid rgb(255,0,0); 
   border-radius: 50%;
@@ -100,3 +101,10 @@
   
 }
 
+
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+  .loaderText {
+    font-size: 2.5em !important;
+  }
+}

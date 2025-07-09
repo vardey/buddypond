@@ -89,6 +89,8 @@ export default class TaskBar {
             let startX = 0, startY = 0;
 
             this.taskBarElement.addEventListener('touchstart', (e) => {
+
+                e.preventDefault();
                 const touch = e.touches[0];
                 const target = e.target.closest('.taskbar-item');
                 if (!target) return;
@@ -99,6 +101,10 @@ export default class TaskBar {
                 startY = touch.clientY;
 
                 pressTimer = setTimeout(() => {
+                    // Haptic feedback
+                    if (navigator.vibrate) {
+                        navigator.vibrate(10); // 10ms pulse
+                    }
                     this.showContextMenu(id, startX, startY);
                 }, 600); // Long press threshold
             });

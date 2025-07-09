@@ -53,6 +53,7 @@ window.top.location = 'ie.html';
 
 <body>
   <img id="wallpaper" class="abs wallpaper" />
+  <div id="wallpaper-html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
   <div id="loaderHolder">
     <div id="loader"></div>
     <p class="loaderText">Loading Buddy Pond...</p>
@@ -155,7 +156,7 @@ window.top.location = 'ie.html';
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
-      // _host = 'https://' + localIp;
+      // _host = 'http://' + localIp;
       // _errorsEndpoint = `http://${localIp}:9010`;
 
       buddypond.host = _host;

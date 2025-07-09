@@ -335,6 +335,10 @@ li {
   z-index: -1;
 }
 
+#wallpaper-html {
+  display: none;
+}
+
 /* `Table >> Data
 ----------------------------------------------------------------------------------------------------*/
 
@@ -1553,12 +1557,11 @@ img.button-bar-button:hover {
 
 .loaderText {
   position: absolute;
-  left: calc(-50% - 170px);
   color: #fff;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 250px;
   width: 500px;
 }
 
@@ -1609,10 +1612,10 @@ a:hover {
   }
 
 
-img.button-bar-button {
-  width: 32pt;
-  height: 32pt;
-  cursor: pointer;
-}
+  img.button-bar-button {
+    width: 32pt;
+    height: 32pt;
+    cursor: pointer;
+  }
 
 }
