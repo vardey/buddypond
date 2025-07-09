@@ -26,6 +26,16 @@ export default class DefaultWallpaper {
         // wrapper div should be aligned center
         defaultWallpaper.html(defaultHTML).fadeIn(1555);
 
+        // only show frog when img is loaded
+        let frogImage = $('#wallpaper-frog');
+        if (frogImage.length) {
+            frogImage.show();
+            frogImage.on('load', () => {
+                // fade in the frog image
+                frogImage.fadeIn(1555);
+            });
+        } 
+
         // canvasBackground hide
         $('.canvasBackground').hide();
     }

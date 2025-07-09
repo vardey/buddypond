@@ -90,7 +90,7 @@ export default class TaskBar {
 
             this.taskBarElement.addEventListener('touchstart', (e) => {
 
-                e.preventDefault();
+                // e.preventDefault();
                 const touch = e.touches[0];
                 const target = e.target.closest('.taskbar-item');
                 if (!target) return;
