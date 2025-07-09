@@ -59,7 +59,7 @@ export default class WallpaperManager {
             if (this.bp.settings.wallpaper_url) {
                 this.setWallpaper(this.bp.settings.wallpaper_url);
             } else {
-                this.active = this.bp.settings.wallpaper_name || 'solid';
+                this.active = this.bp.settings.wallpaper_name || 'default';
                 this.start();
             }
             this.setupEventListeners();
