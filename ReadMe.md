@@ -16,20 +16,11 @@
         Buddy Pond Discord
       </a>
     </td>
-    <td align="center">
-      <a href="https://t.me/BuddyPond">
-        <img src="https://github.com/user-attachments/assets/ce746677-8ae1-4a69-b3ec-6969033403d5" width="150"/><br/>
-        Buddy Pond Telegram
-      </a>
-    </td>
-        <td align="center">
-      <a href="https://x.com/hopon_buddypond">
-        <img src="https://github.com/user-attachments/assets/0bafcb88-85fb-4857-89f5-caae3d2df6a9" width="150"/><br/>
-        Buddy Pond X Account
-      </a>
-    </td>
   </tr>
 </table>
+
+
+
 
  - Cloud OS
  - Desktop and Mobile Interfaces
