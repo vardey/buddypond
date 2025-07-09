@@ -420,6 +420,7 @@ export default {
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
   },
+ 
   /*
   "screen-recorder": {
     "icon": "desktop/assets/images/icons/icon_screen-recorder_64.png",
@@ -431,6 +432,7 @@ export default {
     "author": "BuddyPond"
   },
   */
+ 
   /*
   */
   "chess": {
@@ -441,6 +443,26 @@ export default {
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
     // "alias": ["buddy-chess"]
+  },
+  /*
+  "virtual-machines": {
+    "icon": "desktop/assets/images/icons/icon_virtual-machines_64.png",
+    "label": "Virtual Machines",
+    "description": "Run virtual machines in the cloud",
+    "onClick": "bp.open('virtual-machines')",
+    "categories": ["tools", "productivity"],
+    "author": "BuddyPond",
+    // "alias": ["vm"]
+  },
+  */
+  "webllm": {
+    "icon": "desktop/assets/images/icons/icon_web_llm_64.png",
+    "label": "Web LLM",
+    "description": "Interact with large language models",
+    "onClick": "bp.open('webllm')",
+    "categories": ["tools", "productivity", "ai"],
+    "author": "BuddyPond",
+    // "alias": ["llm"]
   },
 
   "aero-player": {

@@ -24,12 +24,20 @@ window.bp_v_5 = async function bp_v_5() {
 
     await bp.load('card');
 
-    // if (!bp.loadedFromApp) {
+    if (!bp.loadedFromApp) {
         await bp.open({
             name: 'buddylist',
             autocomplete: allCommands
         });
-    // }
+    } else {
+        // TODO: ensure minimized buddylist is opened
+        let buddylist = await bp.open({
+            name: 'buddylist',
+            autocomplete: allCommands
+        });
+        //buddylist.minimize();
+
+    }
 
     // Remark: Do we need to load the pond here, or can we wait until login is successful?
     await bp.load('pond');
