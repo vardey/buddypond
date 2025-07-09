@@ -85,6 +85,17 @@
     justify-content: center;
 }
 
+.wallpaperUrl {
+  display: none;
+}
+
+.wallpaperUrlInput {
+    width: 300px !important;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 /* Row and Column Layout */
 .aim-profile-row {
     display: flex;
@@ -321,23 +332,56 @@
     align-items: center;
 }
 
-.theme-styles {
+.theme-settings {
   width: 100%;
-  border-collapse: collapse;
+  text-align: center;
+}
+
+.theme-styles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* responsive grid */
+  gap: 1rem;
+  width: 100%;
   margin-top: 1rem;
   font-family: sans-serif;
   font-size: 14px;
-  border: 1px solid #333;
+  border: none; /* remove old table border */
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.theme-styles tr {
-  border-bottom: 1px solid #333;
+.theme-style {
+  max-width: 100%; /* allow it to fill the grid cell */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-.theme-styles td {
-  padding: 12px;
-  vertical-align: top;
+.theme-style-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
+
+.style-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.prop-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.prop-name {
+  width: 100px;
+  font-weight: 500;
+}
+
 
 .theme-styles strong {
   display: block;

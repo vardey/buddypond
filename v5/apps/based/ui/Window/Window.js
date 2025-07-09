@@ -23,6 +23,7 @@ class Window {
             onFocus = () => { }, // Callback when the window is focused
             onClose = () => { }, // Callback when the window is closed
             onOpen = () => { }, // Callback when the window is opened
+            onResize = () => { }, // Callback when the window is resized
             onMessage = () => { }, // Callback when the window receives a message
             onLoad = () => { }, // Callback when the window is loaded ( remote content )
             className = '', // Custom classes for styling
@@ -990,6 +991,11 @@ class Window {
 
         this.container.style.width = `${newWidth}px`;
         this.container.style.height = `${newHeight}px`;
+
+        if (this.onResize) {
+            this.onResize(newWidth, newHeight);
+        }
+
     }
 
     stopResize() {

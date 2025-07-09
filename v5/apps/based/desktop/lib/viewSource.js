@@ -2,8 +2,9 @@ export default async function viewSource (url = 'https://raw.githubusercontent.c
     // fetch the content as text
     const response = await fetch(url);
     const content = await response.text();
-    await this.bp.load('editor-monaco', {
+    let win = await this.bp.open('editor-monaco', {
         content: content
     });
-    this.bp.apps['editor-monaco'].open();
+    console.log('viewSource', win);
+    win.maximize();
 }

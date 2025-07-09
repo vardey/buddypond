@@ -51,10 +51,32 @@ wallpapers.legacyWallpapers = function (bp) {
 
     $('input[name=wallpaper_opt]').on('input', function () {
       let radioValue = $('input[name=wallpaper_opt]:checked').val();
+      // alert(`Setting wallpaper to ${radioValue}`);
       // update desktop.settings.wallpaper_name
-      bp.set('wallpaper_name', radioValue);
+      if (radioValue === 'url') {
+        $('.wallpaperColors').hide();
+        $('.wallpaperUrl').show();
+        let wallpaperUrl = bp.settings.wallpaper_url || '';
+        $('.wallpaperUrlInput').val(wallpaperUrl);
+        // alert('Please enter a valid URL for the wallpaper.');
+      } else {
+        $('.wallpaperColors').show();
+        $('.wallpaperUrl').hide();
+
+        bp.set('wallpaper_name', radioValue);
+      }
     });
 
+    $('.wallpaperUrlButton').on('click', function () {
+      let _url = $('.wallpaperUrlInput').val().trim();
+      if (_url) {
+        // set the wallpaper to the URL
+        bp.set('wallpaper_url', _url);
+        bp.set('wallpaper_name', 'url');
+      } else {
+        alert('Please enter a valid URL for the wallpaper.');
+      }
+    });
 
   }
 

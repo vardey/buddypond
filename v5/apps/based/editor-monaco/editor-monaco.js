@@ -16,7 +16,8 @@ export default class MonacoWrapper {
 
     }
 
-    async open () {
+    async open (options = {}) {
+        this.options = options;
 
         let clientWidth = document.documentElement.clientWidth;
         let clientHeight = document.documentElement.clientHeight - 70;
@@ -65,7 +66,7 @@ export default class MonacoWrapper {
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' } });
 
         this.create(this.editorWindow.content, this.options.content || "");
-
+        return this.editorWindow;
 
     }
 

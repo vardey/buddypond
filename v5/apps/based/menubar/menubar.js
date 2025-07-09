@@ -93,7 +93,7 @@ export default class MenuBar {
         });
 
         // Handle option selection
-        $('.desktop-settings-dropdown-menu li').on('click', (ev) => {
+        $('.desktop-settings-dropdown-menu li').on('click', async (ev) => {
             const value = $(ev.target).data('value');
             const text = $(ev.target).text();
             // Update the trigger text/icon if desired
@@ -111,7 +111,10 @@ export default class MenuBar {
                 return;
             }
             if (value === 'urlWallpaper') {
-                bp.apps.wallpaper.setWallpaper();
+                // open profile settings to themes, select url option
+                await this.bp.open('profile', { context: 'themes' });
+                $('#wallPaperRadiourl').click()
+                // bp.apps.wallpaper.setWallpaper();
                 return;
             }
             if (value === 'open') {
@@ -121,8 +124,13 @@ export default class MenuBar {
                 this.menuBar.closeMobileMenu();
                 return;
             }
+
+            if (value === 'default') {
+                bp.apps.wallpaper.setDefaultWallpaper();
+            }
+
             // clear wallpaper_url if exists
-            bp.set('wallpaper_url', null);
+            // bp.set('wallpaper_url', null);
             bp.set('wallpaper_name', value);
         });
 

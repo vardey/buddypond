@@ -55,6 +55,7 @@ export default function defaultMenuBar(bp) {
     <li data-value="nyancat">Nyan Cat Wallpaper</li>
     <li data-value="ripples">Ripples Wallpaper</li>
     <li data-value="urlWallpaper">Set Wallpaper to Url</li>
+    <li data-value="default">Default Wallpaper</li>
   </ul>
 </div>
     `;

@@ -35,6 +35,10 @@ export default class WallpaperManager {
             'url': {
                 label: 'URL',
                 src: ['/v5/apps/based/wallpaper/wallpapers/url.js']
+            },
+            'default': {
+                label: 'Default',
+                src: ['/v5/apps/based/wallpaper/wallpapers/default/default.js']
             }
         };
 

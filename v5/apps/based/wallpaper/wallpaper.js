@@ -28,4 +28,8 @@ export default class Wallpaper {
     removeWallpaper() {
         this.wallpaperManager.removeWallpaper();
     }
+
+    setDefaultWallpaper() {
+        // alert('Setting default wallpaper');
+    }
 }

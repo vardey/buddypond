@@ -1,18 +1,22 @@
 export default function themeEditor(themeName) {
     let themeData = this.bp.apps.themes.themes[themeName];
     let themeStyles = themeData.styles || {};
-    let themeStylesTable = $('.theme-styles', this.profileWindow.content);
-    themeStylesTable.html(''); // clear table
 
     // Create a deep copy so edits don't mutate original
     let editableTheme = JSON.parse(JSON.stringify(themeData));
 
+    // Target container and clear it
+    let themeStylesContainer = $('.theme-styles', this.profileWindow.content);
+    themeStylesContainer.html(''); // clear previous content
+
     for (let styleName in themeStyles) {
         let styleValue = themeStyles[styleName];
-        let row = $('<tr></tr>');
-        let propsCell = $('<td colspan="2"></td>');
 
-        propsCell.append(`<div class="style-block"><div class="style-title">${styleName}</div>`);
+        // Top-level style wrapper
+        let styleDiv = $('<div class="theme-style"></div>');
+        let contentDiv = $('<div class="theme-style-content"></div>');
+
+        contentDiv.append(`<div class="style-title">${styleName}</div>`);
 
         for (let prop in styleValue) {
             let val = styleValue[prop];
@@ -24,57 +28,54 @@ export default function themeEditor(themeName) {
                 colorInput = `<input type="color" value="${safeColor}" data-style="${styleName}" data-prop="${prop}" class="color-picker" />`;
             }
 
-            propsCell.append(`
-        <div class="prop-row">
-            <label class="prop-name">${prop}:</label>
-            <input type="text" id="${inputId}" value="${val}" data-style="${styleName}" data-prop="${prop}" />
-            ${colorInput}
-        </div>
-    `);
-            //  <button class="remove-prop-btn" data-style="${styleName}" data-prop="${prop}">✕</button>
-
+            contentDiv.append(`
+                <div class="prop-row">
+                    <label class="prop-name">${prop}:</label>
+                    <input type="text" id="${inputId}" value="${val}" data-style="${styleName}" data-prop="${prop}" />
+                    ${colorInput}
+                </div>
+            `);
         }
 
+        // TODO: keep this commented for future use
         /*
-        propsCell.append(`
+        contentDiv.append(`
             <div class="prop-row">
                 <label class="prop-name">+</label>
                 <input type="text" class="new-prop-name" placeholder="property" data-style="${styleName}" />
                 <input type="text" class="new-prop-value" placeholder="value" data-style="${styleName}" />
                 <button class="add-prop-btn" data-style="${styleName}">Add</button>
             </div>
-        </div>`);
+        `);
         */
 
-
-        row.append(propsCell);
-        themeStylesTable.append(row);
+        styleDiv.append(contentDiv);
+        themeStylesContainer.append(styleDiv);
     }
 
     // 🔁 Listen to changes and update theme live
-    themeStylesTable.on('input', 'input[type="text"], input.color-picker', function (e) {
-        // set dropdown to Custom
+    themeStylesContainer.on('input', 'input[type="text"], input.color-picker', function (e) {
         $('.themeSelect', this.profileWindow.content).val('Custom');
+
         let style = $(e.target).data('style');
         let prop = $(e.target).data('prop');
-        console.log('style', style, 'prop', prop);
         if (!style || !prop) return;
 
         let newValue = $(e.target).val();
-        // find the closest text input and set its value
+
+        // Sync color picker and text input
         if ($(e.target).hasClass('color-picker')) {
             let closestTextInput = $(e.target).closest('.prop-row').find('input[type="text"]');
             closestTextInput.val(newValue);
-            // newValue = $(e.target).val();
         }
+
         editableTheme.styles[style][prop] = newValue;
-        console.log('editableTheme.styles', editableTheme);
         editableTheme.name = 'Custom';
-        this.bp.apps.themes.applyTheme(editableTheme); // re-apply updated theme
+        this.bp.apps.themes.applyTheme(editableTheme);
     }.bind(this));
 
     // ➕ Add new property
-    themeStylesTable.on('click', '.add-prop-btn', function (e) {
+    themeStylesContainer.on('click', '.add-prop-btn', function (e) {
         let style = $(e.target).data('style');
         let row = $(e.target).closest('div');
         let propInput = row.find('.new-prop-name');
@@ -85,16 +86,16 @@ export default function themeEditor(themeName) {
 
         if (newProp && newVal) {
             editableTheme.styles[style][newProp] = newVal;
-            $('.themeSelect', this.profileWindow.content).trigger('change'); // re-render
+            $('.themeSelect', this.profileWindow.content).trigger('change');
         }
     }.bind(this));
 
     // ❌ Remove property
-    themeStylesTable.on('click', '.remove-prop-btn', function (e) {
+    themeStylesContainer.on('click', '.remove-prop-btn', function (e) {
         let style = $(e.target).data('style');
         let prop = $(e.target).data('prop');
         delete editableTheme.styles[style][prop];
-        $('.themeSelect', this.profileWindow.content).trigger('change'); // re-render
+        $('.themeSelect', this.profileWindow.content).trigger('change');
     }.bind(this));
 
     console.log('themeData', themeData);
