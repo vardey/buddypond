@@ -442,6 +442,24 @@ export default {
     "onClick": "bp.open('chess')",
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
+    "chatWindowButton": ['buddy']
+    /*, // adds this app as a button in the chat window, array is types of windows to add it to
+    "chatButton": {
+      text: 'Chalkboard',
+      image: 'desktop/assets/images/icons/icon_chess_64.png',
+      onclick: async (ev) => {
+        let context = ev.target.dataset.context;
+        let type = ev.target.dataset.type;
+        // Open the image search window
+        await bp.load('chess', {
+          output: type || 'buddy',
+          context: context,
+        });
+        bp.apps.chess.sendGameInvite(context);
+        return false;
+      }
+    }
+    */
     // "alias": ["buddy-chess"]
   },
   /*
@@ -455,6 +473,7 @@ export default {
     // "alias": ["vm"]
   },
   */
+ /*
   "webllm": {
     "icon": "desktop/assets/images/icons/icon_web_llm_64.png",
     "label": "Web LLM",
@@ -464,6 +483,7 @@ export default {
     "author": "BuddyPond",
     // "alias": ["llm"]
   },
+  */
 
   "aero-player": {
     "icon": "desktop/assets/images/icons/icon_aero-player_64.png",
