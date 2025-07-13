@@ -152,6 +152,10 @@ export default class BuddyList {
             config.type = 'buddylist-profile';
         }
 
+        if (config.openDefaultPond === false) {
+            this.openDefaultPond = false;
+        }
+
         if (config.type === 'buddylist-profile') {
 
             // TODO: have the ability to close and re-open the buddylist gracefully
@@ -907,7 +911,7 @@ export default class BuddyList {
         }
 
         // wait until buddylist is connected and then opens default chat window if defined
-        if (this.defaultPond) {
+        if (this.defaultPond && this.openDefaultPond !== false) {
             setTimeout(() => {
                 // console.log('Opening default pond chat window', this.defaultPond);
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });

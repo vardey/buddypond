@@ -56,6 +56,19 @@ export default function createWebSocketClient(chatId) {
       })
     );
 
+    // check for any queuedMessage
+    let queuedMessages = this.queuedMessages.get(chatId);
+    if (queuedMessages) {
+      console.log("SENDING QUEUED MESSAGE", queuedMessages)
+      queuedMessages.forEach((message) => {
+        chatConnection.wsClient.send(JSON.stringify(message));
+
+      })
+    }
+    this.queuedMessages.set(chatId, null);
+
+    bp.emit('buddychat::connected', { chatId: chatId })
+
     // Remark: attempt to set .aim-room-active class on the .aim-room-list-item-name, which is a child
     // of the .aim-room-list-item with data-pond of chatId
     // TODO: Move this code elsewhere, not in the client
@@ -70,8 +83,6 @@ export default function createWebSocketClient(chatId) {
         }
       }
     }
-
-
   }
 
   // Named function for message event
@@ -88,7 +99,7 @@ export default function createWebSocketClient(chatId) {
           // console.log('Connected users message received:', parseData);
           bp.emit('pond::connectedUsers', parseData);
           break;
-        case 'typing' :
+        case 'typing':
           // console.log('Typing message received:', parseData);
           bp.emit('buddy::isTyping', parseData.message);
           break;

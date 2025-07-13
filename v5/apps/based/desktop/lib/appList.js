@@ -442,8 +442,8 @@ export default {
     "onClick": "bp.open('chess')",
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
-    "chatWindowButton": ['buddy']
-    /*, // adds this app as a button in the chat window, array is types of windows to add it to
+    "chatWindowButton": ['buddy'],
+    // adds this app as a button in the chat window, array is types of windows to add it to
     "chatButton": {
       text: 'Chalkboard',
       image: 'desktop/assets/images/icons/icon_chess_64.png',
@@ -459,7 +459,6 @@ export default {
         return false;
       }
     }
-    */
     // "alias": ["buddy-chess"]
   },
   /*

@@ -10,15 +10,17 @@ export default class Client {
             host: "",
             api: "",
         };
-        
+
         this.api = buddypond;
         this.api.endpoint = `${this.config.api}/api/v6`;
-        this.queuedMessages = [];
 
         this.messagesWsClients = new Map();
-        
+
         // Track active subscriptions
         this.subscriptions = new Map();
+
+        // Messages waiting to be sent on connection
+        this.queuedMessages = new Map();
 
         // Timer for keepalive
         this.keepaliveInterval = null;
@@ -35,7 +37,7 @@ export default class Client {
             this.bp.log('Message from worker:', event.data);
             config.onmessage(event.data);
         };
-        
+
         this.worker.onerror = (event) => {
             console.error('Worker error:', event);
             config.onerror(event);
@@ -49,8 +51,8 @@ export default class Client {
 
         this.keepaliveInterval = setInterval(() => {
             //if (this.subscriptions.size > 0) {
-                buddypond.keepAlive();
-                this.bp.log('Keepalive ping sent');
+            buddypond.keepAlive();
+            this.bp.log('Keepalive ping sent');
             //}
         }, 30000); // 30 seconds interval
     }
@@ -65,13 +67,30 @@ export default class Client {
     sendWsMessage(chatId, message) {
         let chatConnection = this.messagesWsClients.get(chatId);
         if (!chatConnection || !chatConnection.wsClient) {
-            console.log('buddypond.messagesWs not connected, unable to send message to', chatId, message);
+            console.log('buddypond.messagesWs not connected, will queue message and send on connect...', chatId, message);
+            // open the chat window, will send queued messags on connect
+            // TODO: buddylist should accept chatId
+            let parts = chatId.split('/');
+            let buddyname = parts[1];
+            if (buddyname === this.bp.me) {
+                buddyname = parts[2];
+            }
+            console.log('parts', parts)
+            console.log('buddyname', buddyname);
+            // TODO: allow for multiple queued messages
+            this.queuedMessages.set(chatId, [message]);
+            if (parts[0] === 'buddy') {
+                this.bp.open('buddylist', {
+                    type: 'buddy',
+                    context: buddyname,
+                })
+            }
             return;
         }
         // Send the message via ws connection
         chatConnection.wsClient.send(JSON.stringify(message));
     }
-    
+
     getConnectedUsers(chatId) {
         alert('getConnectedUsers called for ' + chatId);
         // sends a getConnectedUsers webscket message to the server
@@ -93,7 +112,7 @@ export default class Client {
 
     addSubscription(type, context) {
         let chatId = type + '/' + context;
-      
+
         if (type === 'buddy') {
             // If the context is a buddy, create a unique chatId for the tuple
             let buddyNames = [buddypond.me, context].sort();
@@ -109,13 +128,13 @@ export default class Client {
 
     removeSubscription(type, context) {
         let chatId = type + '/' + context;
-      
+
         if (type === 'buddy') {
             // If the context is a buddy, create a unique chatId for the tuple
             let buddyNames = [buddypond.me, context].sort();
             chatId = type + '/' + buddyNames.join('/');
         }
-      
+
         console.log(`unsubscribeMessages unsubscribing from ${chatId}`);
 
         // Check if an entry exists in the map
@@ -123,7 +142,7 @@ export default class Client {
             console.log(`buddypond.messagesWsClients has ${chatId}, closing connection`);
             let chatConnection = this.messagesWsClients.get(chatId);
             console.log('closing chatConnection', chatConnection);
-      
+
             console.log('Before close, readyState:', chatConnection.wsClient.readyState);
             chatConnection.wsClient.closeConnection();
         }

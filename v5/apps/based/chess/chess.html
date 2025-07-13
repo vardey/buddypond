@@ -1,11 +1,39 @@
-<div align="center">
-  <!--
-  <input id="game-input" placeholder="Enter game ID" />
-  <button id="join-game">Join Game</button>
-  <button id="play-stockfish">Play vs Stockfish</button>
-  -->
-  <div id="status"></div>
-  <div id="chessboard" style="width: 480px"></div>
-  <h2>Opponent: Stock Fish</h2>
-  <h4>Online Buddy Multiplayer Coming soon!</h4>
+<div class="chess-app-container">
+  <!-- Mode Selection -->
+  <div class="chess-app-mode-selection">
+    <h2 class="chess-app-heading">Welcome to BuddyPond Chess</h2>
+    <button id="play-stockfish" class="chess-app-button">Play Against Computer</button>
+    <button id="show-join-game" class="chess-app-button">Play with a Buddy</button>
+  </div>
+
+  <!-- Multiplayer Join Input -->
+  <div class="chess-app-join-ui" style="display: none;">
+    <input id="chess-game-buddyname" class="chess-game-buddyname" placeholder="Enter Buddy Name" />
+
+    <input id="game-input" class="chess-app-input" placeholder="Enter Game ID" type="hidden" />
+    <button id="join-game" class="chess-app-button">Join Game</button>
+  </div>
+
+  <!-- Game UI -->
+  <div class="chess-app-game-ui" style="display: none;">
+
+    <div class="chess-app-game-row">
+      <!-- Left: Chessboard -->
+      <div id="chessboard" class="chess-app-board"></div>
+
+      <!-- Right: Game Controls -->
+      <div class="chess-app-controls">
+            <div class="chess-app-status"></div>
+
+        <button id="resign-button" class="chess-app-button chess-app-small">Resign</button>
+        <button id="restart-button" class="chess-app-button chess-app-small">Restart</button>
+        <button id="rematch-button" class="chess-app-button chess-app-small" style="display: none;">Rematch</button>
+        <button id="leave-button" class="chess-app-button chess-app-small">Leave Game</button>
+      </div>
+    </div>
+
+    <!-- <h2 id="opponent-name" class="chess-app-opponent"></h2> -->
+  </div>
+
+
 </div>
