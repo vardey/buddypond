@@ -20,7 +20,7 @@ export default function showLightbox(src) {
   $img.attr('src', src);
   $overlay.append($img);
   $('body').append($overlay);
-  this.bp.ignoreUIControlKeys = true;
+  bp.ignoreUIControlKeys = true;
 
   // Show with fade-in
   $overlay.flexShow().fadeIn(150);
@@ -35,7 +35,7 @@ export default function showLightbox(src) {
   // Close function with fade-out
   function closeOverlay() {
     $(document).off('keyup', onKeyUp); // cleanup key event
-    this.bp.ignoreUIControlKeys = false;
+    bp.ignoreUIControlKeys = false;
 
     $overlay.fadeOut(150, () => $overlay.remove());
   }
