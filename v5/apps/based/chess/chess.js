@@ -24,7 +24,7 @@ export default class ChessApp {
         await this.bp.appendScript('/v5/apps/based/chess/vendor/chess.js');
         //await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js');
 
-        await this.bp.appendCSS('/v5/apps/based/chess/vendor/chessboardjs-1.0.0/css/chessboard-1.0.0.min.css');
+        await this.bp.appendCSS('/v5/apps/based/chess/vendor/chessboardjs-1.0.0/css/chessboard-1.0.0.min.css', false, true);
         //await this.bp.appendCSS('https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css');
         return 'loaded ChessApp';
     }
@@ -66,7 +66,7 @@ export default class ChessApp {
             x: 120,
             y: 80,
             parent: $('#desktop')[0],
-            width: 600,
+            width: 850,
             height: 600,
             content: this.html,
             resizable: true,
