@@ -325,7 +325,7 @@ buddypond.editInstantMessage = async function editInstantMessage({ chatId, uuid,
 }
 
 buddypond.removeInstantMessage = async function removeInstantMessage({ chatId, uuid }) {
- bp.apps.client.sendWsMessage(chatId, {
+  bp.apps.client.sendWsMessage(chatId, {
     action: 'removeInstantMessage',
     chatId: chatId,
     buddyname: buddypond.me,
@@ -479,28 +479,23 @@ buddypond.sendSnaps = function sendSnaps(type, name, text, snapsJSON, delay, sou
   // route based on the source of the file
   if (source === 'paint') {
     // Paints are stored in the paints folder
-    fileName = `${new Date()}.png`;
-    // replace all spaces with underscores
-    fileName = fileName.replace(/ /g, '_');
+    fileName = generateSafeFilenameFromToString('png');
     filePath = `paints/${fileName}`;
   }
 
   if (source === 'camera') {
     // need to check if gif or png?
-    fileName = `${new Date()}.gif`;
-    // replace all spaces with underscores
-    fileName = fileName.replace(/ /g, '_');
+    fileName = generateSafeFilenameFromToString('gif');
     // Camera shots are stored in the pictures folder
     filePath = `pictures/${fileName}`;
   }
 
   if (source === 'gif-studio') {
     // Gifs are stored in the gifs folder
-    fileName = `${new Date()}.gif`;
-    // replace all spaces with underscores
-    fileName = fileName.replace(/ /g, '_');
+    fileName = generateSafeFilenameFromToString('gif');
     filePath = `animations/${fileName}`;
   }
+
   console.log(`constructed new file: ${fileName}`);
   const file = new File([blob], fileName, { type: mimeString });
   file.filePath = filePath;
@@ -813,9 +808,9 @@ buddypond.lastResponseTime = function averageResponseTime() {
 }
 
 buddypond.sendPasswordResetEmail = function sendPasswordResetEmail(email, cb) {
-    apiRequest('/auth/forgot-password', 'POST', { email: email }, (err, data) => {
-      cb(err, data);
-    });
+  apiRequest('/auth/forgot-password', 'POST', { email: email }, (err, data) => {
+    cb(err, data);
+  });
 }
 
 //
@@ -902,5 +897,32 @@ function apiRequest(uri, method, data, cb) {
       cb(new Error(msg), error.data || null);
     });
 }
+
+function generateSafeFilenameFromToString(extension = 'gif') {
+  const now = new Date();
+  const pad = (n) => n.toString().padStart(2, '0');
+
+  const dayName = now.toLocaleDateString('en-US', { weekday: 'short' });
+  const monthName = now.toLocaleDateString('en-US', { month: 'short' });
+  const day = pad(now.getDate());
+  const year = now.getFullYear();
+  const hour = pad(now.getHours());
+  const minute = pad(now.getMinutes());
+  const second = pad(now.getSeconds());
+
+  // Get GMT offset in ±HHMM format
+  const offsetMinutes = -now.getTimezoneOffset(); // invert sign to match GMT
+  const offsetSign = offsetMinutes >= 0 ? '+' : '-';
+  const offsetHours = pad(Math.floor(Math.abs(offsetMinutes) / 60));
+  const offsetMins = pad(Math.abs(offsetMinutes) % 60);
+  const gmtOffset = `GMT${offsetSign}${offsetHours}${offsetMins}`;
+
+  // Build filename in a predictable, safe format
+  const fileName = `${dayName}_${monthName}_${day}_${year}_${hour}-${minute}-${second}_${gmtOffset}.${extension}`;
+
+  return fileName;
+}
+
+
 
 buddypond.apiRequest = apiRequest;
