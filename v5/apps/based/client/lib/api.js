@@ -479,20 +479,20 @@ buddypond.sendSnaps = function sendSnaps(type, name, text, snapsJSON, delay, sou
   // route based on the source of the file
   if (source === 'paint') {
     // Paints are stored in the paints folder
-    fileName = generateSafeFilenameFromToString('png');
+    fileName = generateSafeFilename('png');
     filePath = `paints/${fileName}`;
   }
 
   if (source === 'camera') {
     // need to check if gif or png?
-    fileName = generateSafeFilenameFromToString('gif');
+    fileName = generateSafeFilename('gif');
     // Camera shots are stored in the pictures folder
     filePath = `pictures/${fileName}`;
   }
 
   if (source === 'gif-studio') {
     // Gifs are stored in the gifs folder
-    fileName = generateSafeFilenameFromToString('gif');
+    fileName = generateSafeFilename('gif');
     filePath = `animations/${fileName}`;
   }
 
@@ -898,31 +898,20 @@ function apiRequest(uri, method, data, cb) {
     });
 }
 
-function generateSafeFilenameFromToString(extension = 'gif') {
+function generateSafeFilename(extension = 'gif') {
+  // Get current time in ISO 8601 format (UTC)
   const now = new Date();
-  const pad = (n) => n.toString().padStart(2, '0');
+  const isoString = now.toISOString() // e.g., "2025-07-13T14:25:30.123Z"
+    .replace(/[:.]/g, '-')          // Replace colons and dots with hyphens
+    .replace('T', '_');             // Replace T with underscore
 
-  const dayName = now.toLocaleDateString('en-US', { weekday: 'short' });
-  const monthName = now.toLocaleDateString('en-US', { month: 'short' });
-  const day = pad(now.getDate());
-  const year = now.getFullYear();
-  const hour = pad(now.getHours());
-  const minute = pad(now.getMinutes());
-  const second = pad(now.getSeconds());
+  // Ensure extension is lowercase and doesn't start with a dot
+  const cleanExtension = extension.replace(/^\./, '').toLowerCase();
 
-  // Get GMT offset in ±HHMM format
-  const offsetMinutes = -now.getTimezoneOffset(); // invert sign to match GMT
-  const offsetSign = offsetMinutes >= 0 ? '+' : '-';
-  const offsetHours = pad(Math.floor(Math.abs(offsetMinutes) / 60));
-  const offsetMins = pad(Math.abs(offsetMinutes) % 60);
-  const gmtOffset = `GMT${offsetSign}${offsetHours}${offsetMins}`;
-
-  // Build filename in a predictable, safe format
-  const fileName = `${dayName}_${monthName}_${day}_${year}_${hour}-${minute}-${second}_${gmtOffset}.${extension}`;
+  // Build filename: <ISODate>_<UTC>.<extension>
+  const fileName = `${isoString}_UTC.${cleanExtension}`;
 
   return fileName;
 }
-
-
 
 buddypond.apiRequest = apiRequest;
