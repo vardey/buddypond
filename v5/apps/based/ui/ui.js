@@ -1,6 +1,7 @@
 // Remark: We may be able to remove UI and put all this logic in the desktop app
 import WindowManager from "./Window/WindowManager.js";
 import CountdownManager from "../ui/CountdownManager.js";
+import LightBox from "./LightBox.js";
 
 export default class UI {
     constructor(bp, options = {}) {
@@ -88,6 +89,8 @@ export default class UI {
         }
 
         await this.bp.appendScript('/v5/vendor/DateFormat.js');
+
+        this.showLightBox = LightBox.bind(this);
 
         // bind common document events
         // TODO: move UI events to separate file
