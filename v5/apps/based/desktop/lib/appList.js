@@ -421,7 +421,6 @@ export default {
     "categories": ["tools"]
   },
  
-  /*
   "screen-recorder": {
     "icon": "desktop/assets/images/icons/icon_screen-recorder_64.png",
     "label": "Screen Recorder",
@@ -431,7 +430,6 @@ export default {
     "desktopOnly": true,
     "author": "BuddyPond"
   },
-  */
  
   /*
   */
