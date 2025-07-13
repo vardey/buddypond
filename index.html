@@ -124,8 +124,9 @@ window.top.location = 'ie.html';
       let _appsEndpoint = 'https://apps.buddypond.com';
       let _apiKeysEndpoint = 'https://api.buddypond.com';
       let _pondsWsEndpoint = 'wss://messages.buddypond.com/ws/ponds';
+      let _chessWsEndpoint = 'wss://chess.buddypond.com/ws/chess';
 
-      let devmode = true;
+      let devmode = false;
 
       // TODO: checks if current host is buddypond.com
       // buddypond.com force devmode to false
@@ -153,6 +154,7 @@ window.top.location = 'ie.html';
         _buddyProxy = `http://${localIp}:9007`;
         _appsEndpoint = `http://${localIp}:9008`;
         _apiKeysEndpoint = `http://${localIp}:9009`;
+        _chessWsEndpoint = `ws://${localIp}:5556/ws/chess`;
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
@@ -175,6 +177,7 @@ window.top.location = 'ie.html';
       buddypond.buddyProxy = _buddyProxy;
       buddypond.appsEndpoint = _appsEndpoint;
       buddypond.apiKeysEndpoint = _apiKeysEndpoint;
+      buddypond.chessWsEndpoint = _chessWsEndpoint;
 
       let renderBpApp = true;
       let loadedFromApp = false;
