@@ -54,6 +54,8 @@ export default class Dictate {
             return;
         }
 
+        this.hasError = false;
+
         this.listening = true;
         console.log('Starting speech recognition...');
         this.recognition.start();
@@ -82,27 +84,35 @@ export default class Dictate {
         } else {
             this.targetEl.val(transcript);
         }
-
-
     }
 
     onError(event) {
+        this.hasError = true;
         console.error('Speech recognition error:', event.error);
         if (this.targetEl) {
             this.targetEl.removeClass('dictate-active');
             console.log('removed class dictate-active from targetEl', this.targetEl);
+            // add the error class to targetEl
+            this.targetEl.addClass('dictate-error');
+            $(this.targetEl).attr('placeholder', 'Dictation Error occurred: ' + event.error);
+            console.log('added class dictate-error to targetEl', this.targetEl);
+            // remove the error class after 3 seconds
+            setTimeout(() => {
+                this.targetEl.removeClass('dictate-error');
+                this.targetEl.attr('placeholder', 'Type your message...');
+            }, 3000);
         }
     }
 
     onEnd() {
-        console.log('Speech recognition ended.');
-
         if (this.targetEl) {
             this.targetEl.removeClass('dictate-active');
             console.log('removed class dictate-active from targetEl', this.targetEl);
         }
         this.listening = false;
-        this.targetEl.attr('placeholder', 'Type your message...');
+        if (!this.hasError) {
+            this.targetEl.attr('placeholder', 'Type your message...');
+        }
 
     }
 

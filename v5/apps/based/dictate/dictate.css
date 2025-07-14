@@ -2,3 +2,14 @@
     background: #50fa7b;
     transform: translateX(5px);
 }
+
+.dictate-error {
+    background: #ff5555;
+    transform: translateX(5px);
+    color: #000;
+    opacity: 1;
+}
+
+.dictate-error::placeholder {
+    color: #000;
+}
