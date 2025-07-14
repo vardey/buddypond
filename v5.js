@@ -34,7 +34,7 @@ window.bp_v_5 = async function bp_v_5() {
         let buddylist = await bp.open({
             name: 'buddylist',
             autocomplete: allCommands,
-            openDefaultPond: false
+            openDefaultPond: true // for now
         });
         // buddylist.minimize();
 
