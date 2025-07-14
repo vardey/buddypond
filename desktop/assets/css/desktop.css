@@ -1525,10 +1525,28 @@ iframe {
   display: none;
 }
 
+.button-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 img.button-bar-button {
   width: 18pt;
   height: 18pt;
   cursor: pointer;
+}
+
+.button-bar-button-icon {
+  width: 18pt;
+  height: 18pt;
+  cursor: pointer;
+  padding:5px;
+  font-size:18px;
+}
+
+.button-bar-button-icon:hover {
+  opacity: 0.44;
 }
 
 img.button-bar-button:hover {
@@ -1611,10 +1629,17 @@ a:hover {
 
   }
 
-
   img.button-bar-button {
     width: 32pt;
     height: 32pt;
+    cursor: pointer;
+  }
+
+  .button-bar-button-icon {
+    width: 32pt;
+    height: 32pt;
+    padding: 0px;
+    font-size: 32px;
     cursor: pointer;
   }
 

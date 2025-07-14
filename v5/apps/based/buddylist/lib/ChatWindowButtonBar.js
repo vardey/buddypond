@@ -47,6 +47,9 @@ export default class ChatWindowButtonBar {
             element.alt = button.text;
             element.title = button.text;
             element.draggable = false;
+        } else if (button.icon) {
+            element = document.createElement('span');
+            element.innerHTML = button.icon;
         } else {
             element = document.createElement('button');
             element.innerText = button.text;

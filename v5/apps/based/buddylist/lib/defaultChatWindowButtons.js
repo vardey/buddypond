@@ -1,7 +1,69 @@
 export default function defaultChatWindowButtons(bp) {
 
     return [
+        {
+            text: 'Upload File',
+            image: 'desktop/assets/images/icons/icon_upload_64.png',
+            //icon: '<i title="Upload File" class="button-bar-button-icon button-bar-button fa-duotone fa-regular fa-upload"></i>',
+            onclick: async (ev) => {
+                let context = ev.target.dataset.context;
+                let type = ev.target.dataset.type;
 
+                // Create a hidden file input dynamically
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '*/*'; // customize this if needed (e.g., 'image/*' or '.txt,.pdf')
+                fileInput.style.display = 'none';
+
+                // Append to DOM to make it usable
+                document.body.appendChild(fileInput);
+
+                // Listen for file selection
+                fileInput.addEventListener('change', async () => {
+                    const file = fileInput.files[0];
+                    console.log('Selected file:', file);
+                    if (file) {
+                        file.filePath = 'uploads/' + file.name; // Add filePath if needed
+                        try {
+                            // Optionally show a progress UI
+                            const onProgress = (percent) => {
+                                console.log(`Upload progress: ${percent}%`);
+                            };
+
+                            // Call your API method
+                            let result = await bp.apps.client.api.uploadFile(file, onProgress);
+                            // console.log('Upload successful', result);
+
+                            // send the message with the uploaded file
+                            let message = {
+                                from: bp.me,
+                                to: context,
+                                text: result,
+                                type: type || 'buddy'
+                            }
+                            // console.log('Sending message with uploaded file', message);
+                            bp.apps.client.api.sendCardMessage(message, function (err, response) {
+                                if (err) {
+                                    console.error('Error sending message', err);
+                                } else {
+                                    console.log('Message sent', response);
+                                }
+                            });
+                        } catch (err) {
+                            console.error('Upload failed:', err);
+                        }
+                    }
+
+                    // Clean up
+                    fileInput.remove();
+                });
+
+                // Trigger the file picker
+                fileInput.click();
+
+                return false;
+            }
+        },
         {
             text: 'Image Search',
             image: 'desktop/assets/images/icons/icon_image-search_64.png',
@@ -51,6 +113,7 @@ export default function defaultChatWindowButtons(bp) {
         },
         {
             text: 'BuddySnap',
+            env: 'desktop-only', // for now, use default mobile camera
             image: 'desktop/assets/images/icons/svg/1f4f7.svg',
             onclick: (ev) => {
                 let context = ev.target.dataset.context;

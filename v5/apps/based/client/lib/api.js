@@ -341,8 +341,11 @@ buddypond.sendCardMessage = function sendCardMessage(msg, cb) {
   // if the context is a buddy, we need to create a unique chatId to represent the tuple
   // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
   // TODO: might be easier to contstruct chatId on backend?
-  let buddyNames = [buddypond.me, msg.to].sort();
-  chatId = 'buddy/' + buddyNames.join('/');
+
+  if (msg.type === 'buddy') {
+    let buddyNames = [buddypond.me, msg.to].sort();
+    chatId = 'buddy/' + buddyNames.join('/');
+  }
 
   if (bp.apps.buddylist.data.profileState.profilePicture) {
     // console.log('sending message with profile picture', bp.apps.buddylist.data.profileState.buddylist[bp.me].profilePicture);
