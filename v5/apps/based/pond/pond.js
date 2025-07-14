@@ -88,10 +88,14 @@ export default class Pond {
         }
     }
 
-    joinPondByName(pondName) {
+    async joinPondByName(pondName) {
         if (!pondName) return;
 
-        // check for bad names
+        // ensure the buddylist app is loaded
+        if (!this.bp.apps.buddylist) {
+            await this.bp.load('buddylist');
+        }
+
         let invalidName = this.bp.apps.buddylist.forbiddenNotes.containsBadWord(pondName);
         if (invalidName) {
             alert('Invalid pond name. Please choose a different name.');

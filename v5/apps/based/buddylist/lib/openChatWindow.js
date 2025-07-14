@@ -1,4 +1,3 @@
-import forbiddenNotes from "./forbiddenNotes.js";
 import setupInputEvents from "./message/setupInputEvents.js";
 import setupAutocomplete from "./message/setupAutocomplete.js";
 import setupChatWindowButtons from "./message/setupChatWindowButtons.js";
@@ -148,7 +147,7 @@ function createProfilePictureElement(userId, profilePicture, $existingContainer 
 
 export default function openChatWindow(data) {
     const { windowType, contextName, windowTitle } = determineWindowParameters(data);
-    if (!isValidContextName(contextName)) {
+    if (!isValidContextName.call(this, contextName)) {
         return;
     }
 
@@ -159,10 +158,6 @@ export default function openChatWindow(data) {
 
     if (!this.updatePondConnectedUsers) {
         this.updatePondConnectedUsers = updatePondConnectedUsers.bind(this);
-    }
-
-    if (!this.forbiddenNotes) {
-        this.forbiddenNotes = forbiddenNotes;
     }
 
     if (!this.joinPond) {
@@ -207,7 +202,7 @@ function determineWindowParameters(data) {
 
 function isValidContextName(contextName) {
     const pondName = contextName.replace("pond/", "");
-    if (forbiddenNotes.containsBadWord(pondName)) {
+    if (this.forbiddenNotes.containsBadWord(pondName)) {
         console.error("Forbidden context name:", contextName);
         alert("Pond name not allowed, please choose a different name.");
         return false;
@@ -746,7 +741,7 @@ function joinPond(pondName) {
         return;
     }
 
-    let invalidName = forbiddenNotes.containsBadWord(pondName);
+    let invalidName = this.forbiddenNotes.containsBadWord(pondName);
     if (invalidName) {
         alert('Invalid pond name. Please choose a different name.');
         return;

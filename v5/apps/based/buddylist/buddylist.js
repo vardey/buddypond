@@ -22,6 +22,8 @@ import loadUserApps from "./lib/loadUserApps.js";
 import sendMessageHandler from "./lib/message/sendMessageHandler.js";
 import showCard from "./lib/message/showCard.js";
 import scrollToBottom from "./lib/message/scrollToBottom.js";
+import forbiddenNotes from "./lib/forbiddenNotes.js";
+
 
 import defaultAvatarSvg from "./lib/buddy/defaultAvatarSvg.js";
 
@@ -125,6 +127,7 @@ export default class BuddyList {
         //console.log('LOADED dicebearAvatars', this.dicebearAvatars);
 
         this.bindMessageContextMenu();
+        this.forbiddenNotes = forbiddenNotes;
 
         // TODO: probably should remove this event and just use handleAuthSuccess handler?
         /*
