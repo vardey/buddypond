@@ -163,7 +163,7 @@
         /* ~1px */
         height: auto;
         /* Unchanged */
-        max-height: 40vh;
+        max-height: 100vh;
         /* Reduced from 70vh to ensure sidebar visibility */
         padding: 0.625rem;
         /* ~10px, reduced for mobile */
