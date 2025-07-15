@@ -14,6 +14,7 @@ class Window {
             context = 'default', // Default context
             content = '', // Default content
             iframeContent = false,
+            position = null,
             icon = '', // Default icon
             x = 50, // Default x position
             y = 50, // Default y position
@@ -73,6 +74,14 @@ class Window {
         this.resizeable = resizeable;
         this.preventOverlap = preventOverlap;
         this.canBeBackground = canBeBackground;
+
+
+        // if position is set, override the x and y values
+        if (position === 'center') {
+            this.x = (window.innerWidth - parseInt(this.width)) / 2;
+            this.y = (window.innerHeight - parseInt(this.height)) / 2;
+        }
+
 
         windowManager = windowManager || {
             windows: [],
@@ -718,8 +727,6 @@ class Window {
         // Mark as not minimized
         this.isMinimized = false;
         // TODO: save the window state
-
-
 
     }
 
