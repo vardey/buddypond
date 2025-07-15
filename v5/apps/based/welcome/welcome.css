@@ -1,0 +1,521 @@
+/* welcome */
+.app-welcome h2 {
+    padding: 0px;
+    margin: 0px;
+}
+
+.window-main {
+    flex-grow: 1;
+    overflow-y: auto;
+    /* background-color: #FFF; */
+    padding: 10px;
+    border-top: 1px solid #000;
+}
+
+.welcomeForm {
+    padding-bottom: 10px;
+}
+
+.welcomeForm input[type="text"],
+.welcomeForm input[type="password"] {
+    margin: 5px 0;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border: 1px solid #888;
+    border-radius: 3px;
+    font-size: 2.5rem;
+    /* ~16px, standard for inputs */
+}
+
+.resetPasswordForm input[type="text"],
+.resetPasswordForm input[type="password"] {
+    margin: 5px 0;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border: 1px solid #888;
+    border-radius: 3px;
+    font-size: 2.5rem;
+}
+
+.welcomeForm .password {
+    display: none;
+}
+
+.welcomeForm button {
+    padding: 10px 15px;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 2.5rem;
+    /* ~16px, standard for buttons */
+}
+
+.welcomeForm button:hover {
+    background-color: #0056b3;
+}
+
+.welcome-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.buddy-apps {
+    width: 128px;
+}
+
+.login-frog {
+    font-size: 64px;
+    text-align: center;
+    color: green;
+    display: flex;
+    justify-content: center;
+    /* center the icon */
+}
+
+.login-frog i:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.token-sale {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* align to right */
+    justify-content: center;
+}
+
+.h2,
+.h3 {
+    color: #000;
+    font-size: 18px;
+}
+
+.addBuddyForm {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sendBuddyRequest:hover {
+    background-color: #2ca6a4;
+}
+
+.welcomeHolder,
+.addBuddyForm {
+    padding: 10px;
+    /* background-color: #f9f9f9; */
+    border: 1px solid #ccc;
+    width: 100%;
+    user-select: none;
+    ;
+}
+
+.welcome-positiveAffirmation {
+    position: absolute;
+    top: 50px;
+    left: 1rem;
+    max-width: 250px;
+
+    font-family: 'Georgia', 'Palatino Linotype', 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(60, 60, 60, 0.85);
+
+    transform: rotate(-2deg);
+    background: rgba(255, 255, 240, 0.6);
+    /* a soft "paper" background */
+    padding: 0.75rem 1rem;
+    border-left: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+    z-index: 9999;
+    cursor: pointer;
+    /* prevent interfering with other elements */
+}
+
+
+.welcome {
+    list-style: none;
+}
+
+.welcomeMessage {
+    text-align: center;
+    font-size: 2.5em;
+}
+
+.loginButton {
+    background-color: #48d1cc;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.welcomeContainer {
+    display: none;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 20px 0 0;
+}
+
+.loginStatus {
+    text-align: center;
+    font-size: 2.5em;
+}
+
+.welcome-tos-checkbox {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 5px;
+    font-size: 2em;
+}
+
+.welcome-nav-links {
+    display: flex;
+    flex-direction: row;
+    gap: 0.625rem;
+    padding: 0.625rem;
+    /* ~10px */
+    background: none;
+    justify-content: center;
+}
+
+.welcome-nav-button {
+    background: #3b3b4f;
+    color: #ffffff;
+    border: none;
+    padding: 0.625rem;
+    /* ~10px */
+    font-size: 1.5em;
+    /* Unchanged */
+    cursor: pointer;
+    border-radius: 0.3125rem;
+    /* ~5px */
+    transition: background 0.3s, transform 0.1s;
+    text-align: left;
+}
+
+.welcome-nav-button:hover {
+    background: #50fa7b;
+    color: #1e1e2e;
+    /* ~5px */
+}
+
+.welcome-nav-button:active {
+    transform: translateX(0.125rem);
+    /* ~2px */
+}
+
+/* TODO: how to make footer stick bottom, while remaining centered? */
+.welcome-footer {
+    display: flex;
+    width : 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem;
+    background: none;
+}
+
+.read-patch-notes {
+    font-size: 0.5em;
+    margin-right: 100px;
+    background: #3b3b4f;
+    color: #ffffff;
+    border: none;
+    padding: 0.625rem;
+    /* ~10px */
+    /* Unchanged */
+    cursor: pointer;
+    border-radius: 0.3125rem;
+    /* ~5px */
+    transition: background 0.3s, transform 0.1s;
+    text-align: left;
+}
+
+.resetPasswordLink {
+    color: #0078D7 !important;
+    text-decoration: none;
+    font-size: 14px;
+    display: none;
+    text-align: center;
+}
+
+.resetPasswordLink a {
+    color: #0078D7 !important;
+    text-decoration: none;
+    font-size: 2em;
+}
+
+.forgot-password-modal {
+    display: none;
+}
+
+.forgot-password-modal {
+    padding-bottom: 10px;
+}
+
+.forgot-password-modal input[type="text"],
+.forgot-password-modal input[type="password"] {
+    margin: 5px 0;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border: 1px solid #888;
+    border-radius: 3px;
+}
+
+.forgot-password-modal button {
+    padding: 10px 15px;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.forgot-password-modal button:hover {
+    background-color: #0056b3;
+}
+
+.welcome-frog {
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+}
+
+#welcome-tosAgree {
+    width: 4rem;
+    /* ~32px, smaller but tappable */
+    height: 4rem;
+}
+
+.webring-links {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.webring-links a {
+    text-decoration: none;
+}
+
+.webring-links a:hover {
+    text-decoration: underline;
+}
+
+.mobile-only {
+    display: none;
+    /* Hide by default, show on mobile */
+}
+
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px;
+        /* Adjust to 14px if you want smaller scaling */
+    }
+
+    .app-welcome>p,
+    .app-welcome>input,
+    .app-welcome>i,
+    .app-welcome>button {
+        font-size: 1rem;
+        /* ~16px, standard for body text and inputs */
+    }
+
+    .aim-input {
+        font-size: 0.875rem;
+        /* ~14px, slightly smaller for inputs */
+        height: 2.5rem;
+        /* ~40px, touch-friendly height */
+    }
+
+    .button-bar-button {
+        width: 2rem;
+        /* ~32px, compact but tappable with padding */
+        height: 2rem;
+        padding: 0.5rem;
+        /* ~8px, total ~48px tap target */
+    }
+
+    .aim-send-btn {
+        width: 3rem;
+        /* ~48px, smaller but touch-friendly */
+        height: 3rem;
+        padding: 0.5rem;
+        /* ~8px, total ~64px tap target */
+    }
+
+    .emojiPicker {
+        display: none;
+        /* Unchanged, good for mobile */
+    }
+
+    .loginButton {
+        width: 100%;
+        /* Unchanged, full-width is good */
+        font-size: 1.25rem;
+        /* ~20px, readable for buttons */
+        height: 3.5rem;
+        /* ~56px, touch-friendly */
+    }
+
+    .welcomeForm input {
+        font-size: 3rem;
+        /* ~16px, standard for inputs */
+        height: 3rem;
+        /* ~48px, touch-friendly */
+    }
+
+    #welcome-tosAgree {
+        width: 2rem;
+        /* ~32px, smaller but tappable */
+        height: 2rem;
+    }
+
+    .welcomeMessage {
+        font-size: 2.5rem;
+        /* ~16px, readable for messages */
+    }
+
+
+    .loginStatus {
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+
+    .buddy-message-sender {
+        font-size: 1rem;
+        /* ~16px, standard for text */
+    }
+
+    .desktopButton {
+        width: 100%;
+        /* Unchanged, full-width is good */
+        height: 3rem;
+        /* ~48px, touch-friendly */
+        font-size: 1.25rem;
+        /* ~20px, readable */
+    }
+
+    .positiveAffirmation {
+        font-size: 1rem;
+        /* ~16px, readable for text */
+    }
+
+    .addBuddyForm {
+        align-items: center;
+        /* Unchanged, good for layout */
+    }
+
+    .buddy_request_name {
+        width: 100%;
+        /* Unchanged, full-width is good */
+    }
+
+    .sendBuddyRequest {
+        width: 100%;
+        /* Unchanged, full-width is good */
+    }
+
+    .welcome-tos-checkbox {
+        font-size: 1rem;
+        /* ~16px, standard */
+        flex-direction: row;
+        /* Unchanged */
+        align-items: center;
+        /* Unchanged */
+        gap: 0.75rem;
+        /* ~12px, smaller gap */
+        padding-top: 1rem;
+        /* ~16px, reduced padding */
+    }
+
+    .welcome-tos-checkbox label {
+        font-size: 1rem;
+        /* ~16px, matches other text */
+        line-height: 1.4;
+        /* Unchanged, good for readability */
+    }
+
+    .welcome-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        background: none;
+        justify-content: center;
+    }
+
+    .welcome-nav-button {
+        background: #3b3b4f;
+        color: #ffffff;
+        border: none;
+        padding: 0.625rem;
+        /* ~10px */
+        font-size: 1em;
+        /* Unchanged */
+        cursor: pointer;
+        border-radius: 0.3125rem;
+        /* ~5px */
+        transition: background 0.3s, transform 0.1s;
+        text-align: left;
+    }
+
+    .welcomeForm button {
+        font-size: 2rem;
+    }
+
+    .token-sale {
+        display: none;
+    }
+
+    .buddy-apps {
+        display: none;
+    }
+
+    .welcome-header {
+        flex-direction: column;
+        /* Stack elements vertically */
+        align-items: center;
+        /* Center items */
+        align-items: flex-end;
+    }
+
+    .welcome-positiveAffirmation {
+        max-width: 180px;
+        top: 75px;
+    }
+
+    .read-patch-notes {
+        font-size: 0.75em;
+        margin-right: 0;
+        text-align: center;
+    }
+
+    .desktop-only {
+        display: none;
+        /* Hide on mobile */
+    }
+
+    .mobile-only {
+        display: block;
+        /* Show on mobile */
+    }
+  
+
+}

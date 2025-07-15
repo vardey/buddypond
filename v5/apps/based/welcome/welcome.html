@@ -1,0 +1,85 @@
+<div class="bp-window-content app-welcome">
+    <div class="window-main">
+        <div class="buddy_list_not_connected loggedOut">
+            <p class="welcome-positiveAffirmation"></p>
+
+            <div class="welcome-header">
+
+                <div class="buddy-apps">
+                    &nbsp;
+
+                </div>
+                <div class="login-frog">
+                    <img src="coin/buddy-the-frog-256.png" alt="Buddy the Frog" class="welcome-frog" />
+                </div>
+                <div class="token-sale">
+                    <a href="https://buddypond.com/coin" target="_blank"><img src="coin/buddypond-coin.png"
+                            alt="$BUDDYPOND (BPC)" class="welcome-frog" /></a>
+                </div>
+
+            </div>
+            <p class="loginStatus">Tell us your name to get started.</p>
+            <p class="resetPasswordLink">
+                <a href="#reset-password" class="forgot-password">Forgot Password?</a>
+            </p>
+            <div class="forgot-password-modal">
+                <div class="forgot-password-content">
+                    <h2>Reset Password</h2>
+                    <p class="resetPasswordMessage">Enter your email to reset your password.</p>
+                    <form class="resetPasswordForm" method="POST" action="#">
+                        <input type="text" class="resetPasswordEmail" name="account_email" placeholder="email address"
+                            required />
+                        <button type="submit" class="resetPasswordButton">Reset Password</button>
+                        <button class="closeForgotPassword">Close</button>
+
+                    </form>
+                    <p class="resetStatus error"></p>
+                    <span>If you never set an email please contact accounts@buddypond.com</span>
+                </div>
+            </div>
+
+            <form class="welcomeForm" method="POST" action="#">
+                <input type="text" name="username" placeholder="Name" tabindex="1" />
+                <input type="password" name="password" class="password" placeholder="Password" tabindex="3" />
+                <button type="submit" class="loginButton" tabindex="4">Login</button>
+            </form>
+            <div class="welcome-tos-checkbox">
+                <button class="read-patch-notes open-app" data-app="motd">Read Patch Notes</button>
+                <label for="welcome-tosAgree">I agree to the <a href="tos.html" target="_blank">Terms of
+                        Service</a>.</label>
+                <input type="checkbox" id="welcome-tosAgree" name="welcome-tosAgree" tabindex="2">
+            </div>
+            <!-- <p class="welcomeMessage">If this is your first visit, password is username until you change it.</p> -->
+        </div>
+
+
+
+    </div>
+        <div class="welcome-footer">
+            <div class="welcome-nav-links">
+                <button class="welcome-nav-button open-app" data-app="pad">Buddy Apps</button>
+
+                <button class="welcome-nav-button open-app" data-app="portfolio">View Portfolio</button>
+                <button class="welcome-nav-button" data-url="https://discord.gg/s7vrhN4grW">Join Discord</button>
+                <button class="welcome-nav-button open-app loggedIn" data-app="profile">Profile Settings</button>
+                <button style="flex:none;" class="welcome-nav-button open-link"
+                    data-link="https://buddypond.com/coin">$BUDDYPOND
+                    Token Sale</button>
+
+                <!-- <button class="welcome-nav-button" data-app="community">Community Hub</button> -->
+            </div>
+
+            <div class="webring-links">
+                <a href="https://yellowbrickring.com/webring?from=buddypond.com&to=prev" target="_blank">← Prev</a> |
+                
+                <strong><a href="https://yellowbrickring.com" target="_blank">
+                    <span class="mobile-only">🌻</span>
+                    <span class="desktop-only">Yellow Brick Ring</span>
+
+                </a></strong> |
+                <a href="https://yellowbrickring.com/webring?from=buddypond.com&to=next" target="_blank">Next →</a> |
+                <a href="https://yellowbrickring.com/webring?from=buddypond.com&to=random" target="_blank">🎲 Random</a>
+            </div>
+        </div>
+</div>
+</div>

@@ -234,20 +234,3 @@
         /* Reset any base hover shadow */
     }
 }
-
-.webring-links {
-    font-size: 0.85rem;
-    color: #f1fa8c;
-    text-align: center;
-    border-bottom: 1px solid #3b3b4f;
-}
-
-.webring-links a {
-    color: #8be9fd;
-    text-decoration: none;
-}
-
-.webring-links a:hover {
-    text-decoration: underline;
-    color: #50fa7b;
-}
