@@ -191,9 +191,9 @@ export default class BuddyList {
             this.buddyListWindow = buddyListWindow;
 
             if (this.eventsBound !== true) {
-              // TODO: it would be better if we unregister events on close
-              // and left this close to re-bind on open
-              this.registerEventHandlers();
+                // TODO: it would be better if we unregister events on close
+                // and left this close to re-bind on open
+                this.registerEventHandlers();
             }
 
             this.buddylistUIEvents();
@@ -777,16 +777,18 @@ export default class BuddyList {
                 this.scrollToBottom(chatWindow.content);
             }
         }
-
         // show help card if local storage does not have the card shown
         if (this.bp.settings['viewed-help-card'] !== true && !this.bp.isMobile()) {
+            console.log('windowsToUpdate', windowsToUpdate)
             let chatWindow = windowsToUpdate.values().next().value;
-            this.showCard({
-                chatWindow,
-                cardName: 'help'
-            });
-            // console.log('showing help card', chatWindow);
-            this.showedHelp = true;
+            if (chatWindow.type === 'pond') {
+                this.showCard({
+                    chatWindow,
+                    cardName: 'help'
+                });
+                // console.log('showing help card', chatWindow);
+                this.showedHelp = true;
+            }
         }
 
     }
@@ -998,43 +1000,43 @@ BuddyList.prototype.logout = function () {
 }
 
 function rollToNumber($el, value) {
-  // Format number with commas
-  const formattedValue = value.toLocaleString('en-US');
-  const digits = formattedValue.split('');
+    // Format number with commas
+    const formattedValue = value.toLocaleString('en-US');
+    const digits = formattedValue.split('');
 
-  // TODO: fix styles on mobile for rolling odometer
-  if (bp.isMobile()) {
-    // For mobile, just set the text directly
-    $el.text(formattedValue);
-    return;
-  }
-
-  // Clear and rebuild digits
-  $el.empty();
-
-  digits.forEach((d, index) => {
-    // Handle comma separately
-    if (d === ',') {
-      $el.append('<span class="odometer-comma">,</span>');
-      return;
+    // TODO: fix styles on mobile for rolling odometer
+    if (bp.isMobile()) {
+        // For mobile, just set the text directly
+        $el.text(formattedValue);
+        return;
     }
 
-    const digitContainer = $('<div class="odometer-digit"></div>');
-    const inner = $('<div class="odometer-digit-inner"></div>');
+    // Clear and rebuild digits
+    $el.empty();
 
-    for (let i = 0; i <= 9; i++) {
-      inner.append(`<span>${i}</span>`);
-    }
+    digits.forEach((d, index) => {
+        // Handle comma separately
+        if (d === ',') {
+            $el.append('<span class="odometer-comma">,</span>');
+            return;
+        }
 
-    digitContainer.append(inner);
-    $el.append(digitContainer);
+        const digitContainer = $('<div class="odometer-digit"></div>');
+        const inner = $('<div class="odometer-digit-inner"></div>');
 
-    // Delay added to force DOM layout flush, staggered for each digit
-    setTimeout(() => {
-      inner.css({
-        'transition': 'transform 0.5s ease-in-out', // Smooth transition
-        'transform': `translateY(-${d * 1}em)`
-      });
-    }, 50 + index * 100); // Base delay + staggered delay per digit
-  });
+        for (let i = 0; i <= 9; i++) {
+            inner.append(`<span>${i}</span>`);
+        }
+
+        digitContainer.append(inner);
+        $el.append(digitContainer);
+
+        // Delay added to force DOM layout flush, staggered for each digit
+        setTimeout(() => {
+            inner.css({
+                'transition': 'transform 0.5s ease-in-out', // Smooth transition
+                'transform': `translateY(-${d * 1}em)`
+            });
+        }, 50 + index * 100); // Base delay + staggered delay per digit
+    });
 }
