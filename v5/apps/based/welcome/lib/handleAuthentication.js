@@ -2,7 +2,10 @@ export default function handleAuthentication() {
         const api = this.bp.apps.client.api;
         const localToken = localStorage.getItem('qtokenid');
         const me = localStorage.getItem('me');
-        if (!localToken) return;
+        if (!localToken) {
+            $('#welcome').show();
+            return;
+        };
         // console.log('localToken', localToken, me);
         api.verifyToken(me, localToken, async (err, data) => {
             if (err) {

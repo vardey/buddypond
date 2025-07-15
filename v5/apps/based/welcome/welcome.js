@@ -16,6 +16,7 @@ export default class Welcome {
     }
 
     async open() {
+
         this.win = await this.bp.window(this.window());
         // this should be handled globally ( if possible )
         $('.loggedIn', this.win.content).hide();
@@ -43,7 +44,6 @@ export default class Welcome {
             resizable: true,
             closable: true,
             onClose: () => {
-                this.cleanup();
                 this.win = null;
             },
             onResize: () => {

@@ -966,7 +966,15 @@ BuddyList.prototype.logout = function () {
     }, (err, re) => {
         console.log('buddypond.setStatus', err, re);
         // close any open chat windows
-        $('.chatWindow').remove(); // maybe, they could stay open as well
+        // $('.chatWindow').remove(); // maybe, they could stay open as well
+        this.bp.apps.ui.windowManager.windows.forEach(window => {
+            console.log('closing window', window);
+            if (window.type === 'buddy' || window.type === 'pond') {
+                // console.log('closing chat window', window.id);
+                window.close();
+            }
+        });
+        // iterate through all windows and close any that are chat windows
         // disconnect the client
         // this.bp.apps.client.logout();
         $('.password').val('');

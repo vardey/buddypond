@@ -1,4 +1,9 @@
 /* welcome */
+
+#welcome {
+    display: none;
+}
+
 .app-welcome h2 {
     padding: 0px;
     margin: 0px;
@@ -305,6 +310,10 @@
 .webring-links {
     font-size: 1.2rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1rem;
 }
 
 .webring-links a {
