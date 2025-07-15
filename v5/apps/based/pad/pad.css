@@ -188,6 +188,7 @@ hr {
     gap: 50px;
     padding-left: 50px;
     padding-right: 50px;
+    overflow: visible !important
 
 }
 
@@ -353,7 +354,15 @@ hr {
 .bp-pads-sidebar {
     width: 200px;
     flex-shrink: 0;
+    /* 
+    position: sticky;
+    top: 0;
+    */
+    align-self: flex-start;
+    height: fit-content; 
+    z-index: 10;
 }
+
 
 .bp-pads-sidebar-title {
     font-size: 18px;
@@ -535,6 +544,7 @@ hr {
     }
 
     .bp-pads-container {
+        display: flex;
         flex-direction: column; /* Unchanged, good for stacking */
     }
 
@@ -579,6 +589,10 @@ hr {
 
     .pad-editor-holder {
         padding: 0;
+    }
+
+    .buddy-apps-tabs {
+        display: none !important;
     }
 
 }

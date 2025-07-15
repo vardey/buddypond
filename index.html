@@ -135,6 +135,7 @@ window.top.location = 'ie.html';
       }
 
       let localIp = '192.168.200.59';
+      localIp = '0.0.0.0';
 
       if (devmode) {
         // localIp = '192.168.64.1';
@@ -326,10 +327,9 @@ window.top.location = 'ie.html';
                   // we need to re-run the default logic
                   let allCommands = bp.apps.buddyscript.commands;
                   await bp.open({
-                    name: 'buddylist',
+                    name: 'welcome',
                     autocomplete: allCommands
                   });
-                  await bp.open('motd');
                 }
               }
 

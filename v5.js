@@ -24,20 +24,24 @@ window.bp_v_5 = async function bp_v_5() {
 
     await bp.load('card');
 
+
+   // bp.load('appstore'); // replaced with pads
+    if (!bp.loadedFromApp) {
+        // bp.open('motd');
+    }
     if (!bp.loadedFromApp) {
         await bp.open({
-            name: 'buddylist',
+            name: 'welcome',
             autocomplete: allCommands
         });
     } else {
         // TODO: ensure minimized buddylist is opened
         let buddylist = await bp.open({
-            name: 'buddylist',
+            name: 'welcome',
             autocomplete: allCommands,
             openDefaultPond: true // for now
         });
         // buddylist.minimize();
-
     }
 
     // Remark: Do we need to load the pond here, or can we wait until login is successful?
@@ -46,10 +50,7 @@ window.bp_v_5 = async function bp_v_5() {
     // load any other apps that are non-essential but still useful
     // bp.load('console');
     bp.load('clock');
-    // bp.load('appstore'); // replaced with pads
-    if (!bp.loadedFromApp) {
-        bp.open('motd');
-    }
+ 
     bp.load('say');
     bp.load('droparea');
     bp.load('file-viewer');
