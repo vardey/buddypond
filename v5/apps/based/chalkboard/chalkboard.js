@@ -30,7 +30,7 @@ export default class Chalkboard {
 
                     let dataURL = event.data.image; // Remark: this was sent over a broadcast channel
                     // console.log('Data URL received:', dataURL);
-                    let fileName = event.data.fileName || 'untitled.png';
+                    let fileName = event.data.fileName || buddypond.generateSafeFilename('png');
                     let filePath = `paints/${fileName}`;
 
                     function srcToFile(src, fileName, mimeType) {

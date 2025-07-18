@@ -917,4 +917,6 @@ function generateSafeFilename(extension = 'gif') {
   return fileName;
 }
 
+buddypond.generateSafeFilename = generateSafeFilename;
+
 buddypond.apiRequest = apiRequest;
