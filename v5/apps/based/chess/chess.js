@@ -1,5 +1,4 @@
-// TODO: add sound via https://github.com/lichess-org/lila/tree/master/public/sound
-// TODO: move joinGame() and handleWebsocketMessage() to separate files
+// TODO: separate game logic using separate files
 export default class ChessApp {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -17,15 +16,9 @@ export default class ChessApp {
     async init() {
         this.html = await this.bp.load('/v5/apps/based/chess/chess.html');
         await this.bp.appendCSS('/v5/apps/based/chess/chess.css');
-
         await this.bp.appendScript('/v5/apps/based/chess/vendor/chessboardjs-1.0.0/js/chessboard-1.0.0.js');
-        // await this.bp.appendScript('https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.js');
-
         await this.bp.appendScript('/v5/apps/based/chess/vendor/chess.js');
-        //await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js');
-
         await this.bp.appendCSS('/v5/apps/based/chess/vendor/chessboardjs-1.0.0/css/chessboard-1.0.0.min.css', false, true);
-        //await this.bp.appendCSS('https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css');
         return 'loaded ChessApp';
     }
 
@@ -255,7 +248,6 @@ export default class ChessApp {
         this.stockfish.postMessage(`setoption name Skill Level Maximum Depth value ${maxDepth}`);
     }
 
-    // TODO: allow custom difficulty for stockfish
     startStockfishGame() {
         $('.chess-app-difficulty-slider', this.win.content).show();
         this.game.reset();
@@ -269,7 +261,18 @@ export default class ChessApp {
                 const from = move.substring(0, 2);
                 const to = move.substring(2, 4);
                 const result = this.game.move({ from, to, promotion: 'q' });
+                this.bp.play('v5/apps/based/chess/vendor/sound/standard/Move.mp3');
+
                 if (result) {
+                    if (result.captured) {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Capture.mp3');
+                    } else if (this.game.in_check()) {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Check.mp3');
+                    } else if (this.game.in_checkmate()) {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Victory.mp3');
+                    } else {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Move.mp3');
+                    }
                     this.board.position(this.game.fen());
                     this.updateStatus();
                 }
@@ -318,9 +321,11 @@ export default class ChessApp {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify({ type: 'resign' }));
             this.setStatus('You resigned the game.');
-            // this.gameHeader('Resigned');
+            this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Defeat.mp3'); // Play resignation sound
         } else {
             this.setStatus('Cannot resign, not connected to a game.');
+            this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Error.mp3'); // Play error sound
+
         }
     }
 
@@ -340,8 +345,7 @@ export default class ChessApp {
             case 'gameStart':
                 this.gameConnected = true;
                 this.setStatus('Game started! ' + (this.playerColor === this.game.turn() ? 'Your move' : this.opponent + "'s move"));
-
-                // $('.chess-app-opponent', this.win.content).html(`${this.opponent} is connected!`);
+                this.bp.play('/v5/apps/based/chess/vendor/sound/standard/GenericNotify.mp3'); // Play game start sound
                 break;
 
             case 'gameState':
@@ -353,6 +357,14 @@ export default class ChessApp {
             case 'move':
                 const move = this.game.move(data.move);
                 if (move) {
+                    // Play sound based on opponent move type
+                    if (move.captured) {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Capture.mp3');
+                    } else if (this.game.in_check()) {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Check.mp3');
+                    } else {
+                        this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Move.mp3');
+                    }
                     this.board.position(this.game.fen());
                     this.updateStatus();
                 }
@@ -365,10 +377,22 @@ export default class ChessApp {
                 // this.playerColor = null;
                 this.setStatus('Game started! ' + (this.playerColor === this.game.turn() ? 'Your move' : "Opponent's move"));
                 $('#rematch-button', this.win.content).hide();
+                this.bp.play('/v5/apps/based/chess/vendor/sound/standard/GenericNotify.mp3'); // Play game reset sound
+
                 break;
 
             case 'gameOver':
                 this.setStatus('Game Over: ' + data.result);
+
+
+                if (data.result.includes('checkmate')) {
+                    this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Victory.mp3');
+                } else if (data.result.includes('draw')) {
+                    this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Draw.mp3');
+                } else if (data.result.includes('resigned')) {
+                    this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Victory.mp3');
+                }
+
 
                 // show the rematch button if multiplayer
                 if (this.mode === 'multiplayer') {
@@ -382,10 +406,14 @@ export default class ChessApp {
 
             case 'error':
                 this.setStatus('Error: ' + data.message);
+                this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Error.mp3'); // Play error sound
+
                 break;
             case 'disconnect':
                 this.gameConnected = false;
                 this.setStatus(this.opponent + ' has disconnected...');
+                this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Error.mp3'); // Play disconnect sound
+
                 break;
 
             default:
@@ -409,7 +437,19 @@ export default class ChessApp {
         let move;
         try {
             move = this.game.move({ from: source, to: target, promotion: 'q' });
-            if (move === null) return 'snapback';
+
+            if (move) {
+                if (move.captured) {
+                    this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Capture.mp3');
+                } else if (this.game.in_check()) {
+                    this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Check.mp3');
+                } else {
+                    this.bp.play('/v5/apps/based/chess/vendor/sound/standard/Move.mp3');
+                }
+            } else {
+                return 'snapback';
+            }
+
 
         } catch (err) {
             return 'snapback';
@@ -435,6 +475,7 @@ export default class ChessApp {
         this.board.position(this.game.fen());
     }
 
+    // TODO: remove game logic checks from here, should only update the status text
     updateStatus() {
         let status = '';
         if (this.game.in_checkmate()) {
@@ -442,12 +483,14 @@ export default class ChessApp {
         } else if (this.game.in_draw()) {
             status = 'Game Over: Draw!';
         } else {
-
-            if (this.gameConnected) {
-                status = (this.game.turn() === 'w' ? 'White' : 'Black') + ' to move';
-
+            if (this.mode !== 'stockfish') {
+                if (this.gameConnected) {
+                    status = (this.game.turn() === 'w' ? 'White' : 'Black') + ' to move';
+                } else {
+                    status = `Waiting for ${this.opponent} to connect...`;
+                }
             } else {
-                status = `Waiting for ${this.opponent} to connect...`;
+                status = (this.game.turn() === 'w' ? 'White' : 'Black') + ' to move';
             }
         }
         this.setStatus(status);
