@@ -126,7 +126,7 @@ window.top.location = 'ie.html';
       let _pondsWsEndpoint = 'wss://messages.buddypond.com/ws/ponds';
       let _chessWsEndpoint = 'wss://chess.buddypond.com/ws/chess';
 
-      let devmode = false;
+      let devmode = true;
 
       // TODO: checks if current host is buddypond.com
       // buddypond.com force devmode to false
@@ -264,6 +264,48 @@ window.top.location = 'ie.html';
 
           }
 
+          let urlParams = new URLSearchParams(window.location.search);
+
+          window.linkDiscordAccount = function linkDiscordAccount(discordId) {
+            // if we have a discord_id, apply discord login logic
+            console.log(`You have a discord_id: ${discordId}. \n\n This will link your Discord account to your Buddy Pond account.`);
+
+            buddypond.apiRequest(`/auth/link-discord`, 'POST', {
+              discord_id: discordId
+            }, (err, data) => {
+              console.log('Link Discord response:', err, data);
+              if (err || !data.success) {
+                if (err.message === 'HTTP 401: Unauthorized') {
+                  alert('You must be logged in to link your Discord account.');
+                  console.log('You must be logged in to link your Discord account.');
+                  // set temporary window variable for discord_id, such that on next login we can link the account
+                  window.tempDiscordId = discordId;
+                } else if (data.message) {
+                  console.error(data.message);
+                } else {
+                  alert('An unknown error occurred while linking your Discord account.');
+                  console.error('Unknown error linking Discord account:', err, data);
+                }
+                console.error('Error linking Discord account:', err, data);
+                return;
+              }
+
+              alert('Successfully linked Discord account!');
+              console.log('Linked Discord account:', data);
+            });
+          }
+
+          // check if we have a query param named discord_id
+          let discordId = urlParams.get('discord_id');
+          if (discordId) {
+            linkDiscordAccount(discordId);
+          }
+
+          // check if we have a query param named rtoken
+          // must be done before bp_v_5() is called since loading logic may update pushstate
+          let rtoken = urlParams.get('rtoken');
+          let buddyname = urlParams.get('buddyname');
+
           await bp_v_5();
 
           let documentReadyTime = new Date();
@@ -333,10 +375,7 @@ window.top.location = 'ie.html';
                 }
               }
 
-              // check if we have a query param named rtoken
-              let urlParams = new URLSearchParams(window.location.search);
-              let rtoken = urlParams.get('rtoken');
-              let buddyname = urlParams.get('buddyname');
+
               if (rtoken && buddyname) {
                 // if we have a rtoken, apply password reset logic
                 // alert('You have a rtoken: ' + rtoken);
@@ -367,12 +406,14 @@ window.top.location = 'ie.html';
                     window.history.pushState({ path: newUrl }, '', newUrl);
                     // loads non-critical apps after main apps are loaded
                     // this is used for chatbar buttons, etc, makes UI more responsive
-                    window.deferLoad();
+                    // window.deferLoad();
                   }
                 });
               } else {
-                window.deferLoad();
+                // window.deferLoad();
               }
+
+
 
             }
           });

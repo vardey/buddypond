@@ -915,6 +915,18 @@ export default class BuddyList {
             this.bp.open('pincode');
         }
 
+        // check if window.tempDiscordId has been set
+        // if so, this indicates user is attempting to link their Discord account
+        // and we first not logged in when clicking the link
+        // if this is the case, re-run window.linkDiscordAccount(window.tempDiscordId);
+        if (window.tempDiscordId) {
+            console.log('linking Discord account', window.tempDiscordId);
+            // link the Discord account
+            window.linkDiscordAccount(window.tempDiscordId);
+            // clear the tempDiscordId
+            window.tempDiscordId = null;
+        }
+
         // wait until buddylist is connected and then opens default chat window if defined
         if (this.defaultPond && this.openDefaultPond !== false) {
             setTimeout(() => {
