@@ -1,0 +1,126 @@
+/* Coinflip Casino Theme */
+.coinflip-form-container {
+  background: linear-gradient(135deg, #300000, #4b1a1a);
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 32px auto;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+  border: 2px solid gold;
+  font-family: 'Segoe UI', sans-serif;
+  color: #ffd700;
+}
+
+.coinflip-form-container h2 {
+  color: #ffefc2;
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.coinflip-form-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.coinflip-form-group {
+  margin-bottom: 16px;
+}
+
+.coinflip-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #ffefc2;
+  background-color: #4b1a1a;
+}
+
+.coinflip-input,
+.coinflip-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #b8860b;
+  background: #1e1e1e;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.coinflip-input::placeholder {
+  color: #aaa;
+}
+
+.coinflip-button {
+  width: 100%;
+  padding: 12px;
+  background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
+  color: #000;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+}
+
+.coinflip-button:hover {
+  transform: scale(1.05);
+  background: radial-gradient(circle, #fffacd 0%, #ff8c00 100%);
+}
+
+.coinflip-result {
+    display: none;
+}
+
+.coinflip-result p {
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #ffefc2;
+}
+
+
+.coinflip-result-data {
+    color: #ffd700;
+}
+
+.coinflip-loaded-bet {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid gold;
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 20px;
+  color: #ffd700;
+}
+
+.coinflip-loaded-bet p, span, h3 {
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #ffefc2;
+}
+
+.coinflip-participants-list {
+  margin-top: 8px;
+  padding-left: 20px;
+}
+
+.coinflip-action-buttons {
+  margin-top: 16px;
+}
+
+.coinflip-action-buttons button {
+  margin-right: 10px;
+  padding: 8px 16px;
+  background: crimson;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.coinflip-action-buttons button:hover {
+  background: darkred;
+}

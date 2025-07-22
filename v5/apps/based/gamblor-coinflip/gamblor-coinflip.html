@@ -1,0 +1,55 @@
+<div class="coinflip-form-container">
+    <h2 class="coinflip-form-title">🎲 Create a Coinflip Bet</h2>
+    <form class="coinflip-form">
+        <div class="coinflip-form-group">
+            <label for="coinflip-amount" class="coinflip-label">Amount</label>
+            <input type="number" id="coinflip-amount" name="amount" class="coinflip-input" placeholder="Enter amount..."
+                required />
+        </div>
+
+        <div class="coinflip-form-group">
+            <label for="coinflip-bet" class="coinflip-label">Your Bet</label>
+            <select id="coinflip-bet" name="bet" class="coinflip-select" required>
+                <option value="">Select Heads or Tails</option>
+                <option value="heads">Heads</option>
+                <option value="tails">Tails</option>
+            </select>
+        </div>
+
+        <div class="coinflip-form-group">
+            <label for="coinflip-max-participants" class="coinflip-label">Max Participants</label>
+            <input type="number" id="coinflip-max-participants" name="max_participants" class="coinflip-input" min="1" max="100"
+                value="2" required />
+        </div>
+
+        <button type="submit" class="coinflip-button">Create Bet</button>
+    </form>
+
+    <!-- result of flip -->
+    <div class="coinflip-result">
+        <h3 class="coinflip-result-title">Bet Created!</h3>
+        <p class="coinflip-result-message">Your bet has been created successfully. Share it with your buddies!</p>
+        <p class="coinflip-result-link">Share this link: <a href="#" class="coinflip-link">Link to Bet</a></p>
+        <p class="coinflip-result-id">Bet ID: <span class="bet-id"></span></p>
+        <p class="coinflip-result-data"></p>
+        <button class="coinflip-close-button">Close</button>
+    </div>
+
+
+    <!-- loaded bet options -->
+<div class="coinflip-loaded-bet" style="display: none;">
+  <h3 class="coinflip-loaded-title">🎯 Coinflip Bet</h3>
+  <p><strong>Status:</strong> <span class="coinflip-status"></span></p>
+  <p><strong>Owner:</strong> <span class="coinflip-owner"></span></p>
+  <p><strong>Amount:</strong> <span class="coinflip-amount-display"></span></p>
+  <p><strong>Max Participants:</strong> <span class="coinflip-max-display"></span></p>
+  <p><strong>Participants:</strong></p>
+  <ul class="coinflip-participants-list"></ul>
+
+  <div class="coinflip-action-buttons">
+    <button class="coinflip-join-button">Join Bet</button>
+    <button class="coinflip-cancel-button">Cancel Bet</button>
+  </div>
+</div>
+
+</div>

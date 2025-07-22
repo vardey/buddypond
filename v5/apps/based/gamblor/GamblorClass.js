@@ -9,30 +9,32 @@ export default class Gamblor {
         const totalAmount = bets.reduce((sum, bet) => sum + bet.amount, 0);
         const seeds = bets.map(bet => bet.seed || '').filter(Boolean);
 
-        // Seed Ramblor with combined seeds if any
         if (seeds.length) {
             this.ramblor.seed(...seeds);
         }
 
-        let winnerIndex, gameResult;
+        let winners = [], gameResult;
+
         switch (type) {
             case 'coinflip':
                 gameResult = this._handleCoinFlip(bets);
-                winnerIndex = bets.findIndex(bet => bet.bet === gameResult);
+                winners = bets
+                    .map((bet, index) => ({ ...bet, index }))
+                    .filter(bet => bet.bet === gameResult);
                 break;
+
             case 'highroll':
             default:
-                gameResult = this._handleHighRoll(bets);
-                winnerIndex = gameResult.index;
-                gameResult = gameResult.roll;  // set the actual roll value
+                const highRollResult = this._handleHighRoll(bets);
+                gameResult = highRollResult.roll;
+                winners = [bets[highRollResult.index]];
                 break;
         }
 
-        const winner = bets[winnerIndex];
         const lastResult = this.ramblor.getHistory(-1);
 
         return {
-            winner: winner.buddy,
+            winners: winners.map(w => w.buddy),
             result: gameResult,
             amount: totalAmount,
             ramblorResult: lastResult,
@@ -41,7 +43,8 @@ export default class Gamblor {
     }
 
     _handleCoinFlip(bets) {
-        const result = this.ramblor.toss() ? 'heads' : 'tails';
+        let toss = this.ramblor.toss();
+        const result = toss.value ? 'heads' : 'tails';
         return result;
     }
 
