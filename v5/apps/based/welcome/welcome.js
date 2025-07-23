@@ -45,11 +45,6 @@ export default class Welcome {
             closable: true,
             onClose: () => {
                 this.win = null;
-            },
-            onResize: () => {
-                if (this.board) {
-                    this.board.resize();
-                }
             }
         }
     }

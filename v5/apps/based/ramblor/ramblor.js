@@ -89,6 +89,19 @@ export default class Ramblor {
         console.log('Opening Ramblor with options:', options);
         // Pre-fill form if roll data is provided
         const roll = options.roll || {};
+
+        // Attempt to serialize the urls params into roll object if current roll is empty
+        let urlParams = new URLSearchParams(window.location.search);
+        if (Object.keys(roll).length === 0) {
+            // If roll is empty, try to extract from URL params
+            roll.generation = parseInt(urlParams.get('generation'), 10);
+            roll.min = parseInt(urlParams.get('min'), 10);
+            roll.max = parseInt(urlParams.get('max'), 10);
+            roll.value = parseInt(urlParams.get('value'), 10);
+            roll.userSeeds = JSON.parse(urlParams.get('userSeeds') || '[]');
+            roll.systemSeed = parseInt(urlParams.get('systemSeed'), 10);
+        }
+
         console.log('Roll data:', roll);
         if (roll.generation) {
             $window.find('#ramblor-gen').val(roll.generation);
