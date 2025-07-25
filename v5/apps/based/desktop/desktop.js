@@ -277,17 +277,36 @@ Desktop.prototype.removeApp = removeApp;
 Desktop.prototype.client = client; // client api for desktop
 Desktop.prototype.bindKeyboardShortcuts = bindKeyboardShortcuts;
 
-// Debounced pushState wrapper
-// This prevents rapid calls to history.pushState from flickering the URL
-// and allows for a delay before the state is actually pushed to the history stack.
-// This is useful for UX such that multiple rapid changes to the URL do not cause flickering
 const DelayedPushState = (() => {
   let timeout = null;
   let latestState = null;
 
+  function mergeUrlParams(existingUrl, newUrl) {
+    try {
+      // Parse URLs
+      const existing = new URL(existingUrl, window.location.origin);
+      const updated = new URL(newUrl, window.location.origin);
+
+      // Merge search parameters
+      const params = new URLSearchParams(existing.search);
+      for (const [key, value] of new URLSearchParams(updated.search)) {
+        params.set(key, value);
+      }
+
+      // Construct the final URL
+      return `${updated.pathname}${params.toString() ? '?' + params.toString() : ''}${updated.hash}`;
+    } catch (e) {
+      console.error('Error merging URL params:', e);
+      return newUrl; // Fallback to newUrl if parsing fails
+    }
+  }
+
   function push(stateObj, title, url, delay = 250) {
+    // Merge existing URL parameters with new ones
+    const mergedUrl = mergeUrlParams(window.location.href, url);
+
     // Store the latest call
-    latestState = { stateObj, title, url };
+    latestState = { stateObj, title, url: mergedUrl };
 
     // Clear any existing timer
     if (timeout) {
