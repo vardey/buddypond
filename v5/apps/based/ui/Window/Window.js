@@ -370,7 +370,17 @@ class Window {
             // by default add allow attributes to the iframe
             this.iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen; clipboard-write; accelerometer; gyroscope; web-share");
 
+            // if this.iframeContent starts with a '/' it's a local iframe
+            // and if window.discordMode is true, we need to prepend /.proxy/
+            if (this.iframeContent.startsWith('/')) {
+                if (window.discordMode) {
+                    this.iframeContent = `/.proxy${this.iframeContent}`;
+                }
+            }
+
             this.iframe.src = this.iframeContent;
+
+            
 
             // Remark: This is legacy settings for iframe message handling bootstrapping
             // In more modern applications, we use broadcast channels or other methods
