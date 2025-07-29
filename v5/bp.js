@@ -122,6 +122,10 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     // console.log('importModule', app, config, buddypond);
 
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
+
+    if (window.discordMode) {
+        modulePath = bp.config.host + `/.proxy/v5/apps/based/${app}/${app}.js`;
+    }
     let appName = app;
 
     if (typeof app === 'object') {
