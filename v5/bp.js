@@ -123,9 +123,6 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
 
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
 
-    if (window.discordMode) {
-        modulePath = bp.config.host + `/.proxy/v5/apps/based/${app}/${app}.js`;
-    }
     let appName = app;
 
     if (typeof app === 'object') {
@@ -137,13 +134,17 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     if (bp.mode === 'prod') {
         if (modulePath.includes('/card/cards')) {
             modulePath = bp.config.host + `/v5/dist/apps/based/${app}`;
-            modulePath = modulePath.replace('apps/based//v5', '');
+            modulePath = modulePath.replace('apps/based/v5', '');
         } else {
             modulePath = bp.config.host + `/v5/dist/apps/based/${app}.js`;
         }
     } else {
         // in dev mode, we use the local path directly
         modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
+    }
+
+    if (window.discordMode) {
+        modulePath = bp.config.host + `/.proxy/v5/apps/based/${app}/${app}.js`;
     }
 
     if (!buddypond) {
