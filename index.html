@@ -181,6 +181,7 @@ window.top.location = 'ie.html';
       // check if the current host is a Discord proxy
       if (window.location.hostname.includes('discord')) {
         discordMode = true;
+        _host = `${localIp}`;
         // console.log('Running in Discord mode. All services are pointing to Discord proxy.');
         console.log('Running in Discord mode. All services are pointing to Discord proxy.');
       }
