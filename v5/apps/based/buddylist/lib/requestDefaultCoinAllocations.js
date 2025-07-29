@@ -11,7 +11,7 @@ export default async function requestDefaultCoinAllocations() {
 
   let res;
   try {
-    let faucetUrl = `${buddypond.randolphEndpoint}/randolph/faucet`;
+    let faucetUrl = `${buddypond.randolphEndpoint}/faucet`;
     console.log('faucetUrl', faucetUrl);
     res = await fetch(faucetUrl, {
       method: 'POST',

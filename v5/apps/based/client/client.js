@@ -12,7 +12,7 @@ export default class Client {
         };
 
         this.api = buddypond;
-        this.api.endpoint = `${this.config.api}/api/v6`;
+        this.api.endpoint = `${this.config.api}`;
 
         this.messagesWsClients = new Map();
 
@@ -27,6 +27,8 @@ export default class Client {
     }
 
     async init() {
+
+        /*
         let config = {
             onmessage: (event) => this.handleWorkerMessage(event),
             onerror: (event) => console.error("Worker Error:", event),
@@ -42,6 +44,7 @@ export default class Client {
             console.error('Worker error:', event);
             config.onerror(event);
         };
+        */
 
         return this;
     }

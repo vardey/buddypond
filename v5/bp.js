@@ -201,10 +201,13 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     // TOOD: only use absolute urls here, host should not be needed at this stage
     // TODO: might be best to default to host if no protocol is present
     // TODO: cache request, do not reload unless forced
-    let fullUrl = `${bp.config.host}${url}`;
-
+    let fullUrl = `${url}`;
+    if (window.discordMode) {
+        // discord mode requires we proxy the request
+        fullUrl = `/.proxy/${url}`;
+    }
     fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
-
+    // console.log('fetchHTMLFragment', fullUrl);
     // console.log('fetchHTMLFragment', fullUrl);
     if (bp._cache.html[fullUrl]) {
         return bp._cache.html[fullUrl];

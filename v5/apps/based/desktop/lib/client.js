@@ -28,7 +28,7 @@ client.incrementAppInstallCount = async function (appName) {
 
 client.getAppsStats = async function () {
     try {
-        const response = await fetch(`${buddypond.appsEndpoint}/apps/stats`, {
+        const response = await fetch(`${buddypond.appsEndpoint}/stats`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

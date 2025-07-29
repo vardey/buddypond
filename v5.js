@@ -35,7 +35,6 @@ window.bp_v_5 = async function bp_v_5() {
             autocomplete: allCommands
         });
     } else {
-        // TODO: ensure minimized buddylist is opened
         let buddylist = await bp.open({
             name: 'welcome',
             autocomplete: allCommands,
@@ -103,6 +102,7 @@ window.bp_v_5 = async function bp_v_5() {
 
 
 };
+
 
 function setConfig() {
     bp.setConfig({
@@ -205,9 +205,9 @@ function bindUIEvents() {
 
 async function loadCoreApps() {
 
-    // wallpaper and themes can be fire-and-forget loaded ( no other apps depend on them )
-    bp.load('wallpaper');
-    bp.load('themes');
+    bp.load('wallpaper'); // load wallpaper app first, as it is used by desktop and other apps
+    bp.load('themes'); // load themes app first, as it is used by desktop and other apps
+
     // we *must* wait for the UI since it contains openWindow() method
     // and other methods that are used by apps
     await bp.importModule({

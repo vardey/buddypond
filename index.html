@@ -108,25 +108,33 @@ window.top.location = 'ie.html';
 
       let _host = 'https://buddypond.com';
       let _api = 'https://a.buddypond.com';
+      _api = 'https://buddypond.com/api/buddylist';
       let _cdn = 'https://files.buddypond.com';
-      let _admin = 'https://admin.buddypond.com';
-      let _portfolioEndpoint = 'https://portfolio.buddypond.com';
-      let _orderbookEndpoint = 'https://orderbook.buddypond.com';
-      let _coinEndpoint = 'https://coin.buddypond.com';
-      let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
-      let _messagesApiEndpoint = 'https://messages.buddypond.com';
-      let _buddylistWsEndpoint = 'wss://a.buddypond.com/ws/buddylist';
-      let _uploadsEndpoint = 'https://uploads.buddypond.com';
-      let _errorsEndpoint = 'https://errors.buddypond.com';
-      let _randolphEndpoint = 'https://randolph.buddypond.com/api/v6';
-      let _imageSearchEndpoint = 'https://image-search.buddypond.com';
-      let _buddyProxy = 'https://proxy.buddypond.com';
-      let _appsEndpoint = 'https://apps.buddypond.com';
-      let _apiKeysEndpoint = 'https://api.buddypond.com';
-      let _pondsWsEndpoint = 'wss://messages.buddypond.com/ws/ponds';
-      let _chessWsEndpoint = 'wss://chess.buddypond.com/ws/chess';
 
-      let devmode = true;
+      let _admin = 'https://buddypond.com/api/admin';
+      let _apiKeysEndpoint = 'https://buddypond.com/api/api-keys';
+      let _appsEndpoint = 'https://buddypond.com/api/apps';
+      let _coinEndpoint = 'https://buddypond.com/api/coin';
+      let _gamblorEndpoint = 'https://gamblor.buddypond.com/api/v6';
+
+      let _imageSearchEndpoint = 'https://buddypond.com/api/image-search';
+      let _portfolioEndpoint = 'https://buddypond.com/api/portfolio';
+      let _orderbookEndpoint = 'https://buddypond.com/api/orderbook';
+      let _messagesApiEndpoint = 'https://buddypond.com/api/messages';
+
+      let _uploadsEndpoint = 'https://buddypond.com/api/uploads';
+      let _errorsEndpoint = 'https://buddypond.com/api/errors';
+      let _randolphEndpoint = 'https://buddypond.com/api/randolph';
+      let _buddyProxy = 'https://buddypond.com/api/proxy';
+
+
+      let _buddylistWsEndpoint = 'wss://buddypond.com/api/buddylist/ws/buddylist';
+      let _chessWsEndpoint = 'wss://buddypond.com/api/chess/ws/chess';
+      let _messagesWsEndpoint = 'wss://buddypond.com/api/ws/messages';
+      let _pondsWsEndpoint = 'wss://buddypond.com/api/ponds/ws/ponds';
+      let _videoChatEndpoint = 'wss://buddypond.com/api/videochat';
+
+      let devmode = false;
 
       // TODO: checks if current host is buddypond.com
       // buddypond.com force devmode to false
@@ -135,35 +143,76 @@ window.top.location = 'ie.html';
       }
 
       let localIp = '192.168.200.59';
-      localIp = '0.0.0.0';
+      // localIp = '0.0.0.0';
+
+      localIp = window.location.origin;
+
+      let localProtocol = window.location.protocol;
+
 
       if (devmode) {
         // localIp = '192.168.64.1';
-        _portfolioEndpoint = `http://${localIp}:9002`;
-        _coinEndpoint = `http://${localIp}:9001`;
-        _buddylistWsEndpoint = `ws://${localIp}:8787/ws/buddylist`;
-        _messagesWsEndpoint = `ws://${localIp}:8788/ws/messages`;
-        _pondsWsEndpoint = `ws://${localIp}:8788/ws/ponds`;
-        _messagesApiEndpoint = `http://${localIp}:8788`;
-        _host = `https://${localIp}`;
-        _uploadsEndpoint = `http://${localIp}:9004`;
-        _api = `http://${localIp}:8787`;
-        _admin = `http://${localIp}:8789`;
-        _errorsEndpoint = `http://${localIp}:9010`;
-        _randolphEndpoint = `http://${localIp}:8889/api/v6`;
-        _imageSearchEndpoint = `http://${localIp}:9005`;
-        _buddyProxy = `http://${localIp}:9007`;
-        _appsEndpoint = `http://${localIp}:9008`;
-        _apiKeysEndpoint = `http://${localIp}:9009`;
-        _chessWsEndpoint = `ws://${localIp}:5556/ws/chess`;
+
+        _host = `${localIp}`;
+        _admin = `${localIp}:8789/api/admin`;
+        _api = `${localIp}:8787/api/buddylist`;
+        _appsEndpoint = `${localIp}:9008/api/apps`;
+        _apiKeysEndpoint = `${localIp}:9009/api/api-keys`;
+        _buddyProxy = `${localIp}:9007/api/proxy`;
+        _coinEndpoint = `${localIp}:9001/api/coin`;
+        _errorsEndpoint = `${localIp}:9010/api/errors`;
+        _gamblorEndpoint = `${localIp}:9012/api/gamblor`;
+        _imageSearchEndpoint = `${localIp}:9005/api/image-search`;
+        _messagesApiEndpoint = `${localIp}:8788/api/messages`;
+        _portfolioEndpoint = `${localIp}:9002/api/portfolio`;
+        _randolphEndpoint = `${localIp}:8889/api/randolph`;
+        _uploadsEndpoint = `${localIp}:9004/api/uploads`;
+        _videoChatEndpoint = 'wss://192.168.200.59:8001/videochat/ws';
+
+        _buddylistWsEndpoint = `${localIp.replace('http://', 'ws://')}:8787/api/buddylist/ws/buddylist`;
+        _chessWsEndpoint = `${localIp.replace('http://', 'ws://')}:5556/api/chess/ws/chess`;
+        _messagesWsEndpoint = `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/messages`;
+        _pondsWsEndpoint = `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/ponds`;
+
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
+      let discordMode = false;
+
+      // check if the current host is a Discord proxy
+      if (window.location.hostname.includes('discord')) {
+        discordMode = true;
+        // console.log('Running in Discord mode. All services are pointing to Discord proxy.');
+        console.log('Running in Discord mode. All services are pointing to Discord proxy.');
+      }
+      // _api = `${localIp}:8787/api/buddylist`;
+      window.discordMode = discordMode;
+
       // _host = 'http://' + localIp;
+      //_host = 'https://prime-sections-rescue-name.trycloudflare.com';
+      // set _host to current document location
+
+      if (discordMode) {
+        _api = `${_host}/.proxy/api/buddylist`;
+        _appsEndpoint = `${_host}/.proxy/api/apps`;
+        _uploadsEndpoint = `${_host}/.proxy/api/uploads`;
+        _coinEndpoint = `${_host}/.proxy/api/coin`;
+        _portfolioEndpoint = `${_host}/.proxy/api/portfolio`;
+
+        // TODO: map all endpoints
+
+        // ws endpoints
+        _messagesWsEndpoint = `${_host.replace('https://', 'wss://')}/.proxy/api/messages/ws/messages`;
+        _buddylistWsEndpoint = `${_host.replace('https://', 'wss://')}/.proxy/api/buddylist/ws/buddylist`;
+
+        console.log(`_messagesWsEndpoint`, _messagesWsEndpoint);
+        console.log(`_buddylistWsEndpoint`, _buddylistWsEndpoint);
+      }
+
       // _errorsEndpoint = `http://${localIp}:9010`;
 
       buddypond.host = _host;
-      buddypond.endpoint = _api + '/api/v6';
+      buddypond.endpoint = _api;
       buddypond.messagesWsEndpoint = _messagesWsEndpoint;
       buddypond.pondsWsEndpoint = _pondsWsEndpoint;
       buddypond.messagesApiEndpoint = _messagesApiEndpoint;
@@ -179,6 +228,8 @@ window.top.location = 'ie.html';
       buddypond.appsEndpoint = _appsEndpoint;
       buddypond.apiKeysEndpoint = _apiKeysEndpoint;
       buddypond.chessWsEndpoint = _chessWsEndpoint;
+      buddypond.gamblorEndpoint = _gamblorEndpoint;
+      buddypond.videoChatEndpoint = _videoChatEndpoint;
 
       let renderBpApp = true;
       let loadedFromApp = false;
@@ -227,8 +278,6 @@ window.top.location = 'ie.html';
               $('.loaderText').text('Loading ' + resource + '...');
             }
           });
-
-
 
           if (!renderBpApp) {
             // render the app
@@ -347,9 +396,18 @@ window.top.location = 'ie.html';
                 let appName = currentPath.split('/')[2];
                 console.log('Opening app:', appName);
                 // open the app
+
+                // check if there is a url param named context
+                // if so, use it as the context for the app
+                let appContext = 'default';
+                if (urlParams.has('context')) {
+                  appContext = urlParams.get('context');
+                }
+
                 let win = await bp.open(appName, {
-                  context: 'buddypond',
-                  output: 'window'
+                  context: appContext,
+                  output: 'window',
+                  urlParams: urlParams
                 });
                 console.log('Opened app:', win);
                 if (win) {

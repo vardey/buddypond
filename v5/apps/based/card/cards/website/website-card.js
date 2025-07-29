@@ -129,7 +129,7 @@ const showFallback = ($el, url) => {
 
 function fetchProxy($el, url, parseMetadata, showContent, showError) {
     //console.log('Fetching via proxy:', url);
-    let proxyUrl = `${buddypond.buddyProxy}/api/fetch-metadata?url=${encodeURIComponent(url)}`;
+    let proxyUrl = `${buddypond.buddyProxy}/fetch-metadata?url=${encodeURIComponent(url)}`;
     //console.log('Proxy URL:', proxyUrl);
 
     const controller = new AbortController();
