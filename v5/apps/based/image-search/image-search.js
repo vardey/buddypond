@@ -211,7 +211,7 @@ export default class ImageSearch {
     async fetchImages(query, numResults = 12, provider = 'pexels') {
         try {
             const _provider = provider || $('#image-search-provider').val() || 'google';
-            const url = `${buddypond.imageSearchEndpoint}/?q=${encodeURIComponent(query)}&num=${numResults}&provider=${_provider}`;
+            const url = `${buddypond.imageSearchEndpoint}/search?q=${encodeURIComponent(query)}&num=${numResults}&provider=${_provider}`;
             console.log("Fetching images from:", url);
             const response = await fetch(url, {
                 headers: {
