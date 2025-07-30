@@ -74,6 +74,10 @@ export default class Youtube {
 
         let startingVideo = options.context || this.playlist[Math.floor(Math.random() * this.playlist.length)];
 
+        if (!startingVideo || startingVideo === 'default') {
+            startingVideo = 'rZhbnty03U4'; // Default video if none provided
+        }
+
         this.player = new YT.Player('youtube-player', {
             height: '390',
             width: '640',

@@ -235,7 +235,9 @@ export default class TaskBar {
                         existingWindow.minimize();
                     }
                 }
-                this.startPanel.close();
+                if (this.startPanel) {
+                    this.startPanel.close();
+                }
                 ev.stopPropagation();
             };
         }

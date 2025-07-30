@@ -124,7 +124,7 @@ export default class WallpaperManager {
         window.addEventListener('resize', (e) => {
             if (e.target !== window) return;
             this.resizeCanvasToWindow();
-            if (this.wallpapers[this.active]) {
+            if (this.wallpapers[this.active] && this.wallpapers[this.active].resize) {
                 this.wallpapers[this.active].resize();
             }
         });
