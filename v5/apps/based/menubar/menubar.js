@@ -87,6 +87,23 @@ export default class MenuBar {
             bp.apps.themes.applyTheme(mode);
         });
 
+        // Delegate change event for .selectPlaylist
+        $('.selectPlaylist', this.menuBarElement).on('change', function () {
+            $('#soundcloudiframe').remove();
+            $('#soundcloudplayer').html('');
+            /*
+            if (desktop.app.soundcloud) {
+                desktop.app.soundcloud.embeded = false;
+            }
+            desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+            */
+            if (bp.apps.soundcloud) {
+                bp.apps.soundcloud.soundCloudEmbeded = false; // reload
+            }
+            bp.open('soundcloud', { playlistID: $(this).val() });
+        });
+
+
         $('.icon.trigger').on('click', function (e) {
             e.stopPropagation(); // Prevent click from bubbling to document
             $(this).siblings('.dropdown-menu').slideToggle(200);
@@ -205,6 +222,16 @@ export default class MenuBar {
             });
         }
 
+        /*
+        if (!desktop.settings.audio_enabled) {
+            $('.volumeFull').hide();
+            $('.volumeMuted').show();
+        } else {
+            $('.volumeFull').show();
+            $('.volumeMuted').hide();
+        }
+        */
+
     }
 }
 
@@ -256,7 +283,7 @@ class MenuBarClass {
         this.addGlobalEventListeners();
 
         return this;
-        
+
     }
 
     createMenuItem(menuItem) {

@@ -6,7 +6,6 @@ window.bp_v_5 = async function bp_v_5() {
     });
 
     setConfig(); // probably can remove this
-    bindUIEvents(); // legacy UI events, these should be removed / refactored to each specific app
 
     // Must wait for localstorage and buddyscript to load before loading the rest of the apps
     await Promise.all([
@@ -25,22 +24,25 @@ window.bp_v_5 = async function bp_v_5() {
     await bp.load('card');
 
 
-   // bp.load('appstore'); // replaced with pads
+    // bp.load('appstore'); // replaced with pads
     if (!bp.loadedFromApp) {
         // bp.open('motd');
-    }
-    if (!bp.loadedFromApp) {
-        await bp.open({
-            name: 'welcome',
-            autocomplete: allCommands
-        });
-    } else {
         let buddylist = await bp.open({
             name: 'welcome',
             autocomplete: allCommands,
             openDefaultPond: true // for now
         });
-        // buddylist.minimize();
+
+    } else {
+        if (!window.discordView) {
+
+
+            await bp.open({
+                name: 'welcome',
+                autocomplete: allCommands
+            });
+        }
+
     }
 
     // Remark: Do we need to load the pond here, or can we wait until login is successful?
@@ -49,7 +51,7 @@ window.bp_v_5 = async function bp_v_5() {
     // load any other apps that are non-essential but still useful
     // bp.load('console');
     bp.load('clock');
- 
+
     bp.load('say');
     bp.load('droparea');
     bp.load('file-viewer');
@@ -90,7 +92,7 @@ window.bp_v_5 = async function bp_v_5() {
             let apps = Object.keys(bp.settings.apps_installed || {});
 
             for (let appId of apps) {
-                let app =  bp.settings.apps_installed[appId];
+                let app = bp.settings.apps_installed[appId];
                 // console.log('Defer loading app:', appId, app);
                 await bp.load(app.app || appId);
                 await sleep(100);
@@ -99,7 +101,6 @@ window.bp_v_5 = async function bp_v_5() {
         }, 7000);
     }
     window.deferLoad = deferLoad;
-
 
 };
 
@@ -113,94 +114,6 @@ function setConfig() {
         coinEndpoint: _coinEndpoint,
         orderbookEndpoint: _orderbookEndpoint,
     });
-}
-
-function bindUIEvents() {
-
-    // Legacy BP logout / login
-    // TODO: move these to buddylist app
-    bp.on('auth::logout', 'old-bp-logout', function () {
-        $('.loggedIn').flexHide();
-        $('.loggedOut').flexShow();
-        // TODO: close all windows that have "loggedIn" flag ( not class )
-        for (let window of bp.windows) {
-            if (window.loggedIn) {
-                window.close();
-            }
-        }
-    });
-
-    bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
-        // console.log('buddy-message-gotfiltered', message);
-        // make toastr that stays for 5 seconds
-        toastr.options.timeOut = 5000;
-        toastr.info('Your message was filtered due to being at Power Level 1.');
-        // desktop.ui.openWindow('buddy_message', { context: message });
-    });
-
-    let d = $(document);
-
-    // Delegate click event for .loginLink
-    d.on('click', '.loginLink', function () {
-        bp.open('buddylist');
-    });
-
-    // Delegate change event for .selectPlaylist
-    d.on('change', '.selectPlaylist', function () {
-        $('#soundcloudiframe').remove();
-        $('#soundcloudplayer').html('');
-        /*
-        if (desktop.app.soundcloud) {
-            desktop.app.soundcloud.embeded = false;
-        }
-        desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
-        */
-        if (bp.apps.soundcloud) {
-            bp.apps.soundcloud.soundCloudEmbeded = false; // reload
-        }
-        bp.open('soundcloud', { playlistID: $(this).val() });
-    });
-
-    $(window).on('resize', function () {
-        //bp.apps.desktop.showDesktopIcons();
-        //bp.apps.desktop.arrangeShortcuts();
-        arrangeDesktop();
-        console.log('Window resized, rearranging desktop shortcuts');
-    });
-
-    d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
-
-        let form = $(this).parent();
-        let url = $('.image', form).attr('src');
-        let output = $(this).data('output');
-        let context = $(this).data('context');
-
-        let cardContainer = $(this).parent().parent();
-        console.log('cardContainer', cardContainer);
-        url = $('.bp-image', cardContainer).attr('src');
-        // url = buddypond.host + url;
-        console.log('remixPaint', url, output, context);
-
-        bp.open('paint', {
-            src: url,
-            output: output,
-            context: context,
-            
-        });
-
-    });
-
-    // Checking and setting the initial state of audio settings
-    $(function () {
-        if (!desktop.settings.audio_enabled) {
-            $('.volumeFull').hide();
-            $('.volumeMuted').show();
-        } else {
-            $('.volumeFull').show();
-            $('.volumeMuted').hide();
-        }
-    });
-
 }
 
 async function loadCoreApps() {
@@ -248,7 +161,7 @@ async function loadCoreApps() {
         name: 'desktop',
         parent: $('#desktop').get(0),
     }, {}, true, function () {
-        arrangeDesktop();
+        window.arrangeDesktop();
     });
 
     // menubar can be fire-and-forget loaded, as long as UI is ready
@@ -256,39 +169,4 @@ async function loadCoreApps() {
 
 }
 
-function arrangeDesktop() {
-    if (!bp.apps.desktop || !bp.apps.ui) {
-        console.log('bp.apps', bp.apps)
-        console.error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
-        return;
-        // throw new Error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
-    }
-    if (bp.isMobile()) {
-        // $('.desktop-only').hide();
-        bp.apps.desktop.arrangeShortcuts(4, {
-            rowWidth: 256,
-            rowHeight: 256,
-            ignoreSavedPosition: false
-        });
-        bp.apps.desktop.showDesktopIcons();
-        // bp.apps.ui.windowManager.arrangeVerticalStacked()
-
-    } else {
-        bp.apps.desktop.arrangeShortcuts(2, {
-            rowWidth: 80,
-            rowHeight: 100,
-            x: 0, // TODO: we should start from the x and y position in our calculations
-            y: 0,
-            ignoreSavedPosition: false
-        }); // Arrange the icons in a grid of 4 columns
-        // bp.apps.ui.windowManager.restoreWindows();
-    }
-
-    setTimeout(() => {
-        bp.apps.desktop.showDesktopIcons();
-    }, 300);
-
-}
 let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-window.arrangeDesktop = arrangeDesktop;

@@ -239,6 +239,29 @@ export default function buddylistUIEvents() {
   });
   */
 
+  let d = $(document);
+
+  d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
+
+    let form = $(this).parent();
+    let url = $('.image', form).attr('src');
+    let output = $(this).data('output');
+    let context = $(this).data('context');
+
+    let cardContainer = $(this).parent().parent();
+    console.log('cardContainer', cardContainer);
+    url = $('.bp-image', cardContainer).attr('src');
+    // url = buddypond.host + url;
+    console.log('remixPaint', url, output, context);
+
+    bp.open('paint', {
+      src: url,
+      output: output,
+      context: context,
+    });
+
+  });
+
   // Invite a buddy link ( opens twitter with a random message )
   $('.inviteBuddy').on('click', () => {
     let randomInviteMessages = [
@@ -265,7 +288,7 @@ export default function buddylistUIEvents() {
   if (this.positiveAffirmationInterval) {
     clearInterval(this.positiveAffirmationInterval);
   }
-  
+
   this.positiveAffirmationInterval = setInterval(function () {
     $('.positiveAffirmation').fadeOut({
       duration: 4444,

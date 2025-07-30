@@ -106,6 +106,12 @@ export default class Desktop {
 
         //alert(`BroadcastChannel message received: ${event.data}`);
 
+        $(window).on('resize', function () {
+            //bp.apps.desktop.showDesktopIcons();
+            //bp.apps.desktop.arrangeShortcuts();
+            arrangeDesktop();
+            console.log('Window resized, rearranging desktop shortcuts');
+        });
 
 
         // if (this.bp.settings.wallpaper) {
@@ -323,5 +329,42 @@ const DelayedPushState = (() => {
 
   return { push };
 })();
+
+
+function arrangeDesktop() {
+    if (!bp.apps.desktop || !bp.apps.ui) {
+        console.log('bp.apps', bp.apps)
+        console.error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
+        return;
+        // throw new Error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
+    }
+    if (bp.isMobile()) {
+        // $('.desktop-only').hide();
+        bp.apps.desktop.arrangeShortcuts(4, {
+            rowWidth: 256,
+            rowHeight: 256,
+            ignoreSavedPosition: false
+        });
+        bp.apps.desktop.showDesktopIcons();
+        // bp.apps.ui.windowManager.arrangeVerticalStacked()
+
+    } else {
+        bp.apps.desktop.arrangeShortcuts(2, {
+            rowWidth: 80,
+            rowHeight: 100,
+            x: 0, // TODO: we should start from the x and y position in our calculations
+            y: 0,
+            ignoreSavedPosition: false
+        }); // Arrange the icons in a grid of 4 columns
+        // bp.apps.ui.windowManager.restoreWindows();
+    }
+
+    setTimeout(() => {
+        bp.apps.desktop.showDesktopIcons();
+    }, 300);
+
+}
+
+window.arrangeDesktop = arrangeDesktop;
 
 window.DelayedPushState = DelayedPushState;
