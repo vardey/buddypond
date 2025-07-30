@@ -124,7 +124,7 @@ window.bp_init = async function () {
   let endpoints = configureEnvironment();
   endpoints = configureDiscordMode(endpoints);
 
-  endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
+  // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
   console.log('Using endpoints:', endpoints);
   assignBuddyPondEndpoints(endpoints);
 
