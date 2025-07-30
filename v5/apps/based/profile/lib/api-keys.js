@@ -162,7 +162,7 @@ const client = {};
 client.endpoint = buddypond.apiKeysEndpoint;
 
 client.addApiKey = async function (name, roles, expiry) {
-    return await client.apiRequest('', 'POST', {
+    return await client.apiRequest('/keys', 'POST', {
         name,
         roles,
         expiry
@@ -170,11 +170,11 @@ client.addApiKey = async function (name, roles, expiry) {
 };
 
 client.revokeApiKey = async function (keyId) {
-    return await client.apiRequest(`/${keyId}`, 'DELETE');
+    return await client.apiRequest(`/keys/${keyId}`, 'DELETE');
 };
 
 client.getApiKeys = async function () {
-    const keys = await client.apiRequest('', 'GET');
+    const keys = await client.apiRequest('/keys', 'GET');
     if (Array.isArray(keys)) return keys;
     throw new Error('Invalid API key list');
 };
@@ -183,7 +183,7 @@ client.validateApiKey = async function (key, requireRole) {
     if (!key || !requireRole || !Array.isArray(requireRole) || requireRole.length === 0) {
         throw new Error('Invalid key or requireRole parameter');
     }
-    return await client.apiRequest('/validate', 'POST', {
+    return await client.apiRequest('/keys/validate', 'POST', {
         key,
         requireRole
     });
