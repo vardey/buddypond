@@ -167,6 +167,10 @@ export default class BuddyList {
         if (config.type === 'buddylist-profile') {
 
             // TODO: have the ability to close and re-open the buddylist gracefully
+            const htmlStr = await this.bp.fetchHTMLFragment('/v5/apps/based/buddylist/buddylist.html');
+            this.messageTemplateString = await this.bp.fetchHTMLFragment('/v5/apps/based/buddylist/message.html');
+            this.bp.appendCSS('/v5/apps/based/buddylist/buddylist.css');
+            this.bp.appendCSS('/v5/apps/based/buddylist/messages.css');
 
             if (this.opened) {
                 // console.log('BuddyList already opened, focusing existing window');
@@ -184,10 +188,6 @@ export default class BuddyList {
 
             this.opened = true;
 
-            const htmlStr = await this.bp.fetchHTMLFragment('/v5/apps/based/buddylist/buddylist.html');
-            this.messageTemplateString = await this.bp.fetchHTMLFragment('/v5/apps/based/buddylist/message.html');
-            this.bp.appendCSS('/v5/apps/based/buddylist/buddylist.css');
-            this.bp.appendCSS('/v5/apps/based/buddylist/messages.css');
 
             // this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
 
