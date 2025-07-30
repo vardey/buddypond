@@ -1,6 +1,13 @@
 // Buddy Pond - Window.js - Marak Squires 2023
 // A simple window class for creating draggable, resizable windows
 // Remark: WindowManager interface is optional and will be stubbed out if not provided
+
+import maximize from "./lib/maximize.js";
+import minimize from "./lib/minimize.js";
+import open from "./lib/open.js";
+import close from "./lib/close.js";
+import createWindow from "./lib/createWindow.js";
+
 let idCounter = 0;
 
 class Window {
@@ -108,244 +115,6 @@ class Window {
 
         return this;
     }
-
-    createWindow() {
-        // Create the main window container
-        this.container = document.createElement("div");
-        this.container.classList.add("window-container");
-
-        // add dataset for app, type, context
-        this.container.dataset.app = this.app;
-        this.container.dataset.type = this.type;
-        this.container.dataset.context = this.context;
-
-        if (this.className) {
-            this.container.classList.add(this.className);
-        }
-
-        if (!this.resizeable) {
-            this.container.classList.add("window-not-resizeable");
-        }
-
-
-        // Helper function to check if two rectangles overlap
-        function checkOverlap(x1, y1, w1, h1, x2, y2, w2, h2, buffer = 10) {
-            // console.log('checkOverlap', x1, y1, w1, h1, x2, y2, w2, h2, buffer);
-            w1 = parseInt(w1);
-            h1 = parseInt(h1);
-            w2 = parseInt(w2);
-            h2 = parseInt(h2);
-            return (
-                x1 < x2 + w2 + buffer &&
-                x1 + w1 + buffer > x2 &&
-                y1 < y2 + h2 + buffer &&
-                y1 + h1 + buffer > y2
-            );
-        }
-
-        // Function to adjust position to prevent overlap
-        function adjustPosition(newWindow, windows, screenWidth, screenHeight, buffer = 10) {
-            let adjustedX = newWindow.x;
-            let adjustedY = newWindow.y;
-
-            // Check overlap with other windows
-            windows.forEach((win) => {
-                if (checkOverlap(adjustedX, adjustedY, newWindow.width, newWindow.height, win.x, win.y, win.width, win.height, buffer)) {
-                    // console.log('OVERLAP DETECTED');
-                    adjustedX += buffer; // Move slightly to the right
-                    // adjustedY += buffer; // Move slightly down
-                }
-            });
-
-            // Check screen boundaries
-            if (adjustedX + newWindow.width + buffer > screenWidth) {
-                adjustedX = screenWidth - newWindow.width - buffer; // Move to the left
-            }
-            if (adjustedY + newWindow.height + buffer > screenHeight) {
-                adjustedY = screenHeight - newWindow.height - buffer; // Move up
-            }
-            if (adjustedX < buffer) {
-                adjustedX = buffer; // Move to the right
-            }
-            if (adjustedY < buffer) {
-                adjustedY = buffer; // Move down
-            }
-
-            return { x: adjustedX, y: adjustedY };
-        }
-
-        // Main Window Creation Logic
-        this.container.id = this.id;
-        this.container.style.width = `${this.width}px`;
-        this.container.style.height = `${this.height}px`;
-        this.container.style.position = "absolute";
-
-        // Assume screen dimensions
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-
-        /*
-        // Remark: We could perform a general zoom scale for mobile devices
-        if (screenWidth <= 980) {
-            // this.container.style.zoom = 1.5; // Adjust zoom for mobile
-        } else {
-            // do nothing
-        }
-        */
-
-        // Adjust position to prevent overlap
-        let adjustedPosition = {
-            x: this.x,
-            y: this.y,
-        };
-
-        if (this.preventOverlap) {
-            adjustedPosition = adjustPosition(
-                { x: this.x, y: this.y, width: this.width, height: this.height },
-                this.windowManager.windows,
-                screenWidth,
-                screenHeight,
-                32
-            );
-        }
-
-
-        // Apply adjusted position
-        this.x = adjustedPosition.x;
-        this.y = adjustedPosition.y;
-        this.container.style.top = `${this.y}px`;
-        this.container.style.left = `${this.x}px`;
-
-        this.container.style.zIndex = 99;
-
-        // add a mousedown handler to container itself to set 'window-active' status
-        this.container.addEventListener('mousedown', () => {
-            // set all windows to inactive
-            document.querySelectorAll('.window-container').forEach((window) => {
-                window.classList.remove('window-active');
-                window.isActive = false;
-            });
-            // set this window to active
-            this.container.classList.add('window-active');
-            this.isActive = true;
-        });
-
-        // same for touchstart
-        this.container.addEventListener('touchstart', () => {
-            // set all windows to inactive
-            document.querySelectorAll('.window-container').forEach((window) => {
-                window.classList.remove('window-active');
-                window.isActive = false;
-            });
-            // set this window to active
-            this.container.classList.add('window-active');
-            this.isActive = true;
-        });
-
-        // Create the title bar
-        this.titleBar = document.createElement("div");
-        this.titleBar.classList.add("window-title-bar");
-
-        if (this.bp.isMobile()) {
-            this.titleBar.onclick = () => {
-                console.log('titleBar clicked on mobile');
-                this.minimize();
-                return;
-                if (!this.isMinimized) {
-                    this.minimize(true); // force minimize on mobile
-                } else {
-                    this.restore(); // restore on mobile
-                }
-            }
-        }
-
-        // on double click maximize
-        this.titleBar.ondblclick = () => this.maximize();
-
-        if (this.icon) {
-            let iconTitleBar = document.createElement("img");
-            iconTitleBar.src = this.icon;
-            iconTitleBar.classList.add("window-icon");
-            this.titleBar.appendChild(iconTitleBar);
-        }
-
-        let titleBarSpan = document.createElement("span");
-        titleBarSpan.classList.add("window-title-text");
-        titleBarSpan.textContent = this.title;
-        this.titleBarSpan = titleBarSpan;
-
-        // Drag functionality
-        // Add mouse and touch event listeners to the titleBar
-        this.titleBar.addEventListener('mousedown', this.startDrag);
-        this.titleBar.addEventListener('touchstart', this.startDrag, { passive: false });
-
-        // Touch events for mobile
-
-
-        // Create control buttons (Minimize, Maximize, Close)
-        const controls = document.createElement("div");
-        controls.classList.add("window-controls");
-
-        if (!this.bp.isMobile()) {
-            this.minimizeButton = document.createElement("button");
-            this.minimizeButton.innerHTML = "&#x1F7E1;"; // Yellow circle
-            this.minimizeButton.classList.add("minimize-button");
-            this.minimizeButton.title = "Minimize";
-            this.minimizeButton.onclick = () => this.minimize();
-
-            controls.appendChild(this.minimizeButton);
-
-
-        }
-
-
-        this.maximizeButton = document.createElement("button");
-        this.maximizeButton.innerHTML = "&#x1F7E2;"; // Green circle
-        this.maximizeButton.classList.add("maximize-button");
-        this.maximizeButton.title = "Maximize";
-        this.maximizeButton.onclick = () => this.maximize();
-
-        controls.appendChild(this.maximizeButton);
-
-
-        this.closeButton = document.createElement("button");
-        this.closeButton.innerHTML = "&#x1F534;"; // Red circle
-        this.closeButton.classList.add("close-button");
-        this.closeButton.title = "Close";
-        this.closeButton.onclick = () => this.close();
-
-        controls.appendChild(this.closeButton);
-
-        this.titleBar.appendChild(titleBarSpan);
-        this.titleBar.appendChild(controls);
-
-        this.initContentArea();
-
-        // Append components
-        this.container.appendChild(this.titleBar);
-        this.container.appendChild(this.content);
-
-        if (this.parent) {
-            this.parent.appendChild(this.container);
-        }
-
-        // Resizing
-        if (this.resizeable) {
-            this.addResizeHandles();
-        }
-
-        if (this.canBeBackground) {
-            // get the menubar-set-window-as-background element and remove disabled class
-            let el = document.getElementById('menubar-set-window-as-background');
-            if (el) {
-                el.classList.remove('disabled');
-            }
-        }
-
-
-        return this.container;
-    }
-
 
     initContentArea() {
         if (typeof this.iframeContent === 'boolean' && this.iframeContent) {
@@ -685,39 +454,6 @@ class Window {
         return { clientX, clientY };
     }
 
-    minimize(force = false) {
-        // console.log('minimize', this.isMinimized);
-
-        if (false && this.bp.isMobile()) {
-
-            if (this.isMinimized && !force) {
-                this.restore();
-                // this.content.style.display = "block"; // Show content area
-            } else {
-                // Minimize the window
-                // this.container.style.display = "none";  // Hide content area
-                // hides the `bp-window-content` area
-                //this.content.style.display = "none";  // Hide content area
-                // set the window-container height to 50px
-                this.container.style.height = "120px"; // Set height to 50px
-
-                this.isMinimized = true;
-            }
-
-            // this.windowManager.arrangeVerticalStacked();
-
-        } else {
-            if (this.isMinimized && !force) {
-                this.restore();
-            } else {
-                // Minimize the window
-                this.container.style.display = "none";  // Hide content area
-                this.isMinimized = true;
-            }
-        }
-        // TODO: save the window state
-    }
-
     // Restore the window
     restore() {
         // console.log('restore', this)
@@ -742,60 +478,6 @@ class Window {
 
     }
 
-    maximize() {
-
-        // offset the top position by $('.desktop-menu-bar').height()
-        // so that on smaller devices the window is not hidden behind the menubar
-        if (this.isMaximized) {
-            if (this.bp.isMobile()) {
-                this.container.style.width = "100vw";
-                this.container.style.height = 'calc(var(--vh) * 90)';
-                this.container.style.top = "0";
-                this.container.style.left = "0";
-
-            } else if (window.discordView) {
-                this.container.style.width = "90vw";
-                this.container.style.height = 'calc(var(--vh) * 90)';
-                this.container.style.top = "0";
-                this.container.style.left = "75";
-
-            } else {
-                this.container.style.width = `${this.width}px`;
-                this.container.style.height = `${this.height}px`;
-                this.container.style.top = "50px";
-                this.container.style.left = "50px";
-                this.isMaximized = false;
-
-            }
-        } else {
-            let normalMenuBarHeight = 21;
-            let currentMenuBarHeight = $('.desktop-menu-bar').height() || normalMenuBarHeight;
-            let diff = currentMenuBarHeight - normalMenuBarHeight;
-            diff += (normalMenuBarHeight + 2); // add 2px for border
-            let pixelOffset = diff + 'px';
-            if (this.bp.isMobile()) {
-                this.container.style.width = "100vw";
-                this.container.style.height = 'calc(var(--vh) * 90)';
-                this.container.style.top = "0";
-                this.container.style.left = "0";
-            }  else if (window.discordView) {
-                this.container.style.width = "90vw";
-                this.container.style.height = 'calc(var(--vh) * 90)';
-                this.container.style.top = "20px";
-                this.container.style.left = "90px";
-
-            } else {
-                this.container.style.width = "100vw";
-                this.container.style.height = "calc(100vh - 104px)";
-                this.container.style.top = pixelOffset;
-                this.container.style.left = "0";
-            }
-            this.isMaximized = true;
-        }
-        // TODO: save the window state
-
-    }
-
     focus(propigate = true) {
         // console.log('on focus called from Window.js')
         if (propigate) {
@@ -816,147 +498,6 @@ class Window {
 
     }
 
-    open() {
-        // set focus to this window ( first )
-        this.focus();
-
-        try {
-            // onOpen may have additional focus events
-            this.onOpen(this);
-        } catch (err) {
-            console.error(err);
-        }
-        // TODO: save the window state ???
-        // ???? this.parent.appendChild(this.container);
-
-        if (this.bp.isMobile()) {
-            this.windowManager.minimizeAllWindows(true);
-            this.maximize();
-        }
-
-        if (window.discordView) {
-            this.windowManager.minimizeAllWindows(true);
-            this.maximize();
-        }
-
-        this.bp.emit('window::open', this);
-
-        // console.log('Window opened:', this);
-        let _app = {
-            id: this.id,
-            app: this.app,
-            label: this.title,
-            icon: this.icon,
-            // app: this.app,
-            type: this.type,
-            context: this.context
-        };
-        // console.log('openWindow openItem', _app);
-        this.bp.apps.ui.windowManager.taskBar.openItem(_app);
-
-        // add the items to this.bp.apps.ui.recentApps
-        this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps || this.bp.settings.recentApps || [];
-
-        // remove items with the same id if already exists
-        this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps.filter(app => app.id !== this.id);
-
-        this.bp.apps.ui.recentApps.unshift({
-            id: this.id,
-            app: this.app,
-            label: this.label || this.title,
-            icon: this.icon,
-            type: this.type
-        });
-
-        // update the recentApps localStorage
-        this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps.slice(0, 10); // keep only the first 10 items
-        this.bp.set('recentApps', this.bp.apps.ui.recentApps);
-
-        // update the url bar push state with app id
-        // modify the url to include the app id
-        // load app data to find any aliases
-        let appData = this.bp.apps.desktop.appList[this.id];
-        let pushStateId = this.id;
-        if (appData && appData.alias) {
-            // get the first entry in the alias array
-            let alias = appData.alias[0];
-            pushStateId = alias; // use the id if it exists, otherwise use the alias string
-        }
-
-        // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
-        DelayedPushState.push({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
-
-    }
-    close() {
-
-        if (this.parent) {
-            // check first to see if child is in parent
-            if (this.container.parentElement && this.container.parentElement === this.parent) {
-                this.parent.removeChild(this.container);
-            }
-        } else {
-            this.container.parentElement.removeChild(this.container);
-        }
-
-        // check to see if this is an iframe and remove event listener
-        if (this.content && this.content.contentWindow) {
-            this.content.contentWindow.removeEventListener('message', this.receiveMessage.bind(this), false);
-        }
-        if (this.content) {
-            if (this.content.parentNode) {
-                this.content.parentNode.removeChild(this.content);
-            }
-            this.content = null;
-        }
-
-        // check to see if no more windows
-        // TODO: remove this code from Window.js class ( it should not know about menubar )
-        // if window count is 0 get the menubar-set-window-as-background element and add disabled class
-        let windowCount = this.windowManager.windows.length;
-        if (windowCount === 0) {
-            let el = document.getElementById('menubar-set-window-as-background');
-            if (el) {
-                el.classList.add('disabled');
-            }
-        }
-        // console.log('removeWindow', this.id);
-        this.windowManager.removeWindow(this.id);
-
-
-        if (this.windowManager.taskBar) {
-            // remove the chat window from the taskbar
-            this.windowManager.taskBar.closeItem(this.id);
-        }
-
-        // TODO: save the window state ??? removeWindow could do it..?
-
-        this.onClose(this);
-        this.bp.emit('window::close', this);
-
-        if (this.bp.isMobile()) {
-            // this.minimizeAllWindows(true);
-            //this.windowManager.arrangeVerticalStacked();
-            setTimeout(() => {
-                // this.windowManager.arrangeVerticalStacked();
-            }, 100);
-        }
-
-        // clear the current pushState
-        // history.pushState({}, '', '/');
-        DelayedPushState.push({}, '', '/');
-
-        if (this.bp.isMobile()) {
-            // if mobile, check to see if there are any other windows open
-            // if so, restore the first one
-            if (this.windowManager.windows.length > 0) {
-                let firstWindow = this.windowManager.windows[0];
-                if (firstWindow) {
-                    firstWindow.restore();
-                }
-            }
-        }
-
-    }
 
     addResizeHandles() {
         const resizeHandle = document.createElement("div");
@@ -1070,3 +611,9 @@ function getXPathForElement(element) {
     };
     return fullPath(element);
 }
+
+Window.prototype.maximize = maximize;
+Window.prototype.minimize = minimize;
+Window.prototype.open = open;
+Window.prototype.close = close;
+Window.prototype.createWindow = createWindow;
