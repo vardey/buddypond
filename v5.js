@@ -263,8 +263,14 @@ async function handleAppRouting(currentPath, urlParams) {
 
   bp.loadedFromApp = false;
   const allCommands = bp.apps.buddyscript.commands;
-  await bp.open({ name: 'welcome', autocomplete: allCommands });
-  return false;
+  // only show welcome if qtokenid is not set
+  if (!bp.qtokenid) {
+    console.log('No qtokenid found, opening welcome app');
+    await bp.open({ name: 'welcome', autocomplete: allCommands, openDefaultPond: true });
+    return false;
+  }
+  //await bp.open({ name: 'welcome', autocomplete: allCommands });
+  //return false;
 }
 
 window.bp_loadApps = async function bp_loadApps() {
@@ -402,11 +408,22 @@ async function loadCoreApps() {
   // bp.load('appstore'); // replaced with pads
   if (!bp.loadedFromApp) {
     // bp.open('motd');
-    let buddylist = await bp.open({
-      name: 'welcome',
-      autocomplete: allCommands,
-      openDefaultPond: true // for now
-    });
+      // if we are not logged in, open the welcome app
+      // this will also load the buddylist app
+      console.log('No qtokenid found, opening welcome app');
+      if (!window.discordView) {
+
+        await bp.open({
+          name: 'welcome',
+          autocomplete: allCommands,
+          openDefaultPond: true // for now
+        });
+      }
+      if (window.discordView) {
+        await bp.open('coin', {
+          type: 'leaderboard'
+        })
+      }
 
   } else {
     if (!window.discordView) {

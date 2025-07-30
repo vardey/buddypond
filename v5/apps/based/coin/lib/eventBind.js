@@ -6,14 +6,10 @@ export default function eventBind(coinWindow) {
 
     this.tabs.onTab(async (tabId) => {
         $('.coin-error').text('');
-
         console.log('tabId', tabId);
         if (tabId === '#coin-leaderboard') {
-
             await fetchLeaderboard.call(this);
-
         }
-
     });
 
      $('#coin-leaderboard-symbol', coinWindow.content).change(async () => {
@@ -21,8 +17,6 @@ export default function eventBind(coinWindow) {
         $('.loading-leaderboard', coinWindow.content).show();
         await fetchLeaderboard.call(this);
     });
-
-
 
     async function fetchLeaderboard() {
         // fetch the /top coins from portfolio
@@ -56,6 +50,17 @@ export default function eventBind(coinWindow) {
                     </tr>
                 `);
         });
+
+        // if window.discordView is true, remove the 5th column (value)
+        if (window.discordView) {
+            leadersList.find('tr').each((index, row) => {
+                $(row).find('td:nth-child(5)').remove();
+                $('.no-discord', coinWindow.content).hide();
+
+            });
+
+        }
+
         $('.loading-leaderboard', coinWindow.content).hide();
     }
 

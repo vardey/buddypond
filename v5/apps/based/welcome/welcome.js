@@ -21,7 +21,6 @@ export default class Welcome {
         // this should be handled globally ( if possible )
         $('.loggedIn', this.win.content).hide();
         $('.loggedOut', this.win.content).show();
-
         this.bindUIEvents();
         // check if the user is already authenticated with qtoken
         this.handleAuthentication();

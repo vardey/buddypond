@@ -325,3 +325,119 @@
         height: 0.1875rem; /* ~3px */
     }
 }
+
+/* Discord or low-height media query */
+@media (max-height: 520px) {
+
+    .desktop-only {
+        display: none; /* Hide desktop-only elements */
+    }
+    .taskbar-container {
+        bottom: 0;
+        left: 0;
+        top: 0;
+        transform: none;
+        flex-direction: column;
+        width: 3.5rem; /* ~56px, slightly wider for vertical layout */
+        border: none;
+        padding: 0.5rem; /* ~8px */
+        border-radius: 0; /* Remove rounded corners for edge-to-edge */
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        justify-content: flex-start; /* Align items to top */
+        gap: 0.625rem; /* ~10px */
+    }
+
+    .taskbar-left,
+    .taskbar-right {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .taskbar-items {
+        flex-direction: column;
+        overflow-y: auto; /* Vertical scrolling */
+        overflow-x: hidden;
+        gap: 0.625rem; /* ~10px */
+        flex: 1;
+    }
+
+    .taskbar-items::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Adjust scroll indicators for vertical layout */
+    .taskbar-left::after,
+    .taskbar-right::before {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1rem; /* ~16px */
+        height: 0.5rem; /* ~8px */
+    }
+
+    /* Down chevron (in taskbar-left, below settings) */
+    .taskbar-left::after {
+        top: auto;
+        bottom: -0.75rem; /* ~12px, below taskbar-left */
+        clip-path: polygon(0 0, 50% 100%, 100% 0); /* Down-pointing chevron */
+    }
+
+    /* Up chevron (in taskbar-right, above home) */
+    .taskbar-right::before {
+        top: -0.75rem; /* ~12px, above taskbar-right */
+        bottom: auto;
+        clip-path: polygon(0 100%, 50% 0, 100% 100%); /* Up-pointing chevron */
+    }
+
+    .taskbar-left + .taskbar-items[data-scrollable="true"]::after {
+        opacity: 1; /* Show down chevron when scrollable */
+    }
+
+    .taskbar-items[data-scrollable="true"]:not([style*="scrollTop: 0"]) + .taskbar-right::before {
+        opacity: 1; /* Show up chevron when not at top and scrollable */
+    }
+
+    .taskbar-left + .taskbar-items[data-scrollable="true"][data-scroll-end="true"]::after {
+        opacity: 0; /* Hide down chevron at end */
+    }
+
+    .taskbar-left + .taskbar-items:not([data-scrollable="true"])::after,
+    .taskbar-items:not([data-scrollable="true"]) + .taskbar-right::before {
+        opacity: 0; /* Hide both chevrons when not scrollable */
+    }
+
+    .taskbar-item {
+        width: 2.5rem; /* ~40px */
+        height: 2.5rem;
+        border-radius: 0.5rem; /* ~8px */
+    }
+
+    .taskbar-item img {
+        width: 1.75rem; /* ~28px */
+        height: 1.75rem;
+    }
+
+    .taskbar-item-text {
+        bottom: auto;
+        left: 3.75rem; /* ~60px, to the right of the item */
+        transform: none; /* Remove centering transform */
+    }
+
+    .taskbar-item-open::after {
+        bottom: auto;
+        left: 0.25rem; /* ~4px */
+        transform: none;
+        width: 0.25rem; /* ~4px */
+        height: 0.875rem; /* ~14px */
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .taskbar-context-menu {
+        min-width: 9rem; /* ~144px */
+        font-size: 0.75rem; /* ~12px */
+        left: 3.5rem; /* ~56px, to the right of taskbar */
+    }
+}

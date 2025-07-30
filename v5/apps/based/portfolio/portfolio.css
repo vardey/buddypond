@@ -321,3 +321,20 @@
     50% { background: #222; color: #ddd; }
     100% { background: transparent; color: inherit; }
 }
+
+/* Discord Integration */
+@media (max-height: 480px) {
+    /* portfolio-actions should be top to bottom vertical  on the right side */
+    .portfolio-actions {
+        position: absolute;
+        right: 20px;
+        top: 50px;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .portfolio-actions button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

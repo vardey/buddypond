@@ -1,5 +1,5 @@
 export default function welcomeUIEvents() {
-    console.log('aaaaaa', this)
+
   let api = this.bp.apps.client.api;
   let affirmations = this.bp.apps.affirmations.affirmations;
 

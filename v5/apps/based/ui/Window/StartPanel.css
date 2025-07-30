@@ -124,3 +124,44 @@
         width: 100%;
     }
 }
+
+/* Discord or low-height media query */
+@media (max-height: 480px) {
+    .start-panel {
+        bottom: 5px; /* Close to the bottom, just above potential horizontal taskbar */
+        left: 4.5rem; /* Align with vertical taskbar width from previous update */
+        transform: none; /* Remove centering transform */
+        width: calc(100% - 4rem); /* Full width minus taskbar and padding */
+        max-width: 360px; /* Cap for readability */
+        height: 300px; /* Reduced height for shorter displays */
+        border-radius: 8px; /* Slightly smaller radius */
+        padding: 12px; /* Reduced padding */
+        gap: 12px; /* Reduced gap */
+    }
+
+    .start-panel-search {
+        font-size: 0.875rem; /* ~14px, slightly smaller */
+        padding: 8px; /* Reduced padding */
+    }
+
+    .start-panel-section h3 {
+        font-size: 1rem; /* ~16px, slightly smaller */
+        margin-bottom: 8px;
+    }
+
+    .start-panel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Smaller tiles */
+        gap: 8px; /* Reduced gap */
+    }
+
+    .start-panel-app {
+        padding: 8px; /* Reduced padding */
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .start-panel-app img {
+        width: 32px; /* Smaller icons */
+        height: 32px;
+    }
+}

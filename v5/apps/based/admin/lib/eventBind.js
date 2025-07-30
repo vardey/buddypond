@@ -205,7 +205,6 @@ export default function eventBind(adminWindow) {
 
     // #login-as-user-button
     // #super-admin-token
-    // if click on login-as-user-button, make fetch request to '/api/v6/auth' setting x-admin-token from input
     $('#login-as-user-button').on('click', async () => {
         let token = $('#super-admin-token').val().trim();
         let buddyname = $('#profile-input').val().trim();

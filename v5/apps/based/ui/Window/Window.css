@@ -6,7 +6,7 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Enhanced shadow for depth */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
     z-index: 99;
     border-radius: 8px; /* Rounded corners for a modern feel */
     position: relative;

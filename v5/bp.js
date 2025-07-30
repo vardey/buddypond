@@ -410,6 +410,9 @@ bp.play = async function lazyLoadPlayModule() {
 bp.focus = function noop() { };
 
 bp.isMobile = function isTouchDevice() {
+    if (window.discordView) {
+        // return true;
+    }
     const maxMobileWidth = 767; // Common mobile breakpoint (in pixels)
     return (
         (window.innerWidth <= maxMobileWidth) &&

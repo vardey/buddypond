@@ -31,6 +31,8 @@ export default class WindowManager {
             }
         }
 
+        // Remark: Why is TaskBar in the WindowManager?
+        // shouldn't this be in the UI class?
         this.taskBar = new TaskBar({
             bp: this.bp,
             homeCallback: () => {

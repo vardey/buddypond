@@ -184,7 +184,7 @@ export default function openChatWindow(data) {
 
 function determineWindowParameters(data) {
     let windowType = data.pondname ? "pond" : "buddy";
-    let contextName = data.pondname || data.name;
+    let contextName = data.pondname || data.name || 'Buddy';
     let windowTitle = windowType === "pond" ? "Pond Chat" : "";
 
     if (data.context) {
@@ -551,8 +551,6 @@ function setupChatWindow(windowType, contextName, chatWindow, client) {
         chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
         const aimWindow = $('.aim-window', chatWindow.content)[0];
-        console.log('chatWindow.contentchatWindow.content', chatWindow.content)
-        console.log('aimWindow', aimWindow)
         let touchStartX = 0;
         let touchEndX = 0;
 

@@ -149,7 +149,11 @@ export default function createWindow() {
     }
 
     // on double click maximize
-    this.titleBar.ondblclick = () => this.maximize();
+    if (window.discordView) {
+        this.titleBar.ondblclick = () => this.maximize({ fullWindow: true });
+    } else {
+        this.titleBar.ondblclick = () => this.maximize();
+    }
 
     if (this.icon) {
         let iconTitleBar = document.createElement("img");

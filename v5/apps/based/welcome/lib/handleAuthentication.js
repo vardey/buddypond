@@ -16,7 +16,15 @@ export default function handleAuthentication() {
             }
             console.log('verified token', data);
             if (data.success) {
-                await this.bp.open('buddylist');
+                if (!window.discordView) {
+                    await this.bp.open('buddylist');
+                } else {
+                    await this.bp.open('buddylist', {
+                        openDefaultPond: false,
+                        showBuddyList: false
+                    });
+
+                }
                 // A pre-existing token was found and verified, emit the auth event
                 this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me, hasPassword: data.user.hasPassword });
                 $('.loggedIn').flexShow();
@@ -25,7 +33,10 @@ export default function handleAuthentication() {
                     this.bp.open('pincode');
                 }
                 // close the welcome window
-                this.win.close();
+                // Remark: May be null here, why? already closed or not initialized?
+                if (this.win && this.win.close) {
+                    this.win.close();
+                }
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 $('.password').show();

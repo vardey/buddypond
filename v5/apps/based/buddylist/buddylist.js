@@ -160,12 +160,21 @@ export default class BuddyList {
             this.openDefaultPond = false;
         }
 
+        if (window.discordView) {
+           this.openDefaultPond = false;
+        }
+
         if (config.type === 'buddylist-profile') {
 
             // TODO: have the ability to close and re-open the buddylist gracefully
 
             if (this.opened) {
                 // console.log('BuddyList already opened, focusing existing window');
+                if (!this.buddyListWindow) {
+                    const buddyListWindow = this.createBuddyListWindow();
+                    buddyListWindow.content.appendChild(this.createHTMLContent(htmlStr));
+                    this.buddyListWindow = buddyListWindow;
+                }
                 this.buddyListWindow.open();
                 this.bp.apps.ui.windowManager.focusWindow(this.buddyListWindow);
                 this.buddyListWindow.restore();
@@ -373,6 +382,10 @@ export default class BuddyList {
                 if (!data.user.hasPassword) {
                     this.bp.open('pincode');
                 }
+                if (window.discordView) {
+                    // minimize window
+                    this.buddyListWindow.minimize();
+                }
 
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
@@ -390,7 +403,7 @@ export default class BuddyList {
     async handleAuthSuccess(qtoken) {
         // console.log('handleAuthSuccess', qtoken);
         if (this.client) {
-            console.error('buddylist websocket client already exists and has not been closed. This should not happen');
+            // console.error('buddylist websocket client already exists and has not been closed. This should not happen');
             return;
         }
 

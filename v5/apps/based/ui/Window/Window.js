@@ -464,7 +464,7 @@ class Window {
         }
 
         if (window.discordView) {
-            this.windowManager.minimizeAllWindows(true);
+            // this.windowManager.minimizeAllWindows(true);
         }
 
         this.container.style.display = "flex";

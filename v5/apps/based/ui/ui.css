@@ -271,3 +271,60 @@ table tr:nth-child(even) {
   color: var(--ui_table_row_even-color);
   border: var(--ui_table_row_even-border);
 }
+
+/* Discord or low-height media query */
+@media (max-height: 480px) {
+
+  .tabs-container {
+    width: 80%;
+  }
+  .tabs-container .tab-list {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    /* width: 3.5rem; */
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: rgba(60, 60, 60, 0.9); /* Match taskbar background */
+    backdrop-filter: blur(0.75rem);
+    border-right: 0.0625rem solid rgba(255, 255, 255, 0.1); /* ~1px */
+    padding: 0.5rem; /* ~8px */
+    z-index: 99998; /* Below taskbar */
+  }
+  .tabs-container .tab-list li {
+    width: 100%;
+    margin-bottom: 0.625rem; /* ~10px */
+    margin-right: 0;
+  }
+  .tabs-container .tab-list li a {
+    width: 100%;
+    padding: 0.5rem; /* ~8px, compact for vertical */
+    font-size: 0.875rem; /* ~14px, smaller for vertical fit */
+    border-right: none;
+    border-bottom: 1px solid #ddd; /* Separator for vertical tabs */
+    text-align: center;
+    color: #e0e0e0; /* Match taskbar text */
+  }
+  .tabs-container .tab-list li.active a {
+    border-bottom: 2px solid #007bff;
+    font-weight: bold;
+    color: var(--desktop_text-color);
+  }
+  .tabs-container .tab-list li:hover {
+    background: var(--desktop_element_hover-background);
+  }
+  .tabs-container .tab-content {
+    width: calc(100% - 4rem); /* Adjust for tab width and padding */
+    padding: 0.75rem; /* ~12px */
+    font-size: 1rem; /* ~16px */
+  }
+  .tabs-container .tab-content:target {
+    display: block;
+  }
+  .ui-button {
+    width: 100%;
+    font-size: 1rem; /* ~16px */
+    padding: 0.75rem; /* ~12px */
+  }
+}

@@ -368,3 +368,14 @@
     display: none !important;
   }
 }
+
+
+/* Discord or low-height media query */
+@media (max-height: 520px) {
+  .menu-bar {
+    padding-left: 90px;
+    background: rgba(60, 60, 60, 0.9);
+
+  }
+  
+}

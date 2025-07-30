@@ -18,6 +18,11 @@ export default function arrangeShortcuts(cols = 2, options = {
     if (typeof options.x !== 'number') options.x = 0;
     if (typeof options.y !== 'number') options.y = 0;
 
+    if (window.discordView) {
+        // start from the top left corner + the width of the sidebar
+        options.x = 75;
+    }
+
     const containerHeight = parent.offsetHeight || 600;
     // continerHeight might not yet be defined if the desktop is not visible
     // alert(`Container height: ${containerHeight}`);
