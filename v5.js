@@ -66,7 +66,7 @@ function configureDiscordMode(endpoints) {
 
   window.discordMode = isDiscordProxy;
   window.discordView = isDiscordProxy || isDiscordView;
-
+  console.log('discordMode:', window.discordMode, 'discordView:', window.discordView);
   if (window.discordMode) {
     const host = window.location.origin;
     return {
@@ -74,9 +74,16 @@ function configureDiscordMode(endpoints) {
       host,
       api: `${host}/.proxy/api/buddylist`,
       apps: `${host}/.proxy/api/apps`,
-      uploads: `${host}/.proxy/api/uploads`,
       coin: `${host}/.proxy/api/coin`,
+      errors: `${host}/.proxy/api/errors`,
+      randolph: `${host}/.proxy/api/randolph`,
+      imageSearch: `${host}/.proxy/api/image-search`,
+      apiKeys: `${host}/.proxy/api/api-keys`,
+      admin: `${host}/.proxy/api/admin`,
+      gamblor: `${host}/.proxy/api/gamblor`,
       portfolio: `${host}/.proxy/api/portfolio`,
+      uploads: `${host}/.proxy/api/uploads`,
+      pondsWs: `${host.replace('https://', 'wss://')}/.proxy/api/messages/ws/ponds`,
       messagesWs: `${host.replace('https://', 'wss://')}/.proxy/api/messages/ws/messages`,
       buddylistWs: `${host.replace('https://', 'wss://')}/.proxy/api/buddylist/ws/buddylist`
     };
@@ -125,7 +132,7 @@ window.bp_init = async function () {
   endpoints = configureDiscordMode(endpoints);
 
   // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
-  console.log('Using endpoints:', endpoints);
+  console.log(endpoints);
   assignBuddyPondEndpoints(endpoints);
 
 
@@ -136,6 +143,8 @@ window.bp_init = async function () {
 
   $(document).ready(async function () {
 
+    setConfig(endpoints);
+  
     bp.loadedFromApp = loadedFromApp;
 
     documentReady();
@@ -280,8 +289,6 @@ window.bp_loadApps = async function bp_loadApps() {
     apiEndpoint: buddypond.errorsEndpoint
   });
 
-  setConfig(); // probably can remove this
-
   await loadCoreApps();
 
   // defer loading of apps that are not essential for the initial experience
@@ -328,14 +335,14 @@ window.bp_loadApps = async function bp_loadApps() {
 };
 
 
-function setConfig() {
+function setConfig(endpoints) {
   bp.setConfig({
-    host: ENDPOINTS.host,
-    api: ENDPOINTS.api,
-    cdn: ENDPOINTS.cdn,
-    portfolioEndpoint: ENDPOINTS.portfolio,
-    coinEndpoint: ENDPOINTS.coin,
-    orderbookEndpoint: ENDPOINTS.orderbook
+    host: endpoints.host,
+    api: endpoints.api,
+    cdn: endpoints.cdn,
+    portfolioEndpoint: endpoints.portfolio,
+    coinEndpoint: endpoints.coin,
+    orderbookEndpoint: endpoints.orderbook
   });
 }
 
