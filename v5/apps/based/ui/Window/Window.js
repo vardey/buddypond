@@ -484,6 +484,11 @@ class Window {
             this.windowManager.focusWindow(this);
         }
 
+        // check if window is minimized, if so, restore it
+        if (this.isMinimized) {
+            this.restore();
+        }
+
         this.onFocus(this);
 
         let appData = this.bp.apps.desktop.appList[this.id];
