@@ -20,6 +20,16 @@ export default class StickMan {
     }
 
     async open() {
+
+        if (window.discordView) {
+            this.bp.alert(`Stickman is a camera assisted computer-vision app and is not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/stickman">BuddyPond</a> to use Stickman.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
+
+
         if (this.win) {
             this.win.restore();
             this.win.focus();

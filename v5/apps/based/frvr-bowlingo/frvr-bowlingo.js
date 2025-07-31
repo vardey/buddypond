@@ -10,6 +10,14 @@ export default class BowlingoFRVR {
     }
 
     async open () {
+
+        if (window.discordView) {
+            this.bp.alert(`Bowling is currently not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/bowling">BuddyPond</a> to play Bowling.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         let win = this.bp.window(this.window());
         win.maximize();
         return win;

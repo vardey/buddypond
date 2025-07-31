@@ -20,6 +20,12 @@ export default class Emulator {
 
     async open({ context = 'nes' }) {
 
+        if (window.discordView) {
+            this.bp.alert(`Emulators are currently not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/basketball">BuddyPond</a> to use the Emulators.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
 
         if (!this.emulatorWindows[context]) {
             this.emulatorWindows[context] = [];

@@ -429,7 +429,10 @@ async function loadCoreApps() {
       if (window.discordView) {
         await bp.open('coin', {
           type: 'leaderboard'
-        })
+        });
+        bp.alert(`Greetings. This is the Buddy Pond Discord Experience<br/>Try out our apps, games, and track your Buddy Coins<br/>Visit https://buddypond.com for the full experience.`, {
+          title: 'Welcome to Buddy Pond!'
+        });
       }
 
   } else {

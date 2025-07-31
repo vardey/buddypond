@@ -313,6 +313,14 @@ export default class JutsuCaster {
 
     async open() {
 
+        if (window.discordView) {
+            this.bp.alert(`The Jutsu Caster is a camera assisted computer-vision app and is not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/basketball">BuddyPond</a> to use the Jutsu Caster.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
+
         if (this.win) {
             this.win.focus();
             return this.win;

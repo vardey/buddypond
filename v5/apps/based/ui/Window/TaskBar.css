@@ -327,7 +327,7 @@
 }
 
 /* Discord or low-height media query */
-@media (max-height: 520px) {
+@media (max-height: 480px) {
 
     .desktop-only {
         display: none; /* Hide desktop-only elements */

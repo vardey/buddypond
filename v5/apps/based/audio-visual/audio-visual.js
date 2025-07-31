@@ -12,6 +12,11 @@ export default class AudioVisual {
     }
 
     async open() {
+
+        if (window.discordView) {
+            this.bp.alert(`Audio Visualizer is not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/audio-visual">BuddyPond</a> to use the Audio Visualizer.`);
+            return;
+        }
         
         let avWindow = this.windowManager.createWindow({
             id: 'audio-visual',

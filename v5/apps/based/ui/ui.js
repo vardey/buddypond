@@ -2,11 +2,13 @@
 import WindowManager from "./Window/WindowManager.js";
 import CountdownManager from "../ui/CountdownManager.js";
 import LightBox from "./LightBox.js";
+import showAlert from "./showAlert.js";
 
 export default class UI {
     constructor(bp, options = {}) {
         this.bp = bp;
 
+        this.bp.alert = showAlert.bind(this);
         let windowManagerOptions = {};
         windowManagerOptions.openWindow = this.bp.open.bind(this.bp),
         windowManagerOptions.window = options.window || {};

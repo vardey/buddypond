@@ -31,6 +31,13 @@ export default class VisionInstrument {
 
     async open() {
 
+        if (window.discordView) {
+            this.bp.alert(`The Vision Harp is a camera assisted computer-vision app and is not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/harp">BuddyPond</a> to use the Vision Harp.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         if (this.win) {
             console.log('VisionInstrument window is already open');
             this.win.restore();
