@@ -74,7 +74,9 @@ function configureDiscordMode(endpoints) {
       host,
       api: `${host}/.proxy/api/buddylist`,
       apps: `${host}/.proxy/api/apps`,
+      buddyProxy: `${host}/.proxy/api/proxy`,
       coin: `${host}/.proxy/api/coin`,
+      cdn: `${host}/.proxy`,
       errors: `${host}/.proxy/api/errors`,
       randolph: `${host}/.proxy/api/randolph`,
       imageSearch: `${host}/.proxy/api/image-search`,
@@ -336,6 +338,8 @@ window.bp_loadApps = async function bp_loadApps() {
 
 
 function setConfig(endpoints) {
+  console.log('Setting Buddy Pond configuration with endpoints:', endpoints);
+  // Set the configuration for Buddy Pond
   bp.setConfig({
     host: endpoints.host,
     api: endpoints.api,
@@ -427,7 +431,7 @@ async function loadCoreApps() {
         });
       }
       if (window.discordView) {
-        await bp.open('coin', {
+        bp.open('coin', {
           type: 'leaderboard'
         });
         bp.alert(`Greetings. This is the Buddy Pond Discord Experience<br/>Try out our apps, games, and track your Buddy Coins<br/>Visit https://buddypond.com for the full experience.`, {
