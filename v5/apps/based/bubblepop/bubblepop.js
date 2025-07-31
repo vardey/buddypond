@@ -32,9 +32,12 @@ export default class BubblePop {
     }
 
     async init() {
-        await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands');
-        await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils');
-        await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/tone/15.2.6/Tone.js');
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands');
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils');
+        // await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/tone/15.2.6/Tone.js');
+        await this.bp.appendScript('/v5/apps/based/bubblepop/vendor/mediapipe.hands.js');
+        await this.bp.appendScript('/v5/apps/based/bubblepop/vendor/mediapipe.camera_utils.js');
+        await this.bp.appendScript('/v5/apps/based/bubblepop/vendor/Tone.js');
         this.html = await this.bp.load('/v5/apps/based/bubblepop/bubblepop.html');
         await this.bp.appendCSS('/v5/apps/based/bubblepop/bubblepop.css');
         this.synth = new Tone.Synth({
