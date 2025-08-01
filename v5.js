@@ -137,7 +137,6 @@ window.bp_init = async function () {
   console.log(endpoints);
   assignBuddyPondEndpoints(endpoints);
 
-
   if (!renderBpApp) {
     renderBuddyPad(currentPath);
     return;
@@ -146,7 +145,7 @@ window.bp_init = async function () {
   $(document).ready(async function () {
 
     setConfig(endpoints);
-  
+
     bp.loadedFromApp = loadedFromApp;
 
     documentReady();
@@ -419,25 +418,25 @@ async function loadCoreApps() {
   // bp.load('appstore'); // replaced with pads
   if (!bp.loadedFromApp) {
     // bp.open('motd');
-      // if we are not logged in, open the welcome app
-      // this will also load the buddylist app
-      console.log('No qtokenid found, opening welcome app');
-      if (!window.discordView) {
+    // if we are not logged in, open the welcome app
+    // this will also load the buddylist app
+    console.log('No qtokenid found, opening welcome app');
+    if (!window.discordView) {
 
-        await bp.open({
-          name: 'welcome',
-          autocomplete: allCommands,
-          openDefaultPond: true // for now
-        });
-      }
-      if (window.discordView) {
-        bp.open('coin', {
-          type: 'leaderboard'
-        });
-        bp.alert(`Greetings. This is the Buddy Pond Discord Experience<br/>Try out our apps, games, and track your Buddy Coins<br/>Visit https://buddypond.com for the full experience.`, {
-          title: 'Welcome to Buddy Pond!'
-        });
-      }
+      await bp.open({
+        name: 'welcome',
+        autocomplete: allCommands,
+        openDefaultPond: true // for now
+      });
+    }
+    if (window.discordView) {
+      bp.open('coin', {
+        type: 'leaderboard'
+      });
+      bp.alert(`Greetings. This is the Buddy Pond Discord Experience<br/>Try out our apps, games, and track your Buddy Coins<br/>Visit <a class="open-link" href="https://buddypond.com">buddypond.com</a> for the full experience.`, {
+        title: 'Welcome to Buddy Pond!'
+      });
+    }
 
   } else {
     if (!window.discordView) {
@@ -463,5 +462,83 @@ async function loadCoreApps() {
   bp.load('pad');
 
 }
+
+window.bp_init_discord = async function () {
+
+  console.log('Buddy Pond Discord SDK', DiscordSDK);
+  let YOUR_OAUTH2_CLIENT_ID = '1397133413147738196'; // Replace with your actual OAuth2 client ID
+  // production: 1396609124132720790
+  YOUR_OAUTH2_CLIENT_ID = '1396609124132720790';
+  const discordSdk = new DiscordSDK(YOUR_OAUTH2_CLIENT_ID);
+  console.log(discordSdk);
+  window.discordSdk = discordSdk;
+
+  console.log('attempting commands discord');
+
+  async function initializeAndSetPresence() {
+    try {
+      // Wait for the SDK to be ready
+      console.log('Waiting for SDK to be ready...');
+      await discordSdk.ready();
+      console.log('SDK is ready!');
+      // Request authorization code from Discord
+      const { code } = await discordSdk.commands.authorize({
+        client_id: YOUR_OAUTH2_CLIENT_ID,
+        response_type: 'code',
+        state: '',
+        prompt: 'none',
+        scope: ['identify', 'rpc.activities.write'],
+      });
+
+      console.log('Authorization code received:', code);
+
+      // Retrieve an access_token from your application's server
+      const response = await fetch('/.proxy/discord/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code,
+        }),
+      });
+      const { access_token } = await response.json();
+
+      // Authenticate the user
+      console.log('Pre auth access_token', access_token);
+      await discordSdk.commands.authenticate({
+        access_token: access_token,
+      });
+
+      await discordSdk.commands.setActivity({
+        activity: {
+          type: 0,
+          details: 'Swimming in the pond',
+          state: 'Frogging around',
+          assets: {
+            large_image: 'buddy-the-frog',
+            large_text: 'in a group',
+            small_image: 'buddy-the-frog',
+            small_text: 'in mainframe'
+          },
+          timestamps: {
+            start: Math.floor(Date.now() / 1000) // Start time in seconds
+          },
+          party: {
+            id: 'buddypond-party'
+          }
+        }
+      });
+
+      console.log('Rich Presence updated!');
+    } catch (error) {
+      throw error;
+      console.error('Error in initializeAndSetPresence:', error);
+    }
+  }
+  console.log('Buddy Pond Discord SDK initialized', discordSdk);
+  initializeAndSetPresence();
+
+};
 
 let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));

@@ -110,10 +110,24 @@ export default class UI {
 
         });
 
-        $(d).on('click', '.open-link', function (e) {
+        $(d).on('click', '.open-link', async function (e) {
+            e.preventDefault();
             let url = $(this).data('link');
+            if (!url) {
+                // check if tag has href attribute
+                url = $(this).attr('href');
+            }
             console.log('open-link ' + url);
-            window.open(url, '_blank');
+            if (window.discordMode) {
+                await window.discordSdk.commands.openExternalLink({
+                    url: url
+                });
+                return;
+            } else {
+                window.open(url, '_blank');
+
+            }
+            return false;
         });
 
         return 'loaded ui';
