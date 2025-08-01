@@ -51,7 +51,7 @@ const DEV_ENDPOINTS = {
 // Initialize application configuration based on environment
 function configureEnvironment() {
   devmode = window.location.hostname !== 'buddypond.com';
-  devmode = false;
+  // devmode = true;
   if (devmode) {
     return DEV_ENDPOINTS
   }
@@ -76,7 +76,7 @@ function configureDiscordMode(endpoints) {
       apps: `${host}/.proxy/api/apps`,
       buddyProxy: `${host}/.proxy/api/proxy`,
       coin: `${host}/.proxy/api/coin`,
-      cdn: `${host}/.proxy`,
+      cdn: `${host}/.proxy/files`,
       errors: `${host}/.proxy/api/errors`,
       randolph: `${host}/.proxy/api/randolph`,
       imageSearch: `${host}/.proxy/api/image-search`,
