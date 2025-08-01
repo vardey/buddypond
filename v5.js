@@ -493,7 +493,7 @@ window.bp_init_discord = async function () {
       console.log('Authorization code received:', code);
 
       // Retrieve an access_token from your application's server
-      const response = await fetch('/.proxy/discord/token', {
+      const response = await fetch('/.proxy/api/buddylist/discord/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -532,7 +532,6 @@ window.bp_init_discord = async function () {
 
       console.log('Rich Presence updated!');
     } catch (error) {
-      throw error;
       console.error('Error in initializeAndSetPresence:', error);
     }
   }
