@@ -13,6 +13,11 @@ export default function applyData(el, data, cardClass, parentWindow) {
             cardClass.bp.apps.buddylist.scrollToBottom(parentWindow.content);
         }
     });
+
+    if (window.discordMode) {
+       data.url =  data.url.replace('https://files.buddypond.com', bp.config.cdn);
+    }
+
     $image.attr('src', data.url);
 
     // 🆕 Lightbox click
