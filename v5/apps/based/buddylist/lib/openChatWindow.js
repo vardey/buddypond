@@ -113,6 +113,10 @@ function updatePondConnectedUsers(data) {
 function createProfilePictureElement(userId, profilePicture, $existingContainer = null) {
     const $profilePicture = $("<div>", { class: "aim-profile-picture" });
 
+    if (window.discordMode) {
+       profilePicture =  profilePicture.replace('https://files.buddypond.com', bp.config.cdn);
+    }
+
     if (profilePicture) {
         const $img = $("<img>", {
             class: "aim-chat-message-profile-picture-img",

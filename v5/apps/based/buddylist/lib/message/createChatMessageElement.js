@@ -78,9 +78,8 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   if (message.profilePicture) {
     // use url as profile picture src
     const img = document.createElement('img');
-    if (window.discordView) {
+    if (window.discordMode) {
        message.profilePicture =  message.profilePicture.replace('https://files.buddypond.com', bp.config.cdn);
-       console.log('Using profile picture from Discord view:', message.profilePicture);
     }
     img.src = message.profilePicture;
     img.alt = `${message.from}'s avatar`;
