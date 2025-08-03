@@ -525,10 +525,13 @@ window.bp_init_discord = async function () {
 
       // Extract the user ID from the auth response
       const userId = auth.user.id;
+      const userName = auth.user.username + '-' + auth.user.discriminator;
       console.log('Authenticated Discord User ID:', userId);
+      console.log('Authenticated Discord User Name:', userName);
       bp.config.discordId = userId;
+      bp.config.discordName = userName;
 
-      discordHandleAuthentication(bp.config.discordId);
+      discordHandleAuthentication(bp.config.discordId, bp.config.discordName);
 
       // perform discord auth route with id
       await discordSdk.commands.setActivity({
@@ -576,11 +579,13 @@ window.bp_init_discord = async function () {
 
 let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-function discordHandleAuthentication(discordId) {
+function discordHandleAuthentication(discordId, discordName) {
   const api = buddypond;
   console.log('discordHandleAuthentication', discordId);
   // console.log('localToken', localToken, me);
-  api.verifyDiscordToken(discordId, async (err, data) => {
+  // TODO: pass default discord name in case no account is found
+  // this way we can create a new account if it does not exist
+  api.verifyDiscordToken(discordId, discordName, async (err, data) => {
     if (err) {
       console.error('Failed to verify token:', err);
       $('.password').show();

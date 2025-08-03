@@ -55,9 +55,10 @@ buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
   })
 }
 
-buddypond.verifyDiscordToken = function verifyToken(discord_id, cb) {
+buddypond.verifyDiscordToken = function verifyToken(discord_id, discord_username, cb) {
   apiRequest('/verifyToken', 'POST', {
-    discord_id: discord_id
+    discord_id: discord_id,
+    discord_username: discord_username
   }, function (err, data) {
     console.log('got back verifyDiscordToken', err, data);
     buddypond.me = data.user.buddyname;
