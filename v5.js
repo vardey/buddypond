@@ -600,7 +600,6 @@ function discordHandleAuthentication(discordId, discordName) {
         });
       }
       */
-      await this.bp.open('buddylist');
 
       let localToken = data.user.qtokenid;
       let me = data.user.buddyname || data.user.discord_id || 'unknown';
@@ -610,6 +609,8 @@ function discordHandleAuthentication(discordId, discordName) {
       localStorage.setItem('me', me);
       // A pre-existing token was found and verified, emit the auth event
       this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me, hasPassword: data.user.hasPassword });
+      await this.bp.open('buddylist');
+
       $('.loggedIn').flexShow();
       $('.loggedOut').flexHide();
     } else {
