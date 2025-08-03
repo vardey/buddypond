@@ -341,12 +341,13 @@ export default class BuddyList {
                 this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me, hasPassword: data.user.hasPassword });
                 $('.loggedIn').flexShow();
                 $('.loggedOut').flexHide();
-                if (!data.user.hasPassword) {
-                    this.bp.open('pincode');
-                }
                 if (window.discordView) {
                     // minimize window
                     this.buddyListWindow.minimize();
+                } else {
+                    if (!data.user.hasPassword) {
+                        this.bp.open('pincode');
+                    }
                 }
 
             } else {
