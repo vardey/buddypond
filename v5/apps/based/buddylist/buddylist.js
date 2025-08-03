@@ -148,7 +148,7 @@ export default class BuddyList {
         }
 
         if (window.discordView) {
-           this.openDefaultPond = false;
+            this.openDefaultPond = false;
         }
 
         if (config.type === 'buddylist-profile') {
@@ -317,7 +317,7 @@ export default class BuddyList {
                 console.log(err, result)
             });
         }
-       
+
     }
 
     // called on open to verify token ( if exists )
@@ -386,9 +386,11 @@ export default class BuddyList {
         this.client = new this.Client(bp);
         let connected = await this.client.connect();
 
-        if (!qtoken.hasPassword) {
-            // if the user does not have a password, open the pincode window
-            this.bp.open('pincode');
+        if (!window.discordView) {
+            if (!qtoken.hasPassword) {
+                // if the user does not have a password, open the pincode window
+                this.bp.open('pincode');
+            }
         }
 
         // check if window.tempDiscordId has been set
