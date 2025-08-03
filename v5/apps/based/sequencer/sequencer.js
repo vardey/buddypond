@@ -10,6 +10,14 @@ export default class Sequencer {
     }
 
     async open() {
+
+        if (window.discordView) {
+            this.bp.alert(`Sequencer is currently not available in Discord Activities.<br/>Please visit <a class="open-link" target="_blank" href="https://buddypond.com/app/sequencer">BuddyPond</a> to use the Sequencer.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         let win = this.bp.window(this.window());
         win.maximize();
         return win;

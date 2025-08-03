@@ -12,10 +12,9 @@ export default class BasketBall_FRVR {
     async open () {
 
         if (window.discordView) {
-            this.bp.alert(`Basketball is currently not available in Discord Activities.<br/>Please visit <a target="_blank" href="https://buddypond.com/app/basketball">BuddyPond</a> to play Basketball.`, {
+            this.bp.alert(`Basketball is currently not available in Discord Activities.<br/>Please visit <a class="open-link" target="_blank" href="https://buddypond.com/app/basketball">BuddyPond</a> to play Basketball.`, {
                 title: 'Sorry!'
             });
-            // window.open('https://basketball.frvr.com/');
             return;
         }
 

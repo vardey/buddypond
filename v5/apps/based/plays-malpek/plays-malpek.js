@@ -10,6 +10,14 @@ export default class Malpek {
     }
 
     async open() {
+
+        if (window.discordView) {
+            this.bp.alert(`Malpek is currently not available in Discord Activities.<br/>Please visit <a class="open-link" target="_blank" href="https://buddypond.com/app/malpek">BuddyPond</a> to play Malpek.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         let win = this.bp.window(this.window());
         win.maximize();
         return win;

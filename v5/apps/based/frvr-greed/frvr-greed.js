@@ -10,6 +10,14 @@ export default class GreedyFRVR {
     }
 
     async open () {
+
+        if (window.discordView) {
+            this.bp.alert(`Greed is currently not available in Discord Activities.<br/>Please visit <a class="open-link" target="_blank" href="https://buddypond.com/app/greed">BuddyPond</a> to play Greed.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         let win = this.bp.window(this.window());
         win.maximize();
         return win;

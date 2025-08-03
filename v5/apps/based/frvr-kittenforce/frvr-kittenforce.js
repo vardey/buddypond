@@ -10,6 +10,14 @@ export default class KittenForceFRVR {
     }
 
     async open () {
+
+        if (window.discordView) {
+            this.bp.alert(`Kitten Force is currently not available in Discord Activities.<br/>Please visit <a class="open-link" target="_blank" href="https://buddypond.com/app/kittenforce">BuddyPond</a> to play Kitten Force.`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         let win = this.bp.window(this.window());
         win.maximize();
         return win;

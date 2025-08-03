@@ -10,6 +10,14 @@ export default class MarbleBlast {
     }
 
     async open() {
+
+        if (window.discordView) {
+            this.bp.alert(`Marble Blast is currently not available in Discord Activities.<br/>Please visit <a class="open-link" target="_blank" href="https://buddypond.com/app/marbleblast">BuddyPond</a> to play Marble Blast .`, {
+                title: 'Sorry!'
+            });
+            return;
+        }
+
         let win = this.bp.window(this.window());
         win.maximize();
         return win;
