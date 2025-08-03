@@ -305,7 +305,7 @@ export default class BuddyList {
     handleAuthentication() {
 
         if (this.bp.connected) {
-            return;
+            // return;
         }
 
         const api = this.bp.apps.client.api;
@@ -358,9 +358,11 @@ export default class BuddyList {
 
         // TODO: connect-to-websocket-server should happen here
         // plays welcome message
-        this.bp.play('desktop/assets/audio/WELCOME.mp3', { tryHard: Infinity });
 
         if (!this.client) {
+
+            this.bp.play('desktop/assets/audio/WELCOME.mp3', { tryHard: Infinity });
+
             // this will eventually trigger the buddylist::connected event
             try {
                 this.client = new this.Client(bp);

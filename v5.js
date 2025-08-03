@@ -278,8 +278,7 @@ async function handleAppRouting(currentPath, urlParams) {
     await bp.open({ name: 'welcome', autocomplete: allCommands, openDefaultPond: true });
     return false;
   }
-  //await bp.open({ name: 'welcome', autocomplete: allCommands });
-  //return false;
+
 }
 
 window.bp_loadApps = async function bp_loadApps() {
@@ -352,8 +351,6 @@ async function loadCoreApps() {
   await Promise.all([
     bp.load('localstorage'),
     bp.load('buddyscript'),
-
-
 
     // we *must* wait for the UI since it contains openWindow() method
     // and other methods that are used by apps
@@ -462,7 +459,6 @@ async function loadCoreApps() {
   // load any other apps that are non-essential but still useful
   // bp.load('console');
   bp.load('clock');
-
   bp.load('say');
   bp.load('droparea');
   bp.load('file-viewer');
@@ -593,6 +589,7 @@ function discordHandleAuthentication(discordId, discordName) {
     console.log('discord verified token', data);
     if (data.success) {
       this.bp.connected = true;
+      /*
       if (!window.discordView) {
         await this.bp.open('buddylist');
       } else {
@@ -601,8 +598,10 @@ function discordHandleAuthentication(discordId, discordName) {
           showPond: false,
           showBuddyList: false
         });
-
       }
+      */
+      await this.bp.open('buddylist');
+
       let localToken = data.user.qtokenid;
       let me = data.user.buddyname || data.user.discord_id || 'unknown';
 
