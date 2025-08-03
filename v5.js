@@ -593,7 +593,8 @@ function discordHandleAuthentication(discordId) {
         await this.bp.open('buddylist');
       } else {
         await this.bp.open('buddylist', {
-          openDefaultPond: false,
+          openDefaultPond: true,
+          showPond: false,
           showBuddyList: false
         });
 

@@ -151,6 +151,10 @@ export default class BuddyList {
             this.openDefaultPond = false;
         }
 
+        if (config.showPond === false) {
+            this.showPond = false;
+        }
+
         if (config.type === 'buddylist-profile') {
 
             // TODO: have the ability to close and re-open the buddylist gracefully
@@ -410,6 +414,9 @@ export default class BuddyList {
             setTimeout(() => {
                 // console.log('Opening default pond chat window', this.defaultPond);
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
+                if (this.showPond === false) {
+                    chatWindow.minimize();
+                }
                 // loads the hotpond client that populates room lists
                 bp.load('pond');
             }, 100);
