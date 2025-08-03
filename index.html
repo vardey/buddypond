@@ -92,21 +92,13 @@ window.top.location = 'ie.html';
     </div>
     <iframe id="buddypad"></iframe>
     <script type="module" src="/v5/public/buddypond.umd.js"></script>
-
-    <script>
-      window.bp_init();
-    </script>
-
     <script type="module">
       import { DiscordSDK } from 'https://cdn.jsdelivr.net/npm/@discord/embedded-app-sdk@2.1.0/+esm';
       window.DiscordSDK = DiscordSDK;
-      const urlParams = new URLSearchParams(window.location.search);
-      const isDiscordProxy = window.location.hostname.includes('discord');
-      if (isDiscordProxy) {
-        window.bp_init_discord();
-      }
     </script>
-
+    <script>
+      window.bp_init();
+    </script>
     <!-- <bp-minesweeper open></bp-minesweeper> -->
     <!-- <bp-youtube open context="G50eivcSvuQ"></bp-youtube> -->
 

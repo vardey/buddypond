@@ -413,8 +413,7 @@ async function loadCoreApps() {
     // TODO: possible double auth issue if qtoken is already set
     // we should probably always perform discord auth if inside discord view instead of qtokenid auth
     // probably modify buddylist logic
-    console.log('Discord ID found in config:', bp.config.discordId);
-    discordHandleAuthentication(bp.config.discordId);
+    // console.log('Discord ID found in config:', bp.config.discordId);
   }
 
   // desktop is loaded at this stage, continue with other apps
@@ -456,6 +455,11 @@ async function loadCoreApps() {
 
   // Remark: Do we need to load the pond here, or can we wait until login is successful?
   await bp.load('pond');
+
+  const isDiscordProxy = window.location.hostname.includes('discord');
+  if (isDiscordProxy) {
+    window.bp_init_discord();
+  }
 
   // load any other apps that are non-essential but still useful
   // bp.load('console');
@@ -523,6 +527,8 @@ window.bp_init_discord = async function () {
       const userId = auth.user.id;
       console.log('Authenticated Discord User ID:', userId);
       bp.config.discordId = userId;
+
+      discordHandleAuthentication(bp.config.discordId);
 
       // perform discord auth route with id
       await discordSdk.commands.setActivity({
