@@ -274,7 +274,7 @@ async function handleAppRouting(currentPath, urlParams) {
   bp.loadedFromApp = false;
   const allCommands = bp.apps.buddyscript.commands;
   // only show welcome if qtokenid is not set
-  if (!bp.qtokenid) {
+  if (!bp.qtokenid && !window.discordView) {
     console.log('No qtokenid found, opening welcome app');
     await bp.open({ name: 'welcome', autocomplete: allCommands, openDefaultPond: true });
     return false;
@@ -332,9 +332,7 @@ window.bp_loadApps = async function bp_loadApps() {
     }, 7000);
   }
   window.deferLoad = deferLoad;
-
 };
-
 
 function setConfig(endpoints) {
   console.log('Setting Buddy Pond configuration with endpoints:', endpoints);
@@ -354,46 +352,48 @@ async function loadCoreApps() {
   // Must wait for localstorage and buddyscript to load before loading the rest of the apps
   await Promise.all([
     bp.load('localstorage'),
-    bp.load('buddyscript')
-  ]);
+    bp.load('buddyscript'),
 
+
+
+    // we *must* wait for the UI since it contains openWindow() method
+    // and other methods that are used by apps
+    await bp.importModule({
+      name: 'ui',
+      parent: $('#desktop').get(0),
+      window: {
+        onFocus(window) {
+          // console.log('custom onFocus window focused');
+          // legacy window check ( we can remove this after all windows are converted to new window )
+          // get all the legacy windows and check z-index to ensure
+          // our window is +1 of the highest z-index
+          let legacyWindows = $('.window');
+          let highestZ = 0;
+          let anyVisible = false;
+          legacyWindows.each((i, el) => {
+            let z = parseInt($(el).css('z-index'));
+            if (z > highestZ) {
+              highestZ = z;
+            }
+            if ($(el).is(':visible')) {
+              anyVisible = true;
+            }
+          });
+          // set the z-index of the current window to highestZ + 1
+          if (legacyWindows.length > 0 && anyVisible) {
+            console.log('legacyWindows', legacyWindows);
+            console.log('highestZ', highestZ);
+            console.log('setting window depth to', highestZ + 1);
+            window.setDepth(highestZ + 1);
+          }
+        },
+      }
+    }),
+    await bp.open('client')
+  ]);
 
   bp.load('wallpaper'); // load wallpaper app first, as it is used by desktop and other apps
   bp.load('themes'); // load themes app first, as it is used by desktop and other apps
-
-  // we *must* wait for the UI since it contains openWindow() method
-  // and other methods that are used by apps
-  await bp.importModule({
-    name: 'ui',
-    parent: $('#desktop').get(0),
-    window: {
-      onFocus(window) {
-        // console.log('custom onFocus window focused');
-        // legacy window check ( we can remove this after all windows are converted to new window )
-        // get all the legacy windows and check z-index to ensure
-        // our window is +1 of the highest z-index
-        let legacyWindows = $('.window');
-        let highestZ = 0;
-        let anyVisible = false;
-        legacyWindows.each((i, el) => {
-          let z = parseInt($(el).css('z-index'));
-          if (z > highestZ) {
-            highestZ = z;
-          }
-          if ($(el).is(':visible')) {
-            anyVisible = true;
-          }
-        });
-        // set the z-index of the current window to highestZ + 1
-        if (legacyWindows.length > 0 && anyVisible) {
-          console.log('legacyWindows', legacyWindows);
-          console.log('highestZ', highestZ);
-          console.log('setting window depth to', highestZ + 1);
-          window.setDepth(highestZ + 1);
-        }
-      },
-    }
-  });
 
   // desktop can be fire-and-forget loaded, as long as we don't call arrangeDesktop()
   // before it the desktop is ready
@@ -407,33 +407,33 @@ async function loadCoreApps() {
   // menubar can be fire-and-forget loaded, as long as UI is ready
   bp.load('menubar');
 
-  await bp.open('client');
-
-  if (bp.config.discordId) {
-    // TODO: possible double auth issue if qtoken is already set
-    // we should probably always perform discord auth if inside discord view instead of qtokenid auth
-    // probably modify buddylist logic
-    // console.log('Discord ID found in config:', bp.config.discordId);
-  }
-
   // desktop is loaded at this stage, continue with other apps
   // load what is required for buddylist and login
   let allCommands = bp.apps.buddyscript.commands;
 
   // bp.load('appstore'); // replaced with pads
+  //
+  // loadedFromApp indicates a direct app like like /app/paint was provided
+  //
   if (!bp.loadedFromApp) {
     // bp.open('motd');
     // if we are not logged in, open the welcome app
     // this will also load the buddylist app
     console.log('No qtokenid found, opening welcome app');
     if (!window.discordView) {
-
+      //
+      // If this is not the Discord view, load the initial welcome app
+      // This app will attempt verify the token and load the buddylist app
+      //
       await bp.open({
         name: 'welcome',
         autocomplete: allCommands,
         openDefaultPond: true // for now
       });
     }
+    //
+    // If this is the Discord view, we will open the coin leaderboard and show a welcome message
+    //
     if (window.discordView) {
       bp.open('coin', {
         type: 'leaderboard'
@@ -442,19 +442,18 @@ async function loadCoreApps() {
         title: 'Welcome to Buddy Pond!'
       });
     }
-
   } else {
+    // a direct app like /app/paint was provided
     if (!window.discordView) {
       await bp.open({
         name: 'welcome',
         autocomplete: allCommands
       });
     }
-
   }
 
   // Remark: Do we need to load the pond here, or can we wait until login is successful?
-  await bp.load('pond');
+  // await bp.load('pond');
 
   const isDiscordProxy = window.location.hostname.includes('discord');
   if (isDiscordProxy) {
@@ -594,6 +593,7 @@ function discordHandleAuthentication(discordId, discordName) {
     }
     console.log('discord verified token', data);
     if (data.success) {
+      this.bp.connected = true;
       if (!window.discordView) {
         await this.bp.open('buddylist');
       } else {

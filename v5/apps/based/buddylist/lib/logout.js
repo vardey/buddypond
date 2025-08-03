@@ -1,6 +1,5 @@
 export default function logout() {
     // set status to online
-
     $('.loginButton').prop('disabled', false);
     $('.loginButton').removeClass('disabled');
     $('#menu-bar-coin-balance').text('0');
@@ -30,6 +29,7 @@ export default function logout() {
         // TODO can we now remove bp.apps.client.logout()?
         this.bp.apps.client.logout();
         this.client.disconnect();
+        this.bp.connected = false;
         this.client = null;
         // clear out the local .data scope
         // TODO: only declare this once ( code is repeated in constructor )

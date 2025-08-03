@@ -59,7 +59,6 @@ export default class BuddyList {
         this.subscribedPonds = [];
         this.options = options;
 
-
         // ensures autocomplete options are always used regardless of entry
         if (bp.apps.buddyscript && bp.apps.buddyscript.commands) {
             this.options.autocomplete = bp.apps.buddyscript.commands;
@@ -90,9 +89,7 @@ export default class BuddyList {
 
         this.opened = false;
         this.showingIsTyping = this.showingIsTyping || {};
-
         this.activeMessageContextMenu = null;
-
         this.faucetAttempts = 0;
 
     }
@@ -100,11 +97,6 @@ export default class BuddyList {
     async init() {
         // Add event when user closes browser window or navigates away
         window.addEventListener('beforeunload', (event) => {
-            // Show warning message
-            //event.preventDefault();
-            //event.returnValue = "Are you sure you want to leave? Your status will be set to offline.";
-            // Attempt to set status to offline (you may need a sync alternative)
-            // if page has quickly refreshed, client might be defined yet or connected
             if (this.client) {
                 this.client.setStatus(this.bp.me, {
                     status: 'offline'
@@ -113,20 +105,16 @@ export default class BuddyList {
                 });
 
             }
-            //return event.returnValue;
         });
-        // this.bp.load('ramblor');
 
-        await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js');
-
-        // TODO: we can load this lazier
-        this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false);
-        this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false);
-        await bp.load('emoji-picker');
-        await bp.load('card');
-
-        //console.log('LOADED dicebear', this.dicebear);
-        //console.log('LOADED dicebearAvatars', this.dicebearAvatars);
+        await Promise.all([
+            this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false),
+            this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false),
+            await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js'),
+            await bp.load('emoji-picker'),
+            await bp.load('card'),
+            await bp.load('pond')
+        ]);
 
         this.bindMessageContextMenu();
         this.forbiddenNotes = forbiddenNotes;
@@ -144,10 +132,6 @@ export default class BuddyList {
         }
 
         if (config.openDefaultPond === false) {
-            this.openDefaultPond = false;
-        }
-
-        if (window.discordView) {
             this.openDefaultPond = false;
         }
 
@@ -179,11 +163,6 @@ export default class BuddyList {
 
             this.opened = true;
 
-
-            // this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
-
-            // await this.bp.importModule('https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm', {}, false)
-
             // loads affirmations messages via the affirmations app
             let affirmations = await this.bp.importModule('affirmations');
 
@@ -193,7 +172,6 @@ export default class BuddyList {
                 this.buddyListWindow = buddyListWindow;
             }
 
-
             if (this.eventsBound !== true) {
                 // TODO: it would be better if we unregister events on close
                 // and left this close to re-bind on open
@@ -202,8 +180,6 @@ export default class BuddyList {
 
             this.buddylistUIEvents();
 
-            if (!this.client) {
-            }
             this.handleAuthentication();
 
             this.eventsBound = true;
@@ -327,6 +303,11 @@ export default class BuddyList {
     // called on open to verify token ( if exists )
     // signup / login logic is in buddylistUIEvents.js
     handleAuthentication() {
+
+        if (this.bp.connected) {
+            return;
+        }
+
         const api = this.bp.apps.client.api;
         const localToken = localStorage.getItem('qtokenid');
         const me = localStorage.getItem('me');
@@ -353,14 +334,12 @@ export default class BuddyList {
                         this.bp.open('pincode');
                     }
                 }
-
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 $('.password').show();
                 console.error('Failed to authenticate buddy:');
             }
         });
-
     }
 
     // TODO: this event should only set the qtokenid and local settings?
@@ -369,11 +348,7 @@ export default class BuddyList {
     // opening the default window initializes the messages client
     async handleAuthSuccess(qtoken) {
         // console.log('handleAuthSuccess', qtoken);
-        if (this.client) {
-            // console.error('buddylist websocket client already exists and has not been closed. This should not happen');
-            return;
-        }
-
+        this.bp.connected = true;
         this.bp.me = qtoken.me;
         this.bp.qtokenid = qtoken.qtokenid;
         this.data.profileState = this.data.profileState || {};
@@ -385,10 +360,15 @@ export default class BuddyList {
         // plays welcome message
         this.bp.play('desktop/assets/audio/WELCOME.mp3', { tryHard: Infinity });
 
-
-        // this will eventually trigger the buddylist::connected event
-        this.client = new this.Client(bp);
-        let connected = await this.client.connect();
+        if (!this.client) {
+            // this will eventually trigger the buddylist::connected event
+            try {
+                this.client = new this.Client(bp);
+                let connected = await this.client.connect();
+            } catch (err) {
+                console.error('Error connecting to BuddyList client:', err);
+            }
+        }
 
         if (!window.discordView) {
             if (!qtoken.hasPassword) {
@@ -414,7 +394,7 @@ export default class BuddyList {
             setTimeout(() => {
                 // console.log('Opening default pond chat window', this.defaultPond);
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
-                if (this.showPond === false) {
+                if (window.discordView) {
                     chatWindow.minimize();
                 }
                 // loads the hotpond client that populates room lists

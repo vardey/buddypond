@@ -16,6 +16,7 @@ export default function handleAuthentication() {
             }
             console.log('verified token', data);
             if (data.success) {
+                this.bp.connected = true;
                 if (!window.discordView) {
                     await this.bp.open('buddylist');
                 } else {

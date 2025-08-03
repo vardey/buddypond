@@ -41,6 +41,7 @@ export default function welcomeUIEvents() {
         return;
       }
       if (result.success) {
+        this.bp.connected = true;
         // attempt to connect for events after getting auth token
         //console.log('connecting with valid qtokenid', api.qtokenid);
         result.me = username;
