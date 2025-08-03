@@ -51,7 +51,7 @@ const DEV_ENDPOINTS = {
 // Initialize application configuration based on environment
 function configureEnvironment() {
   devmode = window.location.hostname !== 'buddypond.com';
-  // devmode = true;
+  devmode = true;
   if (devmode) {
     return DEV_ENDPOINTS
   }
@@ -134,7 +134,7 @@ window.bp_init = async function () {
   endpoints = configureDiscordMode(endpoints);
 
   // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
-  console.log(endpoints);
+  // console.log(endpoints);
   assignBuddyPondEndpoints(endpoints);
 
   if (!renderBpApp) {
@@ -409,7 +409,13 @@ async function loadCoreApps() {
 
   await bp.open('client');
 
-  await bp.load('card');
+  if (bp.config.discordId) {
+    // TODO: possible double auth issue if qtoken is already set
+    // we should probably always perform discord auth if inside discord view instead of qtokenid auth
+    // probably modify buddylist logic
+    console.log('Discord ID found in config:', bp.config.discordId);
+    discordHandleAuthentication(bp.config.discordId);
+  }
 
   // desktop is loaded at this stage, continue with other apps
   // load what is required for buddylist and login
@@ -487,8 +493,11 @@ window.bp_init_discord = async function () {
         response_type: 'code',
         state: '',
         prompt: 'none',
-        scope: ['identify', 'rpc.activities.write'],
+        scope: ['identify', 'rpc.activities.write']
       });
+
+      // scope: ['identify', 'rpc', 'rpc.activities.write', 'rpc.activities.read']
+
 
       console.log('Authorization code received:', code);
 
@@ -506,12 +515,19 @@ window.bp_init_discord = async function () {
 
       // Authenticate the user
       console.log('Pre auth access_token', access_token);
-      await discordSdk.commands.authenticate({
+      const auth = await discordSdk.commands.authenticate({
         access_token: access_token,
       });
 
+      // Extract the user ID from the auth response
+      const userId = auth.user.id;
+      console.log('Authenticated Discord User ID:', userId);
+      bp.config.discordId = userId;
+
+      // perform discord auth route with id
       await discordSdk.commands.setActivity({
         activity: {
+          application_id: '1396609124132720790',
           type: 0,
           details: 'Swimming in the pond',
           state: 'Frogging around',
@@ -525,10 +541,22 @@ window.bp_init_discord = async function () {
             start: Math.floor(Date.now() / 1000) // Start time in seconds
           },
           party: {
-            id: 'buddypond-party'
-          }
+            id: 'buddypond-party',
+          },
+          secrets: {
+            join: 'join-buddypond-room'
+          },
+          instance: true, // Set to true if you want to enable instances
         }
       });
+
+      // TODO: we expected this to have the app appear in the member's activity list at the top
+      // it does not?
+      await discordSdk.subscribe('ACTIVITY_JOIN', (event) => {
+        console.log('Activity join event:', event);
+        // Handle the join event, e.g., open a specific app or perform an action
+      });
+
 
       console.log('Rich Presence updated!');
     } catch (error) {
@@ -541,3 +569,40 @@ window.bp_init_discord = async function () {
 };
 
 let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+function discordHandleAuthentication(discordId) {
+  const api = buddypond;
+  console.log('discordHandleAuthentication', discordId);
+  // console.log('localToken', localToken, me);
+  api.verifyDiscordToken(discordId, async (err, data) => {
+    if (err) {
+      console.error('Failed to verify token:', err);
+      $('.password').show();
+      $('.loginForm .error').text('Failed to authenticate buddy');
+      return;
+    }
+    console.log('discord verified token', data);
+    if (data.success) {
+      if (!window.discordView) {
+        await this.bp.open('buddylist');
+      } else {
+        await this.bp.open('buddylist', {
+          openDefaultPond: false,
+          showBuddyList: false
+        });
+
+      }
+      let localToken = data.user.qtokenid;
+      let me = data.user.buddyname || data.user.discord_id || 'unknown';
+      // A pre-existing token was found and verified, emit the auth event
+      this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me, hasPassword: data.user.hasPassword });
+      $('.loggedIn').flexShow();
+      $('.loggedOut').flexHide();
+    } else {
+      $('.loginForm .error').text('Failed to authenticate buddy');
+      $('.password').show();
+      console.error('Failed to authenticate buddy:');
+    }
+  });
+
+}

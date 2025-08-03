@@ -302,7 +302,7 @@ class MenuBarClass {
         if (menuItem.click) {
             menuButton.onclick = (event) => {
                 event.stopPropagation();
-                menuItem.click();
+                menuItem.click(event);
 
                 if (menuItem.closeMenu) {
                     this.closeMobileMenu();

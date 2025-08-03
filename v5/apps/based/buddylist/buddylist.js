@@ -123,26 +123,13 @@ export default class BuddyList {
         this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false);
         this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false);
         await bp.load('emoji-picker');
+        await bp.load('card');
 
         //console.log('LOADED dicebear', this.dicebear);
         //console.log('LOADED dicebearAvatars', this.dicebearAvatars);
 
         this.bindMessageContextMenu();
         this.forbiddenNotes = forbiddenNotes;
-
-        // TODO: probably should remove this event and just use handleAuthSuccess handler?
-        /*
-        this.bp.on('auth::qtoken', 'connect-to-websocket-server', (qtoken) => {
-            //this.qtokenid = qtoken.qtokenid;
-            //this.api.qtokenid = this.qtokenid;
-            //this.api.me = qtoken.me;
-            //this.me = qtoken.me;
-            //this.bp.me = this.me;
-            //this.bp.qtokenid = this.qtokenid;
-            //this.client = new this.Client(bp);
-            //this.client.connect();
-        });
-        */
 
     }
 
@@ -210,6 +197,9 @@ export default class BuddyList {
             }
 
             this.buddylistUIEvents();
+
+            if (!this.client) {
+            }
             this.handleAuthentication();
 
             this.eventsBound = true;
@@ -327,36 +317,8 @@ export default class BuddyList {
                 console.log(err, result)
             });
         }
-        /*
-        this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
-        data.name = data.to;
-        if (emitLocal) {
-            data.ctime = new Date().getTime();
-            if (this.data.profileState) {
-                data.location = this.data.profileState.location || 'outer space';
-            }
-            this.renderChatMessage(data);
-        }
-        */
+       
     }
-
-    /*
-    sendPondMessageToServer(data, emitLocal = false) {
-        data.type = 'pond';
-        this.bp.log('pond::sendMessage', data);
-        data.uuid = uuid();
-        data.pondname = data.to;
-        // console.log('sendPondMessageToServer', data);
-        this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
-        if (emitLocal) {
-            data.ctime = new Date().getTime();
-            if (this.data.profileState) {
-                data.location = this.data.profileState.location || 'outer space';
-            }
-            this.renderChatMessage(data);
-        }
-    }
-    */
 
     // called on open to verify token ( if exists )
     // signup / login logic is in buddylistUIEvents.js

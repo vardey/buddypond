@@ -629,11 +629,12 @@ button:hover {
 }
 
 
+  */
+
 a:hover {
   cursor: pointer;
-  color: purple;
 }
-  */
+
 
 .purple {
   color: purple;

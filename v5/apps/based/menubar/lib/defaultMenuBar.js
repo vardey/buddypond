@@ -61,7 +61,7 @@ export default function defaultMenuBar(bp) {
     `;
 
 
-  let sourceCodeStr = `<span title="View Source Code">
+  let sourceCodeStr = `<span title="View Source Code" class="open-link" data-link="https://github.com/buddypond/buddypond">
     <i class="fa-duotone fa-regular fa-code"></i> Source Code
   </span>`;
   // use fonr-awesome sun and moon icons
@@ -118,7 +118,6 @@ export default function defaultMenuBar(bp) {
           //visible: bp.apps.client.isLoggedIn(), // Only show if logged in
           click: () => {
             if (bp.logout) {
-
               bp.logout();
             }
             //bp.apps.client.logout();
@@ -220,10 +219,28 @@ export default function defaultMenuBar(bp) {
     // { label: networkStatsStr },
     {
       label: sourceCodeStr,
-      click: () => {
+      click: async (ev) => {
+        // alert('click')
+        let target = ev.target;
+            let url = $(target).data('link');
+            if (!url) {
+                // check if tag has href attribute
+                url = $(target).attr('href');
+            }
+
+            if (window.discordMode) {
+                await window.discordSdk.commands.openExternalLink({
+                    url: url
+                });
+                return;
+            } else {
+                window.open(url, '_blank');
+            }
+
+
         // open a new window to https://github.com/buddypond/buddypond
-        let url = 'https://github.com/buddypond/buddypond';
-        window.open(url, '_blank');
+        // let url = 'https://github.com/buddypond/buddypond';
+        // window.open(url, '_blank');
       }
     },
     { label: selectLightMode },

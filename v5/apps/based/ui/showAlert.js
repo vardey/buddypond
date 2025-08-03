@@ -53,6 +53,7 @@ export default function showAlert(message, options = {}) {
   messageText.textContent = message;
   messageText.style.margin = '0 0 20px';
   messageText.style.fontSize = '2em';
+  messageText.style.color = '#333'; // Dark text for readability
   $(messageText).html(message);
   modalContent.appendChild(messageText);
 

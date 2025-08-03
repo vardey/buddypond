@@ -83,7 +83,6 @@ window.top.location = 'ie.html';
     <script src="/desktop/assets/js/jquery-ui.min.js"></script>
     <script src="/desktop/assets/js/jquery.dateformat.js"></script>
 
-
     <!-- TODO: remove all the below files with replaced v5 code-->
     <script src="/desktop/assets/js/forbidden.notes.js"></script>
     <!-- SDK should be able to be removed -->
@@ -94,6 +93,10 @@ window.top.location = 'ie.html';
     <iframe id="buddypad"></iframe>
     <script type="module" src="/v5/public/buddypond.umd.js"></script>
 
+    <script>
+      window.bp_init();
+    </script>
+
     <script type="module">
       import { DiscordSDK } from 'https://cdn.jsdelivr.net/npm/@discord/embedded-app-sdk@2.1.0/+esm';
       window.DiscordSDK = DiscordSDK;
@@ -102,10 +105,6 @@ window.top.location = 'ie.html';
       if (isDiscordProxy) {
         window.bp_init_discord();
       }
-    </script>
-
-    <script>
-      window.bp_init();
     </script>
 
     <!-- <bp-minesweeper open></bp-minesweeper> -->

@@ -55,6 +55,22 @@ buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
   })
 }
 
+buddypond.verifyDiscordToken = function verifyToken(discord_id, cb) {
+  apiRequest('/verifyToken', 'POST', {
+    discord_id: discord_id
+  }, function (err, data) {
+    console.log('got back verifyDiscordToken', err, data);
+    buddypond.me = data.user.buddyname;
+    buddypond.discord_id = discord_id;
+    buddypond.qtokenid = data.user.qtokenid;
+    if (data && data.banned) {
+      alert(data.error);
+    }
+    // console.log('verifyTokenresult', err, data);
+    cb(err, data);
+  })
+}
+
 buddypond.addBuddy = function addBuddy(buddyname, cb) {
   apiRequest('/buddylist/' + buddypond.me + '/addbuddy', 'POST', {
     buddyname: buddyname
