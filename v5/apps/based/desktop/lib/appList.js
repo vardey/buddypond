@@ -71,7 +71,6 @@ export default {
     "author": "FRVR Games",
     "alias": ["kittenforce"]
   },
-
   "marbleblast": {
     "icon": "desktop/assets/images/icons/icon_marbleblast_64.png",
     "label": "Marble Blast",
@@ -116,6 +115,7 @@ export default {
     "categories": ["audio", "music", "creative"],
     "author": "Jono Brandel"
   },
+  /*,
   "sequencer": {
     "icon": "desktop/assets/images/icons/icon_sequencer_64.png",
     "label": "Sequencer",
@@ -124,6 +124,7 @@ export default {
     "categories": ["audio", "music", "creative"],
     "author": "BuddyPond",
   },
+  */
 
   /*
   "sandspiel": {
@@ -500,7 +501,20 @@ export default {
     "onClick": "bp.open('motd')",
     "categories": ["social", "community"],
     "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
-  }
+  },
 
+  /*
+  "gamblor-coinflip": {
+    "icon": "",
+    "label": "Coin Flip",
+    "alias": "coinflip",
+    "onClick": "bp.open('gamblor-coinflip')",
+    "description": "Flip a coin and get a random result",
+    "categories": ["games", "entertainment"],
+    "author": "BuddyPond",
+    "authorUrl": "https://github.com/BuddyPond",
+    "alias": ["coinflip"],
+  }
+  */
 
 }
