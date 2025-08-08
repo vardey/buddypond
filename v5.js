@@ -23,7 +23,7 @@ const ENDPOINTS = {
   chessWs: 'wss://buddypond.com/api/chess/ws/chess',
   messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
   pondsWs: 'wss://buddypond.com/api/messages/ws/ponds',
-  videoChat: 'wss://buddypond.com/api/videochat'
+  videoChat: 'wss://videochat/buddypond.com/api/videochat/ws'
 };
 
 const DEV_ENDPOINTS = {
