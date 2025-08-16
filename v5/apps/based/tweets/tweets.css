@@ -15,6 +15,12 @@
   margin-bottom: 1.5rem;
 }
 
+.tweets-composer-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .tweets-input {
   min-height: 60px;
   padding: 0.75rem;
@@ -24,8 +30,18 @@
   resize: vertical;
 }
 
-.tweets-button {
+.tweets-char-count {
+  padding: 0.25rem 0.5rem;
   align-self: flex-end;
+  font-size: 0.875rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tweets-button {
+  align-self: center;
   background-color: #1da1f2; /* Twitter blue-ish */
   color: white;
   font-weight: bold;
@@ -111,7 +127,6 @@
 }
 
 .tweets-reply-modal-input {
-  width: 100%;
   min-height: 80px;
   margin-bottom: 10px;
   padding: 10px;

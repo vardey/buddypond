@@ -22,7 +22,7 @@ export default function renderTweet(tweet, options = {}) {
 
   // open-app" data-app="tweets" data-type="post" data-context="${tweet.id}"
   let html = `
-    <div class="tweets-post">
+    <div class="tweets-post desktop-section" data-tweet="${tweet.id}">
       <div class="tweets-author">
         <a href="#" class="open-app" data-app="tweets" data-context="${tweet.author}">
           @${tweet.author}

@@ -1,13 +1,20 @@
 <div class="tweets-holder">
   <h1 class="tweets-title"><a href="#" class="open-app" data-app="tweets">Timeline</a></h1>
   <div class="tweets-error error"></div>
-  <div class="tweets-composer">
+  <div class="tweets-composer loggedIn">
     <textarea class="tweets-input" placeholder="What's happening?"></textarea>
-    <button class="tweets-button">Post</button>
+    <div class="tweets-composer-controls">
+      <!-- <span class="tweets-char-count"></span> -->
+      <button class="tweets-button">Post</button>
+    </div>
+  </div>
+
+  <div class="tweets-login-required loggedOut">
+    <p>Please <button class="open-app" data-app="buddylist">log in</button> to view and post tweets.</p>
   </div>
 
   <div class="tweets-timeline">
-    <!-- Example post -->
+    <!-- Example post 
     <div class="tweets-post">
       <div class="tweets-author">@buddy</div>
       <div class="tweets-content">Hello from Buddypond!</div>
@@ -19,5 +26,6 @@
       <div class="tweets-content">Excited to try this out 🚀</div>
       <div class="tweets-meta">5m ago</div>
     </div>
+    -->
   </div>
 </div>
