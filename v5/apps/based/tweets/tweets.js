@@ -61,7 +61,7 @@ export default class Tweets {
       renderType = 'post';
     }
 
-    // $(this.tweetsWindow.content).html(this.html);
+    $(this.tweetsWindow.content).html(this.html);
 
     await this.render(options.context, renderType, this.tweetsWindow);
     this.eventBind(renderType, this.tweetsWindow);

@@ -1,7 +1,5 @@
 export default async function render(context, type = 'author', tweetsWindow) {
 
-  $(tweetsWindow.content).html(this.html);
-
   if (this.bp.me === 'Guest' || !this.bp.me) {
     $('.loggedIn', this.tweetsWindow.content).hide();
     $('.loggedOut', this.tweetsWindow.content).show();
@@ -27,6 +25,8 @@ export default async function render(context, type = 'author', tweetsWindow) {
   } else {
     // fetch tweets from the backend
     if (context !== this.bp.me && context !== 'all') {
+      // clear all tweets
+      // $('.tweets-timeline', tweetsWindow.content).empty();
       tweets = await this.client.apiRequest(`/feed/${context}`);
     } else {
       tweets = await this.client.apiRequest('/feed');
@@ -39,10 +39,7 @@ export default async function render(context, type = 'author', tweetsWindow) {
   const tweetList = $('.tweets-timeline', tweetsWindow.content);
   // tweetList.empty();
   tweets.forEach(tweet => {
-
-    // first check if tweet already exists in the DOM with data-tweet attribute
-
-    tweetList.append(this.renderTweet(tweet))
+    tweetList.prepend(this.renderTweet(tweet, tweetsWindow))
   })
 
 }
