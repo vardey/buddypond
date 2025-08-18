@@ -23,6 +23,7 @@ const ENDPOINTS = {
   chessWs: 'wss://buddypond.com/api/chess/ws/chess',
   messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
   pondsWs: 'wss://buddypond.com/api/messages/ws/ponds',
+  tweetsWs: 'wss://tweets.buddypond.com/api/tweets/ws/tweets',
   videoChat: 'wss://videochat.buddypond.com/api/videochat/ws'
 };
 
@@ -45,7 +46,8 @@ const DEV_ENDPOINTS = {
   buddylistWs: `${localIp.replace('http://', 'ws://')}:8787/api/buddylist/ws/buddylist`,
   chessWs: `${localIp.replace('http://', 'ws://')}:5556/api/chess/ws/chess`,
   messagesWs: `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/messages`,
-  pondsWs: `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/ponds`
+  pondsWs: `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/ponds`,
+  tweetsWs: `${localIp.replace('http://', 'ws://')}:9020/api/tweets/ws/tweets`,
 }
 
 // Initialize application configuration based on environment
@@ -98,6 +100,7 @@ function assignBuddyPondEndpoints(endpoints) {
   buddypond.endpoint = endpoints.api;
   buddypond.messagesWsEndpoint = endpoints.messagesWs;
   buddypond.pondsWsEndpoint = endpoints.pondsWs;
+  buddypond.tweetsWsEndpoint = endpoints.tweetsWs;
   buddypond.messagesApiEndpoint = endpoints.messagesApi;
   buddypond.buddylistWsEndpoint = endpoints.buddylistWs;
   buddypond.adminEndpoint = endpoints.admin;

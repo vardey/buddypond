@@ -51,7 +51,7 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
   }
 
   // --- New Tweet ---
-  if (tweet.replies) {
+  if (!tweet.parent_id) {
     replyButton = `<a href="#" class="tweets-reply" data-id="${tweet.id}">Reply (${tweet.reply_count || 0})</a>`;
   }
 

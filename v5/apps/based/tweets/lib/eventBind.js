@@ -44,7 +44,11 @@ export default function eventBind(context, renderType, tweetsWindow) {
       errorEl.text(`Post too long! Max ${MAX_CHARS} characters.`);
       return;
     }
-
+    this.wsClient.postTweet({
+      content
+    });
+    input.val('');
+    /*
     try {
       await client.apiRequest('/posts', 'POST', {
         userId: buddypond.me,
@@ -56,17 +60,22 @@ export default function eventBind(context, renderType, tweetsWindow) {
       console.error('Error creating post:', err);
       errorEl.text(`Error: ${err.message}`);
     }
+      */
   }
 
   async function createReplyPost({ client, tweetsWindow, renderType, tweetId, content }) {
     if (!content) return;
     if (content.length > MAX_CHARS) throw new Error(`Reply too long! Max ${MAX_CHARS} characters.`);
 
+    this.wsClient.send({ action: 'postReply', parentId: tweetId, content });
+
+    /*
     await client.apiRequest(`/posts/${tweetId}/replies`, 'POST', {
       userId: buddypond.me,
       content
     });
     await this.render(context, renderType, tweetsWindow);
+    */
   }
 
   // --- Delegated events from .tweets-holder ---
@@ -87,7 +96,8 @@ export default function eventBind(context, renderType, tweetsWindow) {
     if (!confirm('Are you sure you want to delete this tweet?')) return;
 
     const tweetId = $(e.target).data('id');
-    await this.client.apiRequest(`/posts/${tweetId}`, 'DELETE');
+    //await this.client.apiRequest(`/posts/${tweetId}`, 'DELETE');
+    this.wsClient.deleteTweet(tweetId);
     // remove the tweet from the DOM immediately
     $(`[data-tweet="${tweetId}"]`, tweetsWindow.content).remove();
     //await this.render(buddypond.me, renderType, tweetsWindow);
@@ -96,8 +106,9 @@ export default function eventBind(context, renderType, tweetsWindow) {
   holder.on('click', '.tweets-like', async (e) => {
     e.preventDefault();
     const tweetId = $(e.target).data('id');
-    await this.client.apiRequest(`/posts/${tweetId}/likes`, 'POST', { userId: buddypond.me });
-    await this.render(context, renderType, tweetsWindow);
+    this.wsClient.send({ action: 'likeTweet', tweetId });
+    //await this.client.apiRequest(`/posts/${tweetId}/likes`, 'POST', { userId: buddypond.me });
+    //await this.render(context, renderType, tweetsWindow);
   });
 
   /*
@@ -115,8 +126,9 @@ export default function eventBind(context, renderType, tweetsWindow) {
 
     $('.tweets-reply-modal').remove();
 
-    const tweetData = await this.client.apiRequest(`/posts/${tweetId}?reply_count=1`);
-    const originalPostHtml = this.renderTweet(tweetData, tweetsWindow, { noToolbar: true, noRender: true });
+    //const tweetData = await this.client.apiRequest(`/posts/${tweetId}?reply_count=1`);
+    //const originalPostHtml = this.renderTweet(tweetData, tweetsWindow, { noToolbar: true, noRender: true });
+    // <div class="tweets-reply-modal-original">${originalPostHtml}</div>
 
     const modal = $(`
       <div class="tweets-reply-modal">
@@ -125,7 +137,6 @@ export default function eventBind(context, renderType, tweetsWindow) {
             <h3>Reply</h3>
             <span class="tweets-reply-modal-close">&times;</span>
           </div>
-          <div class="tweets-reply-modal-original">${originalPostHtml}</div>
           <textarea class="tweets-reply-modal-input" placeholder="Write your reply..."></textarea>
           <div class="tweets-error"></div>
           <div class="tweets-composer-controls">

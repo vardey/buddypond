@@ -1,5 +1,6 @@
 /* Tweets.js - Marak Squires 2025 - BuddyPond */
 import client from './lib/client.js';
+import wsClient from './lib/wsclient.js';
 import eventBind from './lib/eventBind.js';
 import render from './lib/render.js';
 import renderTweet from './lib/renderTweet.js';
@@ -14,7 +15,7 @@ export default class Tweets {
   async init() {
     this.html = await this.bp.load('/v5/apps/based/tweets/tweets.html');
     await this.bp.load('/v5/apps/based/tweets/tweets.css');
-    return 'loaded tweets window';
+    return 'loaded tweets app';
   }
 
   async open(options = {}) {
@@ -59,9 +60,56 @@ export default class Tweets {
 
     this.tweetsWindow.context = options.context || 'all';
 
+
+    if (!this.wsClient) {
+
+      this.wsClient = new wsClient({ bp: this.bp });
+      this.bp.on('tweets::connected', 'fetch-tweets-feed', (data) => {
+        console.log('Tweets WebSocket connected event received in Tweets app', data);
+        console.log('Tweets WebSocket connected');
+        this.wsClient.fetchTweets(this.tweetsWindow.context);
+      });
+
+      this.bp.on('tweets::feed', 'render-tweets-feed', (tweets) => {
+        console.log('Tweets feed event received in Tweets app', tweets);
+        if (this.tweetsWindow) {
+          this.render(tweets, this.tweetsWindow.context, 'author', this.tweetsWindow);
+        }
+      });
+
+      this.bp.on('tweets::removed', 'remove-tweet', (tweetId) => {
+        console.log('Tweet removed event received in Tweets app', tweetId);
+        if (this.tweetsWindow) {
+          // find the tweet by tweetId and remove
+          $(`[data-tweet="${tweetId}"]`, this.tweetsWindow.content).remove();
+          console.log('remove the tweet', tweetId);
+        }
+      });
+
+      this.bp.on('tweets::error', 'tweets-error', (error) => {
+        console.error('Tweets error event received in Tweets app', error);
+        if (this.tweetsWindow) {
+          const errorDiv = $('.tweets-error', this.tweetsWindow.content);
+          if (errorDiv) {
+            errorDiv.html(`<div class="error">Error: ${error.error}</div>`);
+            setTimeout(() => {
+              errorDiv.html('');
+            }, 5000);
+          }
+        }
+      });
+
+      console.log('Connecting to Tweets WebSocket...');
+      await this.wsClient.connect();
+
+    } else {
+      // fetch tweets feed for current context
+      this.wsClient.fetchTweets(this.tweetsWindow.context);
+    }
+
+
     $(this.tweetsWindow.content).html(this.html);
 
-    await this.render(options.context, renderType, this.tweetsWindow);
     this.eventBind(options.context, renderType, this.tweetsWindow);
 
     return this.tweetsWindow;

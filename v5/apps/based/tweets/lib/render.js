@@ -1,4 +1,4 @@
-export default async function render(context, type = 'author', tweetsWindow) {
+export default async function render(tweets, context, type = 'author', tweetsWindow) {
   if (this.bp.me === 'Guest' || !this.bp.me) {
     $('.loggedIn', this.tweetsWindow.content).hide();
     $('.loggedOut', this.tweetsWindow.content).show();
@@ -6,6 +6,7 @@ export default async function render(context, type = 'author', tweetsWindow) {
     $('.loggedIn', this.tweetsWindow.content).show();
     $('.loggedOut', this.tweetsWindow.content).hide();
   }
+  /*
   let tweets;
 
   if (type === 'post' && context) {
@@ -23,8 +24,9 @@ export default async function render(context, type = 'author', tweetsWindow) {
     }
 
   }
+  */
 
-  console.log('Fetched tweets:', tweets);
+  // console.log('Fetched tweets:', tweets);
 
   const tweetList = $('.tweets-timeline', tweetsWindow.content);
   // tweetList.empty();
