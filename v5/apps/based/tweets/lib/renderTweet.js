@@ -8,7 +8,7 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
 
   // Check if tweet already exists in DOM
   let existingTweet = $(`[data-tweet="${tweet.id}"]`, tweetsWindow.content);
-  if (existingTweet.length > 0) {
+  if (options.noRender !== true && existingTweet.length > 0) {
     // --- Differential update ---
     existingTweet.attr('data-likes', tweet.like_count || 0);
     existingTweet.attr('data-replies', tweet.reply_count || 0);
@@ -17,11 +17,11 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
     $('.tweets-reply', existingTweet).html(`Reply (${tweet.reply_count || 0})`);
 
     // update content in case it changed (edits)
-    $('.tweets-content', existingTweet).html(tweet.content);
+    $('.tweets-content', existingTweet).text(tweet.content);
     $('.tweets-meta', existingTweet).html(new Date(tweet.ctime).toLocaleString());
 
     // --- Handle replies differential update ---
-    if (tweet.replies && tweet.replies.length > 0) {
+    if (options.noRender !== true && tweet.replies && tweet.replies.length > 0) {
       let repliesContainer = existingTweet.children('.tweets-replies');
       if (repliesContainer.length === 0) {
         repliesContainer = $('<div class="tweets-replies"></div>');
@@ -65,30 +65,36 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
     likeButton = ``;
   }
 
-  let html = `
-    <div class="tweets-post desktop-section" data-tweet="${tweet.id}" data-likes="${tweet.like_count || 0}" data-replies="${tweet.reply_count || 0}">
-      <div class="tweets-author">
-        <a href="#" class="open-app" data-app="tweets" data-context="${tweet.author}">
-          @${tweet.author}
-        </a>
-      </div>
-      <div class="tweets-content">${tweet.content}</div>
-      <div class="tweets-meta">${new Date(tweet.ctime).toLocaleString()}</div>
-      <div class="tweets-toolbar">
-        ${likeButton}
-        ${replyButton}
-        ${deleteButton}
-      </div>
-  `;
+  let $tweet = $(`
+  <div class="tweets-post desktop-section" data-tweet="${tweet.id}" data-likes="${tweet.like_count || 0}" data-replies="${tweet.reply_count || 0}">
+    <div class="tweets-author">
+      <a href="#" class="open-app" data-app="tweets" data-context="${tweet.author}">
+        @${tweet.author}
+      </a>
+    </div>
+    <div class="tweets-content"></div>
+    <div class="tweets-meta"></div>
+    <div class="tweets-toolbar">
+      ${likeButton}
+      ${replyButton}
+      ${deleteButton}
+    </div>
+  </div>
+`);
 
-  if (tweet.replies && tweet.replies.length > 0) {
-    html += `<div class="tweets-replies">`;
+  // safely insert user content
+  $('.tweets-content', $tweet).text(tweet.content);
+  $('.tweets-meta', $tweet).text(new Date(tweet.ctime).toLocaleString());
+
+  // append replies if any
+  if (options.noRender !== true && tweet.replies && tweet.replies.length > 0) {
+    let $replies = $('<div class="tweets-replies"></div>');
     tweet.replies.forEach(reply => {
-      html += this.renderTweet(reply, tweetsWindow, options); // recursion
+      $replies.append(this.renderTweet(reply, tweetsWindow, options));
     });
-    html += `</div>`;
+    $tweet.append($replies);
   }
 
-  html += `</div>`;
-  return html;
+  return $tweet;
+
 }

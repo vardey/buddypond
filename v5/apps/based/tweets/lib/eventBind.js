@@ -1,5 +1,5 @@
 // eventBind.js
-export default function eventBind(renderType, tweetsWindow) {
+export default function eventBind(context, renderType, tweetsWindow) {
   const MAX_CHARS = 280;
   const holder = $('.tweets-holder', tweetsWindow.content);
 
@@ -51,7 +51,7 @@ export default function eventBind(renderType, tweetsWindow) {
         content
       });
       input.val('');
-      await this.render(buddypond.me, renderType, tweetsWindow);
+      await this.render(context, renderType, tweetsWindow);
     } catch (err) {
       console.error('Error creating post:', err);
       errorEl.text(`Error: ${err.message}`);
@@ -66,7 +66,7 @@ export default function eventBind(renderType, tweetsWindow) {
       userId: buddypond.me,
       content
     });
-    await this.render(buddypond.me, renderType, tweetsWindow);
+    await this.render(context, renderType, tweetsWindow);
   }
 
   // --- Delegated events from .tweets-holder ---
@@ -97,15 +97,17 @@ export default function eventBind(renderType, tweetsWindow) {
     e.preventDefault();
     const tweetId = $(e.target).data('id');
     await this.client.apiRequest(`/posts/${tweetId}/likes`, 'POST', { userId: buddypond.me });
-    await this.render(buddypond.me, renderType, tweetsWindow);
+    await this.render(context, renderType, tweetsWindow);
   });
 
+  /*
   holder.on('click', '.tweets-retweet', async (e) => {
     e.preventDefault();
     const tweetId = $(e.target).data('id');
     await this.client.apiRequest(`/posts/${tweetId}/repost`, 'POST', { userId: buddypond.me });
     await this.render(buddypond.me, renderType, tweetsWindow);
   });
+  */
 
   holder.on('click', '.tweets-reply', async (e) => {
     e.preventDefault();
@@ -114,7 +116,7 @@ export default function eventBind(renderType, tweetsWindow) {
     $('.tweets-reply-modal').remove();
 
     const tweetData = await this.client.apiRequest(`/posts/${tweetId}?reply_count=1`);
-    const originalPostHtml = this.renderTweet(tweetData, tweetsWindow, { noToolbar: true });
+    const originalPostHtml = this.renderTweet(tweetData, tweetsWindow, { noToolbar: true, noRender: true });
 
     const modal = $(`
       <div class="tweets-reply-modal">

@@ -254,7 +254,13 @@ async function handleAppRouting(currentPath, urlParams) {
   const appName = currentPath.split('/')[2];
   console.log('Opening app:', appName);
 
-  const appContext = urlParams.has('context') ? urlParams.get('context') : 'default';
+  let appContext = urlParams.has('context') ? urlParams.get('context') : 'default';
+
+  // check if currentPath has length > 3 and has a context
+  if (currentPath.split('/').length > 3) {
+    appContext = currentPath.split('/')[3];
+    console.log('Found context in URL path:', appContext);
+  }
 
   const win = await bp.open(appName, {
     context: appContext,

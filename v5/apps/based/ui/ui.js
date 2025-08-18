@@ -99,16 +99,20 @@ export default class UI {
         let d = document;
 
         $(d).on('click', '.open-app', function (e) {
+            e.preventDefault();
             let appName = $(this).data('app');
-            let context = $(e.target).data('context');
+            let context = $(this).data('context');
             let type = $(this).data('type');
             // let output = $(this).data('output');
-
-            console.log('open-app ' + appName);
             // check to see if legacy app ( for now)
             bp.open(appName, { context, type });
 
         });
+
+         $(d).on('click', function (e) {
+            console.log('document click', e);
+            // if the click is outside of a lightbox, close it
+         });
 
         $(d).on('click', '.open-link', async function (e) {
             e.preventDefault();
@@ -125,7 +129,6 @@ export default class UI {
                 return;
             } else {
                 window.open(url, '_blank');
-
             }
             return false;
         });

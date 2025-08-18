@@ -14,14 +14,11 @@ export default class Tweets {
   async init() {
     this.html = await this.bp.load('/v5/apps/based/tweets/tweets.html');
     await this.bp.load('/v5/apps/based/tweets/tweets.css');
-    // await this.bp.appendScript('/v5/apps/based/tweets/vendor/source-map.bundle.js');
     return 'loaded tweets window';
   }
 
   async open(options = {}) {
-    if (options.context === 'default') {
-      options.context = this.bp.me;
-    }
+
     if (!this.tweetsWindow) {
       this.tweetsWindow = this.bp.apps.ui.windowManager.createWindow({
         id: 'tweets',
@@ -51,7 +48,6 @@ export default class Tweets {
       this.tweetsWindow.loggedIn = true;
     }
 
-
     if (options.context === 'default' || !options.context || options.context === 'undefined') {
       options.context = 'all';
     }
@@ -61,18 +57,18 @@ export default class Tweets {
       renderType = 'post';
     }
 
+    this.tweetsWindow.context = options.context || 'all';
+
     $(this.tweetsWindow.content).html(this.html);
 
     await this.render(options.context, renderType, this.tweetsWindow);
-    this.eventBind(renderType, this.tweetsWindow);
+    this.eventBind(options.context, renderType, this.tweetsWindow);
 
     return this.tweetsWindow;
   }
 
 }
 
-//Tweets.prototype.render = render;
-//Tweets.prototype.eventBind = eventBind;
 Tweets.prototype.client = client;
 Tweets.prototype.eventBind = eventBind;
 Tweets.prototype.render = render;
