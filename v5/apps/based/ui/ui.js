@@ -110,7 +110,7 @@ export default class UI {
         });
 
          $(d).on('click', function (e) {
-            console.log('document click', e);
+            // console.log('document click', e);
             // if the click is outside of a lightbox, close it
          });
 

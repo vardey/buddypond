@@ -41,6 +41,15 @@ export default class Tweets {
         maximized: false,
         minimized: false,
         onClose: () => {
+          if (this.wsClient) {
+            this.wsClient.disconnect();
+            this.wsClient = null;
+          }
+          // remove all event listeners
+          this.bp.off('tweets::connected', 'fetch-tweets-feed');
+          this.bp.off('tweets::feed', 'render-tweets-feed');
+          this.bp.off('tweets::removed', 'remove-tweet');
+          this.bp.off('tweets::error', 'tweets-error');
           this.tweetsWindow = null
           // remove tweets-reply-modal if exists
           $('.tweets-reply-modal').remove();
@@ -59,7 +68,6 @@ export default class Tweets {
     }
 
     this.tweetsWindow.context = options.context || 'all';
-
 
     if (!this.wsClient) {
 

@@ -498,8 +498,19 @@ class Window {
             let alias = appData.alias[0];
             pushStateId = alias; // use the id if it exists, otherwise use the alias string
         }
+
+        let pushUrl = `/app/${pushStateId}`;
+        // console.log('focus pushUrl', pushUrl, this.context);
+        if (this.context && this.context !== 'default' && this.context !== 'all') {
+          // don't double append context if it's already ending with it
+          // TODO: should fix this upstream, better URL push state routing
+          if (!pushUrl.endsWith(`/${this.context}`)) {
+            pushUrl += `/${this.context}`;
+          }
+        }
+
         // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
-        DelayedPushState.push({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
+        DelayedPushState.push({ appId: pushStateId }, this.title, pushUrl);
 
     }
 

@@ -66,7 +66,12 @@ export default function open() {
         pushStateId = alias; // use the id if it exists, otherwise use the alias string
     }
 
-    // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
-    DelayedPushState.push({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
+    let pushUrl = `/app/${pushStateId}`;
+    /*
+    if (this.context && this.context !== 'default' && this.context !== 'all') {
+        pushUrl += `/${this.context}`;
+    }
+    */
+    DelayedPushState.push({ appId: pushStateId }, this.title, pushUrl);
 
 }

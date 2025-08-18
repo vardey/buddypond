@@ -35,6 +35,13 @@ export default {
     "onClick": "bp.open('pond')",
     "categories": ["community", "social"]
   },
+  "tweets": {
+    "icon": "desktop/assets/images/icons/icon_tweets_64.png",
+    "label": "Tweets",
+    "description": "View and post tweets",
+    "categories": ["social", "community"],
+    "author": "BuddyPond",
+  },
   "file-explorer": {
     "icon": "desktop/assets/images/icons/icon_file-explorer_64.png",
     "label": "Buddy Files",

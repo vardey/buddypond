@@ -40,6 +40,12 @@ export default class TweetsWebSocketClient {
         console.log('📬 Message received from Tweets:', data);
 
         let action = data.action;
+        let error = data.error;
+        if (error) {
+          console.error('❌ Error from Tweets:', error);
+          this.bp?.emit('tweets::error', { error });
+          return;
+        }
 
         switch (action) {
             case 'tweetsFeed':
@@ -114,6 +120,7 @@ export default class TweetsWebSocketClient {
       this.ws.close(1000, 'Normal closure');
       this.bp?.emit('tweets::closed', { pondId: this.pondId });
       this.ws = null;
+      console.log('🛑 WebSocket disconnected from Tweets');
     }
   }
 
@@ -127,11 +134,11 @@ export default class TweetsWebSocketClient {
   }
 
 
-  async fetchTweets () {
-    console.log('Requesting tweets feed from server...');
+  async fetchTweets (context) {
+    console.log('Requesting tweets feed from server...', context);
      // sends a listActivePonds action message to the server
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.send({ action: 'fetchTweets' });
+      this.send({ action: 'fetchTweets', authorId: context });
     } else {
       console.warn('⚠️ Tried to get tweets feed but WebSocket is not open');
     }

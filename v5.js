@@ -53,6 +53,7 @@ const DEV_ENDPOINTS = {
 // Initialize application configuration based on environment
 function configureEnvironment() {
   devmode = window.location.hostname !== 'buddypond.com';
+  // devmode = false;
   if (devmode) {
     return DEV_ENDPOINTS
   }
