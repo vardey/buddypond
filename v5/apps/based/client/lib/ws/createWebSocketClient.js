@@ -83,10 +83,26 @@ export default function createWebSocketClient(chatId) {
         }
       }
     }
+
+      this.pingInterval = setInterval(() => {
+        if (wsClient.readyState === WebSocket.OPEN) {
+          // console.log('Sending ping to buddylist WebSocket');
+          wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
+        }
+      }, 30000);
+
+
+
   }
 
   // Named function for message event
   async function handleMessage(event) {
+
+    if (event.data === 'pong') {
+      // console.log('Received pong from server');
+      return; // Ignore pong messages
+    }
+
     try {
       const parseData = JSON.parse(event.data);
 
@@ -180,6 +196,8 @@ export default function createWebSocketClient(chatId) {
     console.log('WebSocket connection closed to', chatId, 'Code:', event.code, 'Reason:', event.reason);
     console.log('reconnectAttempts:', chatConnection.reconnectAttempts);
     console.log('isIntentionallyClosed:', isIntentionallyClosed);
+
+    clearInterval(this.pingInterval);
 
     // Only remove from Map if intentionally closed or max reconnect attempts reached
     if (isIntentionallyClosed || chatConnection.reconnectAttempts >= chatConnection.maxReconnectAttempts) {

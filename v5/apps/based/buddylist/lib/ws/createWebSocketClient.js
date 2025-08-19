@@ -25,6 +25,13 @@ export default function createWebSocketClient() {
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
 
+      this.pingInterval = setInterval(() => {
+        if (wsClient.readyState === WebSocket.OPEN) {
+          // console.log('Sending ping to buddylist WebSocket');
+          wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
+        }
+      }, 30000);
+
       /*
       this.updateStatusInterval = setInterval(() => {
         let status = 'online'; // Default status
@@ -36,7 +43,7 @@ export default function createWebSocketClient() {
         // console.log('Sending status update to buddylist:', status);
         this.bp.emit('profile::status', status);
       }, 1000 * 60 * 5); // Refresh status every 5 minutes
-      */  
+      */
       /*
       this.pingInterval = setInterval(() => {
         if (wsClient.readyState === WebSocket.OPEN) {
@@ -50,6 +57,10 @@ export default function createWebSocketClient() {
     // Handle message event
     // TODO: move to a separate function
     const handleMessage = (event) => {
+      if (event.data === 'pong') {
+        // console.log('Received pong from server');
+        return; // Ignore pong messages
+      }
       try {
         const parseData = JSON.parse(event.data);
         // console.log('Got back from server:', parseData);
@@ -146,7 +157,7 @@ export default function createWebSocketClient() {
     const handleClose = (event) => {
       console.log('WebSocket connection closed to', 'buddylist', 'Code:', event.code, 'Reason:', event.reason);
 
-      // clearInterval(this.pingInterval);
+      clearInterval(this.pingInterval);
       clearInterval(this.updateStatusInterval);
 
       bp.emit('buddylist-websocket::disconnected', { code: event.code, reason: event.reason });
