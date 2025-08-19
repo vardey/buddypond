@@ -9,6 +9,7 @@ export default class HotPondsWebSocketClient {
     this.maxReconnectAttempts = 5;
     this.maxBackoffDelay = 10000; // 10 seconds
     this.isIntentionallyClosed = false;
+    return this;
   }
 
   async connect() {
