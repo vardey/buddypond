@@ -31,9 +31,11 @@ export default class Pond {
 
     async connectPonds() {
 
-        this.client = new HotPondsWebSocketClient({ bp: this.bp });
-        console.log('Connecting to HotPonds WebSocket...');
-        await this.client.connect();
+        if (!this.client) {
+          this.client = new HotPondsWebSocketClient({ bp: this.bp });
+          console.log('Connecting to HotPonds WebSocket...');
+          await this.client.connect();
+        }
 
         if (this.eventsBound !== true) {
             this.bp.on('hotpond::activePonds', 'update-pond-room-list', (data) => {
