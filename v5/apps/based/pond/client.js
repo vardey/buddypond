@@ -23,12 +23,23 @@ export default class HotPondsWebSocketClient {
         this.reconnectAttempts = 0;
         this.ws = ws;
 
+        this.pingInterval = setInterval(() => {
+          if (this.ws.readyState === WebSocket.OPEN) {
+            console.log('Sending ping to hotponds WebSocket');
+            this.ws.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
+          }
+        }, 30000);
+
         this.bp?.emit('hotpond::connected', { pondId: this.pondId });
         resolve(this);
       };
 
       const onMessage = (event) => {
         let data;
+        if (event.data === 'pong') {
+          // Ignore pong messages
+          return;
+        }
         try {
           data = JSON.parse(event.data);
         } catch (err) {
@@ -54,7 +65,7 @@ export default class HotPondsWebSocketClient {
 
       const onClose = (event) => {
         console.warn(`⚠️ WebSocket closed [${event.code}]: ${event.reason}`);
-
+        clearInterval(this.pingInterval);
         this.bp?.emit('hotpond::disconnected', {
           pondId: this.pondId,
           code: event.code,
