@@ -107,6 +107,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/apps/apps.js',
+    output: {
+      file: 'dist/apps/based/apps.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/appstore/appstore.js',
     output: {
       file: 'dist/apps/based/appstore.js',
@@ -416,6 +430,21 @@ export default [
       resolve(),
       commonjs(),
       terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/chess/chess-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/chess.css'),
+        minimize: true,
+        sourceMap: true
+      })
     ]
   }
 ,
@@ -901,6 +930,35 @@ export default [
       resolve(),
       commonjs(),
       terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/gamblor-coinflip/gamblor-coinflip.js',
+    output: {
+      file: 'dist/apps/based/gamblor-coinflip.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/gamblor-coinflip/gamblor-coinflip-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/gamblor-coinflip.css'),
+        minimize: true,
+        sourceMap: true
+      })
     ]
   }
 ,
@@ -1819,6 +1877,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/taskbar/taskbar.js',
+    output: {
+      file: 'dist/apps/based/taskbar.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/themes/themes.js',
     output: {
       file: 'dist/apps/based/themes.js',
@@ -1843,6 +1915,35 @@ export default [
       resolve(),
       commonjs(),
       terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/tweets/tweets.js',
+    output: {
+      file: 'dist/apps/based/tweets.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/tweets/tweets-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/tweets.css'),
+        minimize: true,
+        sourceMap: true
+      })
     ]
   }
 ,
@@ -1934,6 +2035,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/virtual-machines/virtual-machines.js',
+    output: {
+      file: 'dist/apps/based/virtual-machines.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/vision-harp/vision-harp.js',
     output: {
       file: 'dist/apps/based/vision-harp.js',
@@ -1973,6 +2088,49 @@ export default [
       resolve(),
       commonjs(),
       terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/webllm/webllm.js',
+    output: {
+      file: 'dist/apps/based/webllm.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/welcome/welcome.js',
+    output: {
+      file: 'dist/apps/based/welcome.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/welcome/welcome-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/welcome.css'),
+        minimize: true,
+        sourceMap: true
+      })
     ]
   }
 ,

@@ -78,6 +78,20 @@ export default [
   },
 
   {
+    input: "apps/based/card/cards/chess/chess-card.js",
+    output: {
+      file: "dist/apps/based/card/cards/chess/chess-card.js",
+      format: "es",
+      sourcemap: true
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser()
+    ]
+  },
+
+  {
     input: "apps/based/card/cards/error/error-card.js",
     output: {
       file: "dist/apps/based/card/cards/error/error-card.js",
@@ -400,6 +414,18 @@ export default [
     },
     plugins: [
       postcss({ extract: path.resolve("dist/apps/based/card/cards/bs-commands/bs-commands-card.css"), minimize: true, sourceMap: true })
+    ]
+  },
+
+  {
+    input: "apps/based/card/cards/chess/chess-card-style.js",
+    output: {
+      file: "dist/dummy-card-css.js",
+      format: "es",
+      sourcemap: false
+    },
+    plugins: [
+      postcss({ extract: path.resolve("dist/apps/based/card/cards/chess/chess-card.css"), minimize: true, sourceMap: true })
     ]
   },
 

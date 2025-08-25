@@ -172,7 +172,7 @@ export default function openChatWindow(data) {
     const windowId = generateWindowId(windowType, contextName);
     const existingWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
     if (existingWindow) {
-        handleExistingWindow(existingWindow, windowType, contextName, client, this);
+        handleExistingWindow.call(this, existingWindow, windowType, contextName, client, this);
         return existingWindow;
     }
 
@@ -228,7 +228,7 @@ function handleExistingWindow(chatWindow, windowType, contextName, client, conte
         //const hotPonds = context.data.hotPonds || [];
         //populateRoomList.call(context, hotPonds, chatWindow, contextName);
         // Ensure the messages container exists and is subscribed
-        ensureMessagesContainer.call(this, context, contextName, chatWindow, client);
+        ensureMessagesContainer.call(this, contextName, chatWindow, client);
         toggleMessagesContainer.call(this, contextName, chatWindow);
     }
     chatWindow.focus();
