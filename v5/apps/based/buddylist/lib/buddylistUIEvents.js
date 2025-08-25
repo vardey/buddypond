@@ -71,6 +71,19 @@ export default function buddylistUIEvents() {
     bp.emit('profile::status', status);
   });
 
+  $('.openPondChatRooms').change((e) => {
+    let isChecked = $(e.target).is(':checked');
+    if (isChecked) {
+      let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
+      bp.load('pond');
+    }
+    bp.set('openPondChatRooms', isChecked);
+  });
+
+  if (this.openDefaultPond) {
+    $('.openPondChatRooms').prop('checked', true);
+  }
+
   $('.forgot-password').on('click', (ev) => {
     $('.loginForm').flexHide();
     $('.forgot-password-modal').flexShow();

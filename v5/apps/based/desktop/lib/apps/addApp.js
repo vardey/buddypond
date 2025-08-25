@@ -10,7 +10,7 @@ export default async function addApp(appName, app) {
     if (!app) {
         console.log('this.bp.apps.desktop', this.bp.apps.desktop)
         // if no app is provided, look up the app in the appstore
-        app = this.bp.apps.desktop.appList[appName];
+        app = this.bp.apps.list[appName];
     }
 
     if (!app) {

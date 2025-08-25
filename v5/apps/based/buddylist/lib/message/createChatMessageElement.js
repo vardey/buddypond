@@ -208,9 +208,11 @@ function insertChatMessage(chatWindow, message, chatMessage) {
   }
 
   if (!aimMessages) {
-    console.error('aim-messages not found. user most likely not in the chat window');
+    // TODO: this case should never be hit? investigate why it is being hit sometimes
+    console.log('aim-messages not found. chat window is not yet ready...');
     return;
   }
+
   const allMessages = Array.from(aimMessages.querySelectorAll('.aim-chat-message'));
   let inserted = false;
 

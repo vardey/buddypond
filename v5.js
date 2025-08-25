@@ -361,6 +361,7 @@ async function loadCoreApps() {
   await Promise.all([
     bp.load('localstorage'),
     bp.load('buddyscript'),
+    bp.load('apps'),
 
     // we *must* wait for the UI since it contains openWindow() method
     // and other methods that are used by apps
@@ -398,6 +399,8 @@ async function loadCoreApps() {
     await bp.open('client')
   ]);
 
+  bp.open('taskbar');
+
   bp.load('wallpaper'); // load wallpaper app first, as it is used by desktop and other apps
   bp.load('themes'); // load themes app first, as it is used by desktop and other apps
 
@@ -434,7 +437,7 @@ async function loadCoreApps() {
       await bp.open({
         name: 'welcome',
         autocomplete: allCommands,
-        openDefaultPond: true // for now
+        // openDefaultPond: true // for now
       });
     }
     //
@@ -619,7 +622,9 @@ function discordHandleAuthentication(discordId, discordName) {
       localStorage.setItem('me', me);
       // A pre-existing token was found and verified, emit the auth event
       this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me, hasPassword: data.user.hasPassword });
-      await this.bp.open('buddylist');
+      await this.bp.open('buddylist', {
+        // openDefaultPond: true // TODO: config settings
+      });
 
       $('.loggedIn').flexShow();
       $('.loggedOut').flexHide();

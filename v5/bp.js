@@ -21,6 +21,95 @@ bp.config = {
     host: ""
 };
 
+const localIp = window.location.origin;
+
+
+// Endpoint Constants
+const ENDPOINTS = {
+  host: 'https://buddypond.com',
+  api: 'https://buddypond.com/api/buddylist',
+  cdn: 'https://files.buddypond.com',
+  admin: 'https://buddypond.com/api/admin',
+  apiKeys: 'https://buddypond.com/api/api-keys',
+  apps: 'https://buddypond.com/api/apps',
+  coin: 'https://buddypond.com/api/coin',
+  gamblor: 'https://gamblor.buddypond.com/api/v6',
+  imageSearch: 'https://buddypond.com/api/image-search',
+  portfolio: 'https://buddypond.com/api/portfolio',
+  orderbook: 'https://buddypond.com/api/orderbook',
+  messagesApi: 'https://buddypond.com/api/messages',
+  uploads: 'https://buddypond.com/api/uploads',
+  errors: 'https://buddypond.com/api/errors',
+  randolph: 'https://buddypond.com/api/randolph',
+  buddyProxy: 'https://buddypond.com/api/proxy',
+  buddylistWs: 'wss://buddypond.com/api/buddylist/ws/buddylist',
+  chessWs: 'wss://buddypond.com/api/chess/ws/chess',
+  messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
+  pondsWs: 'wss://buddypond.com/api/messages/ws/ponds',
+  tweetsWs: 'wss://tweets.buddypond.com/api/tweets/ws/tweets',
+  videoChat: 'wss://videochat.buddypond.com/api/videochat/ws'
+};
+
+const DEV_ENDPOINTS = {
+  host: localIp,
+  admin: `${localIp}:8789/api/admin`,
+  api: `${localIp}:8787/api/buddylist`,
+  apps: `${localIp}:9008/api/apps`,
+  apiKeys: `${localIp}:9009/api/api-keys`,
+  buddyProxy: `${localIp}:9007/api/proxy`,
+  coin: `${localIp}:9001/api/coin`,
+  errors: `${localIp}:9010/api/errors`,
+  gamblor: `${localIp}:9012/api/gamblor`,
+  imageSearch: `${localIp}:9005/api/image-search`,
+  messagesApi: `${localIp}:8788/api/messages`,
+  portfolio: `${localIp}:9002/api/portfolio`,
+  randolph: `${localIp}:8889/api/randolph`,
+  uploads: `${localIp}:9004/api/uploads`,
+  videoChat: 'wss://192.168.200.59:8001/videochat/ws',
+  buddylistWs: `${localIp.replace('http://', 'ws://')}:8787/api/buddylist/ws/buddylist`,
+  chessWs: `${localIp.replace('http://', 'ws://')}:5556/api/chess/ws/chess`,
+  messagesWs: `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/messages`,
+  pondsWs: `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/ponds`,
+  tweetsWs: `${localIp.replace('http://', 'ws://')}:9020/api/tweets/ws/tweets`,
+}
+
+// Initialize application configuration based on environment
+function configureEnvironment() {
+  let devmode = window.location.hostname !== 'buddypond.com';
+  // devmode = false;
+  if (devmode) {
+    return DEV_ENDPOINTS
+  }
+  return ENDPOINTS;
+}
+
+
+// Assign endpoints to buddypond object
+function assignBuddyPondEndpoints(endpoints) {
+  console.log('assignBuddyPondEndpoints', endpoints);
+  buddypond.host = endpoints.host;
+  buddypond.endpoint = endpoints.api;
+  buddypond.messagesWsEndpoint = endpoints.messagesWs;
+  buddypond.pondsWsEndpoint = endpoints.pondsWs;
+  buddypond.tweetsWsEndpoint = endpoints.tweetsWs;
+  buddypond.messagesApiEndpoint = endpoints.messagesApi;
+  buddypond.buddylistWsEndpoint = endpoints.buddylistWs;
+  buddypond.adminEndpoint = endpoints.admin;
+  buddypond.errorsEndpoint = endpoints.errors;
+  buddypond.uploadsEndpoint = endpoints.uploads;
+  buddypond.portfolioEndpoint = endpoints.portfolio;
+  buddypond.coinEndpoint = endpoints.coin;
+  buddypond.randolphEndpoint = endpoints.randolph;
+  buddypond.imageSearchEndpoint = endpoints.imageSearch;
+  buddypond.buddyProxy = endpoints.buddyProxy;
+  buddypond.appsEndpoint = endpoints.apps;
+  buddypond.apiKeysEndpoint = endpoints.apiKeys;
+  buddypond.chessWsEndpoint = endpoints.chessWs;
+  buddypond.gamblorEndpoint = endpoints.gamblor;
+  buddypond.videoChatEndpoint = endpoints.videoChat;
+}
+
+
 bp.apps = {};
 bp.data = {};     // stores data specific to the bp instance itself ( not yet, stored per app )
 bp.settings = {}; // stores app settings for the user ( preferences, defaults, etc )
@@ -40,6 +129,41 @@ bp.setConfig = function setConfig(config, softApply = false) {
     }
 }
 
+bp.init = async function init(config) {
+  // loads the default / required apps and deps for buddypond to function
+  // load jQuery from /desktop/assets/js/jquery.min.js
+  if (config) {
+      bp.setConfig(config);
+  }
+
+  // buddypond API client
+  // TODO: we should be able to remove this, move it to client dep?
+  await bp.appendScript('/v5/apps/based/client/lib/api.js');
+
+  let endpoints = configureEnvironment();
+  // endpoints = configureDiscordMode(endpoints);
+  console.log(endpoints)
+  // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
+  // console.log(endpoints);
+  assignBuddyPondEndpoints(endpoints);
+
+  /* TODO: load scripts in parallel
+  await Promise.all([
+
+  ]);
+  */
+  await bp.appendScript('/desktop/assets/js/jquery.min.js');
+  await bp.appendCSS('/desktop/assets/css/desktop.css');
+  await bp.start(['ui', 'client', 'localstorage', 'themes', 'buddyscript']);
+  await bp.load('apps')
+  await bp.appendScript('/v5/vendor/flexHide.js');
+
+  await bp.appendScript('/desktop/assets/js/jquery-ui.min.js');
+  await bp.appendCSS('/desktop/assets/css/jquery-ui.min.css');
+
+}
+
+// Remark: Start may be better off removed, just use Promise.all() instead
 bp.start = async function start(apps = []) {
     for (let app of apps) {
         await bp.importModule(app);
@@ -53,11 +177,11 @@ bp.open = async function open(app, config = { context: 'default' }) {
     if (typeof app === 'string') {
         // See if the requested app is an alias in the desktop appList
         // This allows for loading apps by their alias names
-        if (this.apps.desktop && this.apps.desktop.appList) {
-            let appList = this.apps.desktop.appList;
+        if (this.apps.list && this.apps.list) {
+            let appList = this.apps.list;
             // iterate through all entries in appList and see if appName matches any entries in alias array
             for (let key in appList) {
-                let appData = this.apps.desktop.appList[key];
+                let appData = this.apps.list[key];
                 if (appData && appData.alias && Array.isArray(appData.alias) && appData.alias.includes(appName)) {
                     appName = key; // found an alias
                     break;
@@ -91,6 +215,12 @@ bp.open = async function open(app, config = { context: 'default' }) {
     }
 }
 
+bp.close = async function close(appName) {
+    if (bp.apps[appName] && typeof bp.apps[appName].close === 'function') {
+        await bp.apps[appName].close();
+    }
+}
+
 // bp.load will delegate to correct provider based on resource type
 // in most cases this will be by file extension or object shape
 bp.load = async function load(resource, config = {}) {
@@ -120,7 +250,7 @@ bp.load = async function load(resource, config = {}) {
 
 bp.importModule = async function importModule(app, config, buddypond = true, cb) {
     // console.log('importModule', app, config, buddypond);
-
+    // console.log('host', bp.config.host, 'version', bp.version);
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
 
     let appName = app;

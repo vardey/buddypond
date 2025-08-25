@@ -39,7 +39,7 @@ export default function defaultDesktopShortcuts() {
         }
 
         defaultTaskBarApps.forEach(appName => {
-            let app = this.bp.apps.desktop.appList[appName];
+            let app = this.bp.apps.list[appName];
             if (app) {
                 // console.log(`Adding default taskbar app: ${appName}`);
                 installedTaskBarApps[appName] = {
@@ -57,9 +57,9 @@ export default function defaultDesktopShortcuts() {
     Object.keys(installedTaskBarApps).forEach(appName => {
         let savedApp = installedTaskBarApps[appName];
         //console.log('Adding taskbar app', appName);
-        //console.log(this.bp.apps.desktop.appList)
+        //console.log(this.bp.apps.list)
         // console.log('savedApp', appName, savedApp);
-        let app = this.bp.apps.desktop.appList[savedApp.id || appName];
+        let app = this.bp.apps.list[savedApp.id || appName];
         if (!app) {
             console.warn(`App ${appName} not found in desktop app list.`);
             return;
@@ -73,7 +73,7 @@ export default function defaultDesktopShortcuts() {
         }
         if (_app) {
             // console.log(`Adding default taskbar app: ${appName}`, _app);
-            this.bp.apps.ui.windowManager.taskBar.saveItem(_app);
+            this.bp.apps.taskbar.taskBar.saveItem(_app);
         } else {
             console.warn(`App ${appName} not found in desktop app list.`);
         }
@@ -95,7 +95,7 @@ export default function defaultDesktopShortcuts() {
 
 
         defaultAppList.forEach(appName => {
-            let app = this.bp.apps.desktop.appList[appName];
+            let app = this.bp.apps.list[appName];
             if (app) {
                 console.log(`Adding default app shortcut: ${appName}`);
                 // console.log(app);

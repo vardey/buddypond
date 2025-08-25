@@ -18,11 +18,13 @@ export default function handleAuthentication() {
             if (data.success) {
                 this.bp.connected = true;
                 if (!window.discordView) {
-                    await this.bp.open('buddylist');
+                    await this.bp.open('buddylist', {
+                        // openDefaultPond: true
+                    });
                 } else {
                     await this.bp.open('buddylist', {
                         openDefaultPond: false,
-                        showBuddyList: false
+                        // showBuddyList: false
                     });
 
                 }

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>BuddyPond SDK</title>
+  <link rel="stylesheet" href="sdk-styles.css">
+
+  <script src="/bp.js"></script>
+
+  <script>
+
+
+    // on document load
+    document.addEventListener('DOMContentLoaded', async (event) => {
+      console.log('DOM fully loaded and parsed');
+
+
+      await bp.init();
+
+      console.log(bp.apps)
+      console.log('api available', bp.apps.client.api);
+      let api = bp.apps.client.api;
+
+      await bp.open('fluid-simulation', {
+        panel: '.targetDiv1'
+      });
+
+      await bp.open('taskbar');
+
+      let sdkAppsList = [
+        'piano',
+        'fluid-simulation',
+        'taskbar',
+        'buddylist',
+        'coin',
+        'paint'
+      ];
+
+      // TODO: better off as static HTML...
+      for (let app in bp.apps.list) {
+        let appInfo = bp.apps.list[app];
+        if (appInfo.adminOnly) continue;
+        // TODO: only show apps in the sdkAppsList
+        // if (sdkAppsList.indexOf(app) === -1) continue;
+        //console.log(`App Name: ${appInfo.name}`);
+        //console.log(`App Description: ${appInfo.description}`);
+        $('.sdk-appList').append(`<div class="sdk-appItem"><strong>${app}</strong>: ${appInfo.label} ${appInfo.description || 'No description available'}</div>`);
+        //createAppExample(app, appInfo);
+      }
+    });
+
+    function createAppExample(app, appInfo) {
+      /*
+      <h3>Open Buddy Coins</h2>
+      <pre class="sdk-pre"><code>await bp.open('coin');</code></pre>
+      <button class="sdk-button" onclick="bp.open('coin')">Open Buddy Coins</button>
+      */
+      let appName = app;
+      let appId = appName.replace(/\s+/g, '-').toLowerCase();
+      let codeExample = `await bp.open('${appName}');`;
+      let buttonExample = `<button class="sdk-button" onclick="bp.open('${app}')">Open ${appInfo.label || appName}</button>`;
+      $('.sdk-appList').append(`
+        <h3>Open ${appInfo.label || appName}</h2>
+        <pre class="sdk-pre"><code>${codeExample}</code></pre>
+        ${buttonExample}
+      `);
+
+    }
+
+  </script>
+</head>
+
+<body class="sdk-body">
+  <div class="sdk-header">
+    <a href="https://buddypond.com" target="_blank"><img src="./coin/buddy-the-frog-256.png" height="64" width="64"
+        alt="Buddy the Frog" /></a>
+    <h1 class="sdk-title">Buddy Pond SDK</h1>
+    <h2 class="sdk-subtitle">Use any Buddy Pond App inside any existing Web Page</h2>
+  </div>
+
+  <div class="sdk-container">
+
+    <!-- Row 1: main examples + target divs -->
+    <div class="sdk-row">
+
+      <!-- Left column: code examples -->
+      <div class="sdk-column sdk-code-column">
+        <h2>Embed the Buddy Pond JavaScript file</h2>
+        <div class="sdk-app">
+          <pre
+            class="sdk-pre"><code data-copy="true">&lt;script src="https://buddypond.com/bp.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+        <h2>Initialize the SDK, then you may open apps</h2>
+        <div class="sdk-app">
+          <pre class="sdk-pre"><code  data-copy="true" data-main-example="true">&lt;script&gt;
+document.addEventListener('DOMContentLoaded', async (event) => {
+    await bp.init();
+    bp.open('fluid-simulation', {
+      panel: '.targetDiv1'   // optional, default mode is Window
+    });
+    bp.open('taskbar');      // taskbar app defaults fixed bottom
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <h2><img src="/desktop/assets/images/icons/icon_profile_64.png" alt="Buddylist" class="sdk-app-icon" />Open
+          Buddylist Instant Messaging Chat Window</h2>
+
+        <div class="sdk-app">
+          <pre
+            class="sdk-pre"><code data-run="true">await bp.open('buddylist'); // opens BuddyList in Window</code></pre>
+        </div>
+
+      </div>
+
+      <!-- Right column: target divs -->
+      <div class="sdk-column sdk-target-column">
+        <div>
+          <a href="#api">
+            Jump to API Documentation Below
+          </a>
+        </div>
+        <div class="sdk-targetDiv targetDiv1">
+          <h3>.targetDiv1 Click and Drag mouse to create fluid particles</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: responsive app grid -->
+    <div class="sdk-row">
+      <div class="sdk-app-grid">
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_pad_64.png" alt="App Store" class="sdk-app-icon" />Buddy Apps
+            Store</h3>
+          <p>Hosted Apps for Buddy Pond</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('apps');</code></pre>
+        </div>
+
+
+        <!--
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_menubar_64.png" alt="Menu Bar" class="sdk-app-icon" />Menu
+            Bar</h3>
+          <p>A customizable menu bar</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('menubar');</code></pre>
+        </div>
+        -->
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_myprofile_64.png" alt="Profile" class="sdk-app-icon" />My
+            Profile</h3>
+          <p>Manage your profile and settings</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('profile');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_coin_64.png" alt="Coins" class="sdk-app-icon" />Buddy Coins
+          </h3>
+          <p>Manage your virtual currency</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('coin');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_portfolio_64.png" alt="Portfolio"
+              class="sdk-app-icon" />Portfolio</h3>
+          <p>Track your investments and assets</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('portfolio');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_tweets_64.png" alt="Tweets" class="sdk-app-icon" />Tweets</h3>
+          <p>View and post tweets</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('tweets');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_paint_64.png" alt="Paint" class="sdk-app-icon" />Paint App
+          </h3>
+          <p>A Classic Retro Style Image Editor</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('paint');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_interdimensionalcable_64.png" alt="Interdimensional
+            Cable" class="sdk-app-icon" />Interdimensional Cable</h3>
+          <p>Watch and browse Interdimensional Cable</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('youtube');</code></pre>
+        </div>
+
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_piano_64.png" alt="Piano" class="sdk-app-icon" />Piano App
+          </h3>
+          <p>A virtual piano keyboard</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('piano');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_fluidsimulation_64.png" alt="Fluid"
+              class="sdk-app-icon" />Fluid Simulation App</h3>
+          <p>A fluid simulation application</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('fluid-simulation');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_painterro_64.png" alt="Painterro"
+              class="sdk-app-icon" />Painterro App</h3>
+          <p>Easy to use image editing tool</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('painterro');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_minipaint_64.png" alt="MiniPaint"
+              class="sdk-app-icon" />MiniPaint App</h3>
+          <p>A simple and easy to use paint application</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('minipaint');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_bubblepop_64.png" alt="Bubble Pop"
+              class="sdk-app-icon" />Bubble Pop</h3>
+          <p>A fun and addictive bubble popping game</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('bubblepop');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_vision-harp_64.png" alt="Vision Harp"
+              class="sdk-app-icon" />Vision Harp</h3>
+          <p>Play music using hand gestures</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('vision-harp');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_jutsu_64.png" alt="Jutsu Caster" class="sdk-app-icon" />Jutsu
+            Caster</h3>
+          <p>Cast Jutsu spells using hand gestures</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('jutsu-caster');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_chalkboard_64.png" alt="Chalkboard"
+              class="sdk-app-icon" />Chalkboard</h3>
+          <p>Draw and write on a virtual chalkboard</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('chalkboard');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_patatap_64.png" alt="Patatap" class="sdk-app-icon" />Patatap
+          </h3>
+          <p>Create music and animations with touch and keyboard input</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('patatap');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_soundrecorder_64.png" alt="Sound Recorder"
+              class="sdk-app-icon" />Sound Recorder</h3>
+          <p>Record and save audio clips</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('soundrecorder');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_midifighter_64.png" alt="Sampler"
+              class="sdk-app-icon" />Sampler
+          </h3>
+          <p>Create and mix audio samples</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('sampler');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_audio-player_64.png" alt="Audio Player"
+              class="sdk-app-icon" />Audio Player</h3>
+          <p>Play and manage audio files</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('audio-player');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_vscode_64.png" alt="VS Code Editor"
+              class="sdk-app-icon" />Visual Studio Code</h3>
+          <p>A powerful code editor</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('editor');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_minesweeper_64.png" alt="Minesweeper"
+              class="sdk-app-icon" />Minesweeper</h3>
+          <p>Classic Minesweeper puzzle game</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('minesweeper');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_chess_64.png" alt="Chess" class="sdk-app-icon" />Chess</h3>
+          <p>Play chess online with friends</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('chess');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_solitaire_64.png" alt="Solitaire"
+              class="sdk-app-icon" />Solitaire</h3>
+          <p>Classic Solitaire card game</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('solitaire');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_stickman_64.png" alt="Stickman"
+              class="sdk-app-icon" />Stickman</h3>
+          <p>Control a stickman using body poses</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('stickman');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_globe_64.png" alt="Globe" class="sdk-app-icon" />Globe</h3>
+          <p>Visualize global network data</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('globe');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_spellbook_64.png" alt="Spellbook"
+              class="sdk-app-icon" />Spellbook</h3>
+          <p>Manage scripts or commands</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('spellbook');</code></pre>
+        </div>
+
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_hacker-typer_64.png" alt="Hacker Typer"
+              class="sdk-app-icon" />Hacker Typer</h3>
+          <p>Simulate hacking with a typing game</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('hacker-typer');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_screen-recorder_64.png" alt="Screen Recorder"
+              class="sdk-app-icon" />Screen Recorder</h3>
+          <p>Record your screen activity</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('screen-recorder');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_file-viewer_64.png" alt="File Viewer"
+              class="sdk-app-icon" />File Viewer</h3>
+          <p>View files in various formats</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('file-viewer');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_camera_64.png" alt="Camera" class="sdk-app-icon" />Camera</h3>
+          <p>Capture photos and videos</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('camera');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_hex-editor_64.png" alt="Hex Editor" class="sdk-app-icon" />Hex
+            Editor</h3>
+          <p>Edit files in hexadecimal format</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('hex-editor');</code></pre>
+        </div>
+        <div class="sdk-app">
+          <h3><img src="/desktop/assets/images/icons/icon_mantra_64.png" alt="Mantra" class="sdk-app-icon" />Mantra</h3>
+          <p>Experimental Game Engine</p>
+          <pre class="sdk-pre"><code data-run="true">await bp.open('mantra');</code></pre>
+        </div>
+      </div>
+    </div>
+    <!-- Row 3: BP API Documentation -->
+    <div class="sdk-row">
+      <div class="sdk-api">
+        <a id="api"></a>
+        <h1>Buddy Pond API</h1>
+
+        <!-- bp.load() -->
+        <section class="sdk-api-section">
+          <h2>bp.load(appName | path)</h2>
+          <p>
+            Loads an app or resource. This will call <code>App.init()</code> if available</code>.
+            <br>It can also load external files (JS, HTML, CSS, JSON).
+          </p>
+          <h3>Examples</h3>
+          <pre class="sdk-pre"><code data-copy="true">await bp.load(appName)</code></pre>
+          <pre class="sdk-pre"><code data-copy="true">await bp.load('./path/to/script.js')</code></pre>
+          <pre class="sdk-pre"><code data-copy="true">let html = await bp.load('./path/to/fragment.html')</code></pre>
+          <pre class="sdk-pre"><code data-copy="true">let css = await bp.load('./path/to/styles.css')</code></pre>
+          <pre class="sdk-pre"><code data-copy="true">let json = await bp.load('./path/to/data.json')</code></pre>
+        </section>
+
+        <!-- bp.open() -->
+        <section class="sdk-api-section">
+          <h2>bp.open(appName, options)</h2>
+          <p>
+            Opens an app. This will call both <code>app.init()</code> and <code>app.open()</code>.
+          </p>
+          <h3>Open App in Window</h3>
+          <pre class="sdk-pre"><code data-copy="true">await bp.open('piano')</code></pre>
+          <h3>Open App in Panel</h3>
+          <pre class="sdk-pre"><code data-copy="true">await bp.open('piano', { panel: '.targetDiv1' })</code></pre>
+        </section>
+
+        <!-- bp.window() -->
+        <section class="sdk-api-section">
+          <h2>bp.window(options)</h2>
+          <p>
+            Opens a new window. Options may include position, size, parent, content, callbacks, etc.
+          </p>
+          <pre
+            class="sdk-pre"><code data-copy="true">bp.window.open('myApp', { title: "My Window", width: "500px", height: "400px" })</code></pre>
+
+          <div class="sdk-api-options">
+            <span>Available Options (with defaults)</span>
+            <pre class="sdk-pre"><code>title = "Window", // Title of the window
+width = '400px', // Default width
+height = '300px', // Default height
+app = 'default', // default app
+type = 'singleton', // Default type ( intended to not have siblings )
+context = 'default', // Default context
+content = '', // Default content
+iframeContent = false,
+position = null,
+icon = '', // Default icon
+x = 50, // Default x position
+y = 50, // Default y position
+z = 99, // Default z-index
+parent = window.document.body, // Parent element to append to
+id = `window-${idCounter}`, // Unique ID for the panel
+onFocus = () => { }, // Callback when the window is focused
+onClose = () => { }, // Callback when the window is closed
+onOpen = () => { }, // Callback when the window is opened
+onResize = () => { }, // Callback when the window is resized
+onMessage = () => { }, // Callback when the window receives a message
+onLoad = () => { }, // Callback when the window is loaded ( remote content )
+className = '', // Custom classes for styling
+resizeable = true, // Enable resizable feature
+preventOverlap = true, // prevents direct overlap with other windows
+canBeBackground = false // Can be set as background
+</code></pre>
+          </div>
+        </section>
+
+        <!-- bp.close() -->
+        <section class="sdk-api-section">
+          <h2>bp.close(appName)</h2>
+          <p>Closes an app by name.</p>
+          <pre class="sdk-pre"><code data-copy="true">bp.close('piano')</code></pre>
+        </section>
+
+        <!-- bp.set(k,v)-->
+        <section class="sdk-api-section">
+          <h2>bp.set(key, value)</h2>
+          <p>Saves a key/value pair to local storage.</p>
+          <pre class="sdk-pre"><code data-copy="true">bp.set('myKey', 'myValue')</code></pre>
+        </section>
+        <!-- bp.get(k)-->
+        <section class="sdk-api-section">
+          <h2>bp.get(key)</h2>
+          <p>Retrieves a value from local storage by key.</p>
+          <pre class="sdk-pre"><code data-copy="true">let value = bp.get('myKey')</code></pre>
+        </section>
+        <!-- bp.on(event, label, callback)-->
+        <section class="sdk-api-section">
+          <h2>bp.on(event, label, callback)</h2>
+          <p>Registers an event listener for a specific event and label.</p>
+          <pre
+            class="sdk-pre"><code data-copy="true">bp.on('app-opened', 'piano', (app) =&gt; { console.log('Piano app opened', app); })</code></pre>
+        </section>
+        <!-- bp.emit(event, data)-->
+        <section class="sdk-api-section">
+          <h2>bp.emit(event, data)</h2>
+          <p>Emits a custom event with optional data.</p>
+          <pre class="sdk-pre"><code data-copy="true">bp.emit('my-event', { some: 'data' })</code></pre>
+        </section>
+        <!-- bp.off(event, label)-->
+        <section class="sdk-api-section">
+          <h2>bp.off(event, label)</h2>
+          <p>Removes an event listener for a specific event and label.</p>
+          <pre class="sdk-pre"><code data-copy="true">bp.off('app-opened', 'piano')</code></pre>
+        </section>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- debug 
+    <h2>App List</h2>
+    <div class="sdk-appList"></div>
+   -->
+
+
+  <!-- jQuery for copy/run buttons -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      $('.sdk-app').each(function () {
+        const $code = $(this).find('code');
+        const $pre = $code.closest('.sdk-pre');
+        const $img = $(this).find('img');
+
+        // Wrap the pre in a container for buttons
+        // $pre.css('position', 'relative');
+
+        // Add Copy button
+        if ($code.data('copy')) {
+          const $btn = $('<button class="sdk-code-btn sdk-copy-btn">Copy</button>');
+          $btn.on('click', () => {
+            navigator.clipboard.writeText($code.text()).then(() => {
+              $btn.text('Copied!');
+              setTimeout(() => $btn.text('Copy'), 1500);
+            });
+          });
+          $(this).append($btn);
+        }
+
+        // Add Run button
+        if ($code.data('run')) {
+          const $btn = $('<button class="sdk-code-btn sdk-run-btn">Run</button>');
+          let runCode = async () => {
+            try {
+              let codeText = $code.text();
+              const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
+              const myAsync = new AsyncFunction(codeText);
+              await myAsync();
+
+            } catch (err) {
+              console.error('Run error:', err);
+              alert('Error running code: ' + err.message);
+            }
+          };
+          $btn.on('click', runCode);
+          console.log('$img', $img);
+          // find the closest img and add the same runCode onclick
+          if ($img.length) {
+            $img.css('cursor', 'pointer');
+            $img.attr('title', 'Click to run code example');
+            $img.on('click', runCode);
+          }
+          $(this).append($btn);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
+
+
+<!--
+        
+        profile: My Profile Manage your profile and settings
+buddylist: BuddyList View and manage your contacts
+pad: Buddy Apps Create hosted Apps for Buddy Pond
+pond: Ponds Explore shared content or communities
+tweets: Tweets View and post tweets
+file-explorer: Buddy Files Browse and manage your files
+plays-doodle-jump-extra: Doodle Jump Play Doodle Jump Extra game
+plays-malpek: Malpek Play Malpek game
+frvr-kittenforce: Kitten Force Play Kitten Force FRVR game
+marbleblast: Marble Blast Play the Marble Blast game
+frvr-greed: Greed Play Greedy FRVR game
+jutsu-caster: Jutsu Caster Cast Jutsu spells using hand gestures
+minipaint: miniPaint Advanced image editor to create and edit images
+patatap: Patatap Create music and animations with touch and keyboard input
+vision-harp: Vision Harp Play music using hand gestures
+soundrecorder: Sound Recorder Record and save audio clips
+youtube: IDC Cable Watch and browse YouTube videos
+camera: Camera Capture photos or videos
+coin: Buddy Coins Manage your virtual currency
+fluid-simulation: Fluid Simulation Interact with a fluid dynamics simulation
+sampler: Sampler Create and mix audio samples
+audio-visual: Audio Visuals Experience audio-responsive visuals
+chalkboard: Chalkboard Draw and write on a virtual chalkboard
+piano: Piano Play a virtual piano keyboard
+bubblepop: Bubble Pop Pop bubbles and enjoy the visuals
+portfolio: Portfolio Track your investments and assets
+audio-player: Audio Player Play and manage audio files
+paint: Paint A Classic Retro Style Image Editor
+painterro: Painterro Easy to use image editing tool
+frvr-basketball: BasketBall Play Basketball game
+frvr-bowlingo: Bowlingo Play Bowlingo game
+mantra: Mantra Play the Mantra game
+minesweeper: Minesweeper Classic Minesweeper puzzle game
+emulator-nes: NES Play Nintendo Entertainment System games
+emulator-sega: Sega Play Sega console games
+emulator-snes: SNES Play Super Nintendo games
+emulator-atari2600: Atari 2600 Play Atari 2600 games
+emulator-n64: n64 Play Nintendo 64 games
+solitaire: Solitaire Classic Solitaire card game
+stickman: Stickman Control a stickman using body poses
+spellbook: Spellbook Manage scripts or commands
+globe: Globe Visualize global network data
+file-viewer: File Viewer View files in various formats
+hacker-typer: Hack Typer Simulate hacking with a typing game
+hex-editor: Hex Editor Edit files in hexadecimal format
+maps: Maps Access mapping and navigation tools
+screen-recorder: Screen Recorder Record your screen activity
+chess: Chess Play chess online with friends
+motd: MOTD Message of the Day
+        -->

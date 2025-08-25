@@ -1,4 +1,4 @@
-import appList from '../../desktop/lib/appList.js';
+import appList from '../../apps/appList.js';
 
 export default function renderAppList(appStats = {}) {
     const appContainer = $('.bp-pads-grid');
@@ -154,7 +154,10 @@ export default function renderAppList(appStats = {}) {
             setButtonLoading(button, 'install');
             // this.bp.apps.desktop.showLoadingProgressIndicator(); // Use existing method
             // Simulate async operation (replace with actual addApp implementation)
-            await this.bp.apps.desktop.addApp(appName, app);
+            if (this.bp.apps.desktop) {
+              await this.bp.apps.desktop.addApp(appName, app);
+
+            }
             appsInstalled[appName] = app; // Update local state
             resetButtonState(button, true);
             // this.bp.apps.desktop.hideLoadingProgressIndicator();

@@ -26,7 +26,7 @@ export default {
     "description": "Create hosted Apps for Buddy Pond",
     "onClick": "bp.open('pad')",
     "categories": ["productivity", "creative", "community"],
-    "alias": ["buddy-apps"]
+    "alias": ["buddy-apps", "apps"]
   },
   "pond": {
     "icon": "desktop/assets/images/icons/icon_pond_64.png",
@@ -104,6 +104,14 @@ export default {
     "categories": ["tools", "creative", "computer-vision"],
     "author": "BuddyPond",
     "alias": ["jutsu"]
+  },
+  "editor-monaco": {
+    "icon": "desktop/assets/images/icons/icon_vscode_64.png",
+    "label": "Monaco Editor",
+    "description": "A powerful code editor",
+    "onClick": "bp.open('editor-monaco')",
+    "categories": ["productivity", "development"],
+    "alias": ["monaco", "editor"]
   },
   "minipaint": {
     "icon": "desktop/assets/images/icons/icon_minipaint_64.png",

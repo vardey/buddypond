@@ -64,7 +64,7 @@ export default class StartPanel {
             recentGrid.appendChild(app);
         });
 
-        const appList = window.bp?.apps?.desktop?.appList || {};
+        const appList = window.bp?.apps?.list || {};
         const allAppEntries = Object.entries(appList);
         allAppEntries.forEach(([appName, appData]) => {
             if (appData.adminOnly && this.bp.me !== 'Marak') return;
@@ -76,12 +76,14 @@ export default class StartPanel {
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase();
-
             recentSection.style.display = query.length > 0 ? 'none' : '';
             allGrid.querySelectorAll('.start-panel-app').forEach(el => {
                 const label = el.dataset.name.toLowerCase();
-                const _app = this.bp.apps.desktop.appList[el.dataset.id];
+                const _app = this.bp.apps.list[el.dataset.id];
                 let showResult = label.includes(query);
+                if (!showResult && _app?.alias) {
+                    showResult = _app.alias.some(alias => alias.toLowerCase().includes(query));
+                }
                 if (!showResult && _app?.categories) {
                     showResult = _app.categories.some(cat => cat.toLowerCase().includes(query));
                 }

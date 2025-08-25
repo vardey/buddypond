@@ -12,7 +12,7 @@ export default class Client {
         };
 
         this.api = buddypond;
-        this.api.endpoint = `${this.config.api}`;
+        this.api.endpoint = buddypond.endpoint;
 
         this.messagesWsClients = new Map();
 

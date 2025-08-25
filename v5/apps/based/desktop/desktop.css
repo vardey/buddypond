@@ -165,10 +165,6 @@
     color: var(--desktop_element_hover-color);
 }
 
-.desktop-section {
-    /* background-color: #f9f9f9; */
-}
-
 .bp-shortcut-examples-list {
     display: flex;
     flex-direction: row;
@@ -192,16 +188,6 @@ h5,
 h6 {
     color: var(--desktop_headers-color);
     text-shadow: var(--desktop_headers-text-shadow);
-}
-
-.desktop-section {
-    background: var(--desktop_section-background);
-    color: var(--desktop_section-color);
-}
-
-.desktop-overlay {
-    background: var(--desktop_overlay-background);
-    color: var(--desktop_overlay-color);
 }
 
 div {

@@ -1,7 +1,6 @@
 // Buddy Pond - Window.js - Marak Squires 2023
 // A simple window class for creating draggable, resizable windows
 // Remark: WindowManager interface is optional and will be stubbed out if not provided
-
 import maximize from "./lib/maximize.js";
 import minimize from "./lib/minimize.js";
 import open from "./lib/open.js";
@@ -210,7 +209,6 @@ class Window {
                 }
             });
         `;
-        //alert(script.textContent)
         iframeDoc.body.appendChild(script);
 
         // Set the message event listener on the iframe's window
@@ -304,8 +302,12 @@ class Window {
     updateWindow() {
         this.container.style.width = `${this.width}px`;
         this.container.style.height = `${this.height}px`;
-        this.container.style.top = `${this.y}px`;
-        this.container.style.left = `${this.x}px`;
+
+        // top and left values should be relative to the current scroll position of the window
+        let relativeX = this.x + window.scrollX;
+        let relativeY = this.y + window.scrollY;
+        this.container.style.top = `${relativeY}px`;
+        this.container.style.left = `${relativeX}px`;
         this.container.style.zIndex = this.z;
         // console.log('updateWindow', this);
     }
@@ -491,26 +493,28 @@ class Window {
 
         this.onFocus(this);
 
-        let appData = this.bp.apps.desktop.appList[this.id];
-        let pushStateId = this.id;
-        if (appData && appData.alias) {
-            // get the first entry in the alias array
-            let alias = appData.alias[0];
-            pushStateId = alias; // use the id if it exists, otherwise use the alias string
-        }
-
-        let pushUrl = `/app/${pushStateId}`;
-        // console.log('focus pushUrl', pushUrl, this.context);
-        if (this.context && this.context !== 'default' && this.context !== 'all') {
-          // don't double append context if it's already ending with it
-          // TODO: should fix this upstream, better URL push state routing
-          if (!pushUrl.endsWith(`/${this.context}`)) {
-            pushUrl += `/${this.context}`;
+        if (this.bp.apps.desktop && this.bp.apps.list) {
+          let appData = this.bp.apps.list[this.id];
+          let pushStateId = this.id;
+          if (appData && appData.alias) {
+              // get the first entry in the alias array
+              let alias = appData.alias[0];
+              pushStateId = alias; // use the id if it exists, otherwise use the alias string
           }
-        }
 
-        // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
-        DelayedPushState.push({ appId: pushStateId }, this.title, pushUrl);
+          let pushUrl = `/app/${pushStateId}`;
+          // console.log('focus pushUrl', pushUrl, this.context);
+          if (this.context && this.context !== 'default' && this.context !== 'all') {
+            // don't double append context if it's already ending with it
+            // TODO: should fix this upstream, better URL push state routing
+            if (!pushUrl.endsWith(`/${this.context}`)) {
+              pushUrl += `/${this.context}`;
+            }
+          }
+
+          // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
+          DelayedPushState.push({ appId: pushStateId }, this.title, pushUrl);
+        }
 
     }
 

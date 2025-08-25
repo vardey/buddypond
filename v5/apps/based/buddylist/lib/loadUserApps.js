@@ -7,6 +7,8 @@ export default function loadUserApps() {
         if (!installedApps['admin']) {
             this.bp.apps.desktop.addApp('admin');
         }
-        window.arrangeDesktop();
+        if (typeof window.arrangeDesktop === 'function') {
+          window.arrangeDesktop();
+        }
     }
 }

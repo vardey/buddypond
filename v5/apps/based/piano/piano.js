@@ -23,18 +23,28 @@ export default class Example {
         return 'loaded Piano';
     }
 
+    async close () {
+        if (this.pianoWindow) {
+            this.pianoWindow.close();
+            this.pianoWindow = null;
+        }
+    }
+
     async open(options = {}) {
         if (!this.pianoWindow) {
             this.pianoWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'piano',
                 title: 'Piano',
-                x: 50,
-                y: 100,
+                x: options.x || 50,
+                y: options.y || 100,
+                position: options.position || null, // 'center'
                 width: 600,
                 height: 300,
                 minWidth: 200,
                 minHeight: 200,
-                parent: $('#desktop')[0],
+                parent: options.parent || $('#desktop')[0],
+                panel: options.panel || false,
+
                 iframeContent: '/v5/apps/based/piano/vendor/index.html',
                 icon: this.icon,
                 resizable: true,

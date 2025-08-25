@@ -183,7 +183,6 @@ export default class BubblePop {
                     this.bubbles = [];
                     this.score = 0;
                     this.chainCount = 0;
-                    this.spawnRate = 1000;
                     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                     status.innerText = `🎈 BubblePop | C: Clear, R: Reset`;
                     scoreDisplay.innerText = `Score: ${this.score}`;

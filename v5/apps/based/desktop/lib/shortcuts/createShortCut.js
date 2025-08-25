@@ -28,7 +28,7 @@ export default function createShortcut() {
                     <label for="shortcut-apps">Select App:</label>
                     <select id="shortcut-apps" name="shortcut-apps">
                         <option value="">Select App</option>
-                        ${Object.keys(this.bp.apps.desktop.appList).map(appName => `<option value="${appName}">${this.bp.apps.desktop.appList[appName].label || appName}</option>`).join('')}
+                        ${Object.keys(this.bp.apps.list).map(appName => `<option value="${appName}">${this.bp.apps.list[appName].label || appName}</option>`).join('')}
                     </select>
                 </div>
                 <div class="bp-form-group bp-app-select-group">
@@ -161,7 +161,7 @@ export default function createShortcut() {
                 console.log('appNameappName', appName)
                 if (!icon) {
                     // attempt default app icon
-                    icon = this.bp.apps.desktop.appList[appName]?.icon || 'desktop/assets/images/icons/icon_default_64.png';    
+                    icon = this.bp.apps.list[appName]?.icon || 'desktop/assets/images/icons/icon_default_64.png';    
                 }
                 onClick = () => {
                     bp.open(appName, { context: context });
@@ -225,7 +225,7 @@ export default function createShortcut() {
                 shortcutType: shortcutType,
                 icon: icon || 'desktop/assets/images/icons/icon_default_64.png', // Default icon if none provided
                 description: description || '',
-                target: shortcutType === 'app' ? this.bp.apps.desktop.appList[appName]?.onClick || `bp.open('${appName}')` : command,
+                target: shortcutType === 'app' ? this.bp.apps.list[appName]?.onClick || `bp.open('${appName}')` : command,
                 onClick: onClick,
                 parameters: {
                     icon: icon || '',

@@ -14,14 +14,19 @@ export default class Profile {
 
     async init() {
 
-        // injects CSS link tag into the head of document
-        await this.bp.load('/v5/apps/based/profile/profile.css');
-        // await this.bp.load('/v5/apps/based/ui/LoadingContainer/LoadingContainer.css');
-        await this.bp.load('browser');
-        await this.bp.appendScript('/desktop/assets/js/jquery.simple-color.js');
-
-        // fetches html from the fragment and returns it as a string
-        this.html = await this.bp.load('/v5/apps/based/profile/profile.html');
+        await Promise.all([
+          // injects CSS link tag into the head of document
+          await this.bp.load('/v5/apps/based/profile/profile.css'),
+          // await this.bp.load('/v5/apps/based/ui/LoadingContainer/LoadingContainer.css');
+          await this.bp.load('browser'),
+          await this.bp.load('themes'),
+          await this.bp.load('wallpaper'),
+          this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false),
+          this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false),
+          await this.bp.appendScript('/desktop/assets/js/jquery.simple-color.js'),
+          // fetches html from the fragment and returns it as a string
+          this.html = await this.bp.load('/v5/apps/based/profile/profile.html')
+       ]);
 
         return 'loaded Profile';
     }

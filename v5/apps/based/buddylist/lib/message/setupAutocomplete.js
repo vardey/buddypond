@@ -1,4 +1,5 @@
 export default function setupAutocomplete(chatWindow) {
+
     if (!this.options.autocomplete) return;
 
     const $input = $(".aim-input", chatWindow.content);

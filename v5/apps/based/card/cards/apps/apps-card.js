@@ -1,7 +1,7 @@
 
 export default function applyData(el, data, cardClass, parent) {
 
-  const apps = this.bp.apps.desktop.appList;
+  const apps = this.bp.apps.list;
   let commandSet = [];
 
   // iterate through all the desktop.apps and index by .name property

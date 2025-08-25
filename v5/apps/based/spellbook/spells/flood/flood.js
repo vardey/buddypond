@@ -1,14 +1,30 @@
 export default function flood(duration = 5000, intensity = 3) {
     // Prevent multiple floods
     if ($('body').hasClass('flood-active')) return;
-    
-    // Add flood class to body
-    const $body = $('body');
-    $body.addClass('flood-active');
-    
-    // Inject CSS for wave and bubble animations
+
+    const $body = $('body').addClass('flood-active');
+
+    // Inject CSS
     const $style = $('<style>').text(`
-        .water-wave::before {
+        .flood-wrapper {
+            position: fixed;
+            inset: 0;              /* top/right/bottom/left: 0 */
+            width: 100vw;
+            height: 100vh;
+            z-index: 100001;
+            pointer-events: none;  /* do not block clicks */
+            overflow: hidden;
+        }
+        .water {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 0vh; /* start at bottom */
+            background: linear-gradient(to top, rgba(0, 100, 200, 0.9), rgba(0, 150, 255, 0.7));
+            transition: height var(--flood-duration, 5000ms) ease-in;
+        }
+        .water.water-wave::before {
             content: '';
             position: absolute;
             top: 0;
@@ -19,110 +35,86 @@ export default function flood(duration = 5000, intensity = 3) {
             animation: wave 1.5s infinite;
         }
         @keyframes wave {
-            0% {
-                transform: translateX(0) skew(0deg);
-            }
-            50% {
-                transform: translateX(-10%) skew(5deg);
-            }
-            100% {
-                transform: translateX(0) skew(0deg);
-            }
+            0%   { transform: translateX(0)    skew(0deg); }
+            50%  { transform: translateX(-10%) skew(5deg); }
+            100% { transform: translateX(0)    skew(0deg); }
         }
         @keyframes bubble {
-            0% {
-                transform: translateY(0);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100vh);
-                opacity: 0;
-            }
+            0%   { transform: translateY(0);      opacity: 0.3; }
+            100% { transform: translateY(-100vh); opacity: 0;   }
         }
-        .water-rise {
-            height: 100% !important;
-        }
+        .water-rise { height: 100vh !important; } /* fill the viewport */
     `).appendTo('head');
-    
-    // Create water overlay
-    const $water = $('<div>').css({
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: '0%', // Start at bottom
-        background: 'linear-gradient(to top, rgba(0, 100, 200, 0.9), rgba(0, 150, 255, 0.7))',
-        zIndex: 9998,
-        pointerEvents: 'none',
-        transition: `height ${duration}ms ease-in` // Smooth rise
-    }).appendTo($body);
-    
-    // Add wave effect
-    $water.addClass('water-wave');
 
-    this.bp.play('v5/apps/based/spellbook/spells/flood/flood.mp3', { duration: duration + 3000 });
-    
-    // Create bubbles
+    // Fixed, full-viewport wrapper we can safely "shake"
+    const $wrapper = $('<div class="flood-wrapper">').appendTo(document.body);
+
+    // Water layer inside the wrapper
+    const $water = $('<div class="water water-wave">')
+        .css({ '--flood-duration': `${duration}ms` })
+        .appendTo($wrapper);
+
+    // Lock scroll without transforming <body>
+    const $html = $('html');
+    const prevHtmlOverflow = $html.css('overflow');
+    const prevBodyOverflow = $body.css('overflow');
+    $html.css('overflow', 'hidden');
+    $body.css('overflow', 'hidden');
+
+    // Sound
+    try {
+        this.bp.play('v5/apps/based/spellbook/spells/flood/flood.mp3', { duration: duration + 3000 });
+    } catch (e) {
+        const audio = new Audio('v5/apps/based/spellbook/spells/flood/flood.mp3');
+        audio.play().catch(err => console.warn('Audio playback failed:', err));
+    }
+
+    // Bubbles
     const bubbleCount = 10;
     const bubbles = [];
     for (let i = 0; i < bubbleCount; i++) {
         const $bubble = $('<div>').css({
             position: 'absolute',
             bottom: '5%',
-            left: `${Math.random() * 90 + 5}%`, // Random X position
-            width: `${Math.random() * 20 + 10}px`, // Random size 10-30px
+            left: `${Math.random() * 90 + 5}%`,
+            width: `${Math.random() * 20 + 10}px`,
             height: `${Math.random() * 20 + 10}px`,
             background: 'rgba(255, 255, 255, 0.3)',
             borderRadius: '50%',
             pointerEvents: 'none',
-            zIndex: 9999,
-            animation: `bubble ${Math.random() * 2000 + 1000}ms linear infinite` // Random speed
+            zIndex: 100002,
+            animation: `bubble ${Math.random() * 2000 + 1000}ms linear infinite`
         }).appendTo($water);
         bubbles.push($bubble);
     }
-    
-    // Frame rate for ~60 FPS
+
+    // Start the rise (small delay so transition applies)
+    setTimeout(() => $water.addClass('water-rise'), 50);
+
+    // Shake the wrapper (NOT the body)
     const frameRate = 1000 / 60;
     const startTime = Date.now();
-    
-    // Trigger water rise with slight delay to ensure transition applies
-    setTimeout(() => {
-        $water.addClass('water-rise');
-    }, 50);
-    
-    // Animation loop for shake
+
     function animate() {
         const elapsed = Date.now() - startTime;
-        const progress = elapsed / duration;
-        
+        const progress = Math.min(elapsed / duration, 1);
+
         if (elapsed < duration) {
-            // Subtle shake
-            const shakeIntensity = intensity * (1 - progress); // Fade shake
-            const offsetX = (Math.random() - 0.5) * shakeIntensity * 2;
-            const offsetY = (Math.random() - 0.5) * shakeIntensity * 2;
-            $body.css({
-                position: 'relative',
-                transform: `translate(${offsetX}px, ${offsetY}px)`
-            });
-            
-            // Schedule next frame
+            const shake = intensity * (1 - progress);
+            const ox = (Math.random() - 0.5) * shake * 2;
+            const oy = (Math.random() - 0.5) * shake * 2;
+            $wrapper.css('transform', `translate(${ox}px, ${oy}px)`);
             setTimeout(animate, frameRate);
         } else {
-            // Cleanup
-            // hold the flood for a moment
+            // Hold the flood briefly, then clean up
             setTimeout(() => {
-                $water.remove();
-                bubbles.forEach($bubble => $bubble.remove());
+                $wrapper.remove();
                 $style.remove();
-                $body.css({
-                    transform: 'translate(0, 0)',
-                    position: ''
-                }).removeClass('flood-active');
-            }, 3000); // TODO: flood hold time
-
+                $html.css('overflow', prevHtmlOverflow);
+                $body.css('overflow', prevBodyOverflow).removeClass('flood-active');
+            }, 3000); // hold time
         }
     }
-    
-    // Start animation
+
     animate();
 }

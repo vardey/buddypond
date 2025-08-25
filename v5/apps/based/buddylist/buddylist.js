@@ -76,11 +76,14 @@ export default class BuddyList {
         // add any active buttons that have been added in this session
         // add the this.bp.apps.desktop.enabledChatWindowButtons array to this.options.chatWindowButtons
 
-        let enabledChatWindowButtons = this.bp.apps.desktop.enabledChatWindowButtons;
+        let enabledChatWindowButtons = true;
+        if (this.bp.apps.desktop && typeof this.bp.apps.desktop.enabledChatWindowButtons === 'boolean') {
+            enabledChatWindowButtons = this.bp.apps.desktop.enabledChatWindowButtons;
+        }
         // iterate through each button and fetch the appList data.chatButton data ( hydrate the button )
         if (enabledChatWindowButtons && Array.isArray(enabledChatWindowButtons)) {
             enabledChatWindowButtons.forEach(buttonMeta => {
-                let app = this.bp.apps.desktop.appList[buttonMeta.name];
+                let app = this.bp.apps.list[buttonMeta.name];
                 if (app && app.chatButton) {
                     this.options.chatWindowButtons.push(app.chatButton);
                 }
@@ -112,6 +115,7 @@ export default class BuddyList {
             this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false),
             await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js'),
             await bp.load('emoji-picker'),
+            await bp.load('buddyscript'),
             await bp.load('card'),
             await bp.load('pond')
         ]);
@@ -131,8 +135,15 @@ export default class BuddyList {
             config.type = 'buddylist-profile';
         }
 
-        if (config.openDefaultPond === false) {
-            this.openDefaultPond = false;
+        if (config.openDefaultPond === true) {
+            this.openDefaultPond = true;
+        }
+
+        // check localStorage for buddylist.openDefaultPond
+        let localValue = bp.get('openPondChatRooms');
+
+        if (localValue === true || typeof localValue === 'undefined') {
+            this.openDefaultPond = true;
         }
 
         if (config.showPond === false) {
@@ -257,10 +268,10 @@ export default class BuddyList {
             }
         }
         // show help card if local storage does not have the card shown
-        if (this.bp.settings['viewed-help-card'] !== true && !this.bp.isMobile()) {
+        if (!this.showedHelp && this.bp.settings['viewed-help-card'] !== true && !this.bp.isMobile()) {
             console.log('windowsToUpdate', windowsToUpdate)
             let chatWindow = windowsToUpdate.values().next().value;
-            if (chatWindow.type === 'pond') {
+            if (chatWindow && chatWindow.type === 'pond') {
                 this.showCard({
                     chatWindow,
                     cardName: 'help'
@@ -392,7 +403,7 @@ export default class BuddyList {
         }
 
         // wait until buddylist is connected and then opens default chat window if defined
-        if (this.defaultPond && this.openDefaultPond !== false) {
+        if (this.defaultPond && this.openDefaultPond === true) {
             setTimeout(() => {
                 // console.log('Opening default pond chat window', this.defaultPond);
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });

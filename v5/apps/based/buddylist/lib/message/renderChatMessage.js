@@ -123,7 +123,7 @@ export default async function renderChatMessage(message, _chatWindow) {
             // remove the removed message
             removedMessageEl.remove();
         }
-        return;
+        return chatWindow;
     }
 
     if (message.edited) {
@@ -133,7 +133,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
         if (!editedMessageEl.length > 0) {
             console.error('No original message found');
-            return;
+            return chatWindow;
         }
 
         // get the aim-message-content and set the text to the new message
@@ -142,26 +142,26 @@ export default async function renderChatMessage(message, _chatWindow) {
             // remove the edited message
             editedMessageContent.html(message.text);
         }
-        return;
+        return chatWindow;
     }
 
     // console.log('current windows', this.bp.windows);
     // console.log('renderChatMessage windowId', windowId, message);
     let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
-
+    //console.log('attemping to fetch chatWindow', windowId, chatWindow);
     if (_chatWindow) {
         chatWindow = _chatWindow;
     }
 
     if (!chatWindow || !chatWindow.content) {
-        console.log('chat window not ready, trying again soon', windowId, message);
+        //console.log('chat window not ready, trying again soon', windowId, message);
         console.log(message);
         return;
     }
 
     // Check if message already exists in the DOM
     if (document.querySelector(`.chatMessage[data-uuid="${message.uuid}"]`)) {
-        return; // Message is already rendered
+        return chatWindow; // Message is already rendered
     }
 
     // check to see if this command is less than 10 seconds old
@@ -241,7 +241,6 @@ export default async function renderChatMessage(message, _chatWindow) {
     // legacy API
     if (this.bp.isMobile()) {
         messageTime = DateFormat.format.date(messageTime, 'hh:mm:ss a');
-
     } else {
         messageTime = DateFormat.format.date(messageTime, 'E MMMM dd, hh:mm:ss a');
     }
@@ -275,9 +274,6 @@ export default async function renderChatMessage(message, _chatWindow) {
     let bp = this.bp;
 
     this.createChatMessageElement(message, messageTime, chatWindow, container);
-
-    // console.log('parseChatMessage result', result);
-
 
     // emit the freshly processed message for any post processing events ( such as playing a sound )
     if (message.type === 'pond') {

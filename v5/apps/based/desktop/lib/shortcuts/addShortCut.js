@@ -163,7 +163,7 @@ export default function addShortCut(app, options = {}, parent) {
         } else if (action === 'add-taskbar') {
             // Add to taskbar logic
             app.id = app.name; // ensure the app has an id for taskbar
-            this.bp.apps.ui.windowManager.taskBar.addItem(app);
+            this.bp.apps.taskbar.taskBar.addItem(app);
         }
         contextMenu.style.display = 'none';
     });

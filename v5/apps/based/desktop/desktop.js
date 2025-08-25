@@ -12,11 +12,8 @@ import createShortCut from "./lib/shortcuts/createShortCut.js";
 import renameShortCut from "./lib/shortcuts/renameShortCut.js";
 import arrangeShortcuts from "./lib/shortcuts/arrangeShortCuts.js";
 
-// apps
-import appList from "./lib/appList.js";
 import addApp from "./lib/apps/addApp.js";
 import removeApp from "./lib/apps/removeApp.js";
-
 
 // context menu(s)
 import setupContextMenu from "./lib/contextmenu/setupContextMenu.js";
@@ -275,7 +272,6 @@ class Shortcut {
     }
 }
 
-Desktop.prototype.appList = appList;
 Desktop.prototype.createShortCut = createShortCut;
 Desktop.prototype.renameShortCut = renameShortCut;
 Desktop.prototype.addApp = addApp;
@@ -308,6 +304,8 @@ const DelayedPushState = (() => {
   }
 
   function push(stateObj, title, url, delay = 250) {
+    // return;
+
     // Merge existing URL parameters with new ones
     const mergedUrl = mergeUrlParams(window.location.href, url);
 

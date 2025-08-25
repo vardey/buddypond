@@ -42,6 +42,22 @@ export default class WallpaperManager {
             }
         };
 
+        // check if a canvas with id 'c' exists, if not create one
+        if (!document.getElementById('c')) {
+            this.canvas = document.createElement('canvas');
+            this.canvas.id = 'c';
+            this.canvas.style.position = 'fixed';
+            this.canvas.style.top = '0';
+            this.canvas.style.left = '0';
+            this.canvas.style.zIndex = '-1';
+            this.canvas.style.width = '100%';
+            this.canvas.style.height = '100%';
+            this.canvas.style.pointerEvents = 'none';
+            document.body.appendChild(this.canvas);
+        } else {
+            this.canvas = document.getElementById('c');
+        }
+
 
         bp.on('settings::wallpaper_color', 'update-wallpaper-bg-color', (color) => {
             if (this.wallpapers[this.active]) {

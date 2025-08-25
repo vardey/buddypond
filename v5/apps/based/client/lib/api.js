@@ -259,8 +259,6 @@ function preprocessDeepSeek(data) {
     }
   }
 
-  console.log('new data', data);
-
 }
 
 buddypond.keepAlive = function keepalive() {

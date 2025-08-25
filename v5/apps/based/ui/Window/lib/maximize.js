@@ -3,14 +3,16 @@ export default function maximize({ fullWindow = false } = {}) {
     const normalMenuBarHeight = 21;
     const currentMenuBarHeight = $('.desktop-menu-bar').height() || normalMenuBarHeight;
     const diff = currentMenuBarHeight - normalMenuBarHeight + (normalMenuBarHeight + 2); // add 2px for border
-    return `${diff}px`;
+    return diff;
   };
 
   const applyMobileStyles = () => {
     this.container.style.width = "100vw";
     this.container.style.height = 'calc(var(--vh) * 90)';
-    this.container.style.top = "0";
-    this.container.style.left = "0";
+    let relativeTop = window.scrollY;
+    let relativeLeft = window.scrollX;
+    this.container.style.top = `${relativeTop}px`;
+    this.container.style.left = `${relativeLeft}px`;
   };
 
   const applyDiscordViewStyles = (isFullWindow) => {
@@ -30,8 +32,12 @@ export default function maximize({ fullWindow = false } = {}) {
   const applyDefaultUnmaximizedStyles = () => {
     this.container.style.width = `${this.width}px`;
     this.container.style.height = `${this.height}px`;
-    this.container.style.top = "50px";
-    this.container.style.left = "50px";
+
+    // top and left values should be relative to the current scroll position of the window
+    let relativeTop = 50 + window.scrollY;
+    let relativeLeft = 50 + window.scrollX;
+    this.container.style.top = `${relativeTop}px`;
+    this.container.style.left = `${relativeLeft}px`;
     this.isMaximized = false;
   };
 
@@ -53,8 +59,12 @@ export default function maximize({ fullWindow = false } = {}) {
     const pixelOffset = getMenuBarOffset();
     this.container.style.width = "100vw";
     this.container.style.height = "calc(100vh - 104px)";
-    this.container.style.top = pixelOffset;
-    this.container.style.left = "0";
+
+    // Adjust top position based on menu bar height
+    let relativeTop = parseInt(pixelOffset, 10) + window.scrollY;
+    let relativeLeft = 0 + window.scrollX;
+    this.container.style.top = `${relativeTop}px`;
+    this.container.style.left = `${relativeLeft}px`;
     this.isMaximized = true;
   };
 

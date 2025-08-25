@@ -628,12 +628,11 @@ function setupChatWindow(windowType, contextName, chatWindow, client) {
 
     }
 
-
     setupAutocomplete.call(this, chatWindow);
     setupChatWindowButtons.call(this, windowType, contextName, chatWindow);
     setupMessageForm.call(this, windowType, contextName, chatWindow);
     setupInputEvents.call(this, windowType, contextName, chatWindow);
-
+    
     // update the aim-close-chat-btn with contextName
     const closeButton = $(".aim-close-chat-btn", chatWindow.content);
     if (closeButton.length) {

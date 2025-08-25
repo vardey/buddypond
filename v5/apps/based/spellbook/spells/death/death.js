@@ -8,29 +8,30 @@ export default function skullFlash({
     // Prevent multiple skull flash effects
     if ($('body').hasClass('skull-flash-active')) return;
 
-    // Add active class to body
     const $body = $('body');
     $body.addClass('skull-flash-active');
 
-    // Inject CSS for black overlay, skull, and text
+    // Inject CSS
     const $style = $('<style>').text(`
         .skull-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0; /* top:0; right:0; bottom:0; left:0 */
+            width: 100vw;
+            height: 100vh;
             background: black;
             z-index: 100001;
             pointer-events: none;
         }
         .skull-emoji {
             position: fixed;
+            left: 50vw;
+            top: 50vh;
             font-size: ${skullSize}px;
-            color: white; /* White skull for contrast */
+            color: white;
             z-index: 100001;
             pointer-events: none;
             animation: skullRotate 2s ease-in-out infinite;
+            transform: translate(-50%, -50%);
         }
         @keyframes skullRotate {
             0% { transform: translate(-50%, -50%) rotate(-${rotationAngle}deg); }
@@ -39,19 +40,18 @@ export default function skullFlash({
         }
         .death-text {
             position: fixed;
-            left: 50%;
-            top: 50%;
-            line-height: 300px;
+            left: 50vw;
+            top: 50vh;
             transform: translate(-50%, -50%);
             color: red;
-            font-size: 100px; /* Large text */
-            font-family: 'Arial', sans-serif; /* Bold, readable font */
+            font-size: 100px;
+            font-family: 'Arial', sans-serif;
             font-weight: bold;
             text-align: center;
-            z-index: 100002; /* Above skull */
+            z-index: 100002;
             pointer-events: none;
-            opacity: 0; /* Start hidden */
-            animation: fadeIn 1s ease-in forwards ${textDelay}ms; /* Fade in after delay */
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards ${textDelay}ms;
         }
         @keyframes fadeIn {
             0% { opacity: 0; }
@@ -59,35 +59,35 @@ export default function skullFlash({
         }
     `).appendTo('head');
 
-    // Create black overlay
+    // Create overlay
     const $overlay = $('<div>').addClass('skull-overlay').appendTo($body);
 
     // Create skull emoji
-    const $skull = $('<span>').addClass('skull-emoji').text('💀').css({
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)' // Center the skull
-    }).appendTo($body);
+    const $skull = $('<span>').addClass('skull-emoji').text('💀').appendTo($body);
 
-    // Create "YOU HAVE DIED" text
-    const $text = $('<div>').addClass('death-text').text('YOU HAVE DIED').appendTo($body).fadeIn(3000);
+    // Create death text
+    const $text = $('<div>').addClass('death-text').text('YOU HAVE DIED').appendTo($body);
+
+    // Prevent page scrolling while active
+    const prevOverflow = $body.css('overflow');
+    $body.css('overflow', 'hidden');
 
     // Play sound
     try {
         this.bp.play(soundUrl, { tryHard: 1, volume: 0.5 });
     } catch (e) {
-        // Fallback to Audio object
         const audio = new Audio(soundUrl);
         audio.volume = 0.5;
         audio.play().catch(err => console.warn('Audio playback failed:', err));
     }
 
-    // Cleanup after duration
+    // Cleanup
     setTimeout(() => {
         $overlay.remove();
         $skull.remove();
         $text.remove();
         $style.remove();
         $body.removeClass('skull-flash-active');
+        $body.css('overflow', prevOverflow); // restore scroll
     }, duration);
 }

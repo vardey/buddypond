@@ -466,9 +466,9 @@ export default class FileExplorer {
         }
     }
 
-    async open({ context } = {}) {
+    async open(options = {}) {
         // console.log(`Opening file explorer with context ${context}`);
-        this.options.context = context;
+        this.options.context = options.context;
         //alert('context is set to ' + this.options.context);
 
         this.onUploadComplete = this.options.onUploadComplete || (() => { });
@@ -497,7 +497,8 @@ export default class FileExplorer {
                 height: 600,
                 minWidth: 200,
                 minHeight: 200,
-                parent: $('#desktop')[0],
+                panel: options.panel || false,
+                parent: options.parent || $('#desktop')[0],
                 content: this.fileExplorer.container,
                 resizable: true,
                 minimizable: true,

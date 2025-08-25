@@ -20,7 +20,8 @@ export default class FluidSimulation {
                 height: 600,
                 minWidth: 200,
                 minHeight: 200,
-                parent: $('#desktop')[0],
+                parent: options.parent || $('#desktop')[0],
+                panel: options.panel || false,
                 iframeContent: '/v5/apps/based/fluid-simulation/vendor/index.html',
                 icon: '/desktop/assets/images/icons/icon_fluidsimulation_64.png',
                 resizable: true,
@@ -33,12 +34,21 @@ export default class FluidSimulation {
                 canBeBackground: true,
                 onClose: () => {
                     this.fluidsWindow = null;
+                    // this.close();
                 }
             });
 
         }
 
-        this.bp.apps.ui.windowManager.focusWindow(this.fluidsWindow);
         return this.fluidsWindow;
     }
+
+    async close () {
+        if (this.fluidsWindow) {
+            this.fluidsWindow.close();
+            this.fluidsWindow = null;
+        }
+    }
+
+
 }

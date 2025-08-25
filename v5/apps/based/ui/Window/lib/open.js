@@ -9,8 +9,8 @@ export default function open() {
     } catch (err) {
         console.error(err);
     }
+
     // TODO: save the window state ???
-    // ???? this.parent.appendChild(this.container);
 
     if (this.bp.isMobile()) {
         this.windowManager.minimizeAllWindows(true);
@@ -35,7 +35,7 @@ export default function open() {
         context: this.context
     };
     // console.log('openWindow openItem', _app);
-    this.bp.apps.ui.windowManager.taskBar.openItem(_app);
+    this.bp.apps.taskbar.taskBar.openItem(_app);
 
     // add the items to this.bp.apps.ui.recentApps
     this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps || this.bp.settings.recentApps || [];
@@ -58,20 +58,25 @@ export default function open() {
     // update the url bar push state with app id
     // modify the url to include the app id
     // load app data to find any aliases
-    let appData = this.bp.apps.desktop.appList[this.id];
-    let pushStateId = this.id;
-    if (appData && appData.alias) {
-        // get the first entry in the alias array
-        let alias = appData.alias[0];
-        pushStateId = alias; // use the id if it exists, otherwise use the alias string
-    }
+    if (this.bp.apps.list) {
 
-    let pushUrl = `/app/${pushStateId}`;
-    /*
-    if (this.context && this.context !== 'default' && this.context !== 'all') {
-        pushUrl += `/${this.context}`;
+        let appData = this.bp.apps.list[this.id];
+        let pushStateId = this.id;
+        if (appData && appData.alias) {
+            // get the first entry in the alias array
+            let alias = appData.alias[0];
+            pushStateId = alias; // use the id if it exists, otherwise use the alias string
+        }
+
+        let pushUrl = `/app/${pushStateId}`;
+        /*
+        if (this.context && this.context !== 'default' && this.context !== 'all') {
+            pushUrl += `/${this.context}`;
+        }
+        */
+        if (typeof DelayedPushState !== 'undefined') {
+            DelayedPushState.push({ appId: pushStateId }, this.title, pushUrl);
+        }
     }
-    */
-    DelayedPushState.push({ appId: pushStateId }, this.title, pushUrl);
 
 }

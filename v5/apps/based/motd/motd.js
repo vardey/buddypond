@@ -41,6 +41,23 @@ export default class Motd {
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');
         const patchNotes = [
             {
+              date: '8/25/25',
+              notes: [
+                  'New Buddy Pond SDK for Developers',
+                  'Run Buddy Pond Apps on your own website',
+                  'Add Instant Messaging to any website'
+              ]
+            },
+            {
+              date: '8/2/25',
+              notes: [
+                  'Discord Integration',
+                  'Discord Bot Commands',
+                  'Run Buddy Pond Apps in Discord',
+                  'New Discord Gambling and Fishing Games'
+              ]
+            },
+            {
                 date: '7/4/25',
                 notes: [
                     '<a class="motd-link" href="https://buddypond.com/coin" target="_blank">$BUDDYPOND Token Pre-Sale Launched</a>',

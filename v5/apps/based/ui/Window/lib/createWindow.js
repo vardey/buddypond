@@ -98,10 +98,14 @@ export default function createWindow() {
         );
     }
 
+    // adjust the position to be relative to the current scroll position of the window
+    adjustedPosition.x += window.scrollX;
+    adjustedPosition.y += window.scrollY;
 
     // Apply adjusted position
     this.x = adjustedPosition.x;
     this.y = adjustedPosition.y;
+
     this.container.style.top = `${this.y}px`;
     this.container.style.left = `${this.x}px`;
 
@@ -219,7 +223,11 @@ export default function createWindow() {
     this.container.appendChild(this.content);
 
     if (this.parent) {
+      if (typeof this.parent === 'string'){
+        $(this.parent).append(this.container);
+      } else {
         this.parent.appendChild(this.container);
+      }
     }
 
     // Resizing

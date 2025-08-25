@@ -54,7 +54,9 @@ export default function close() {
 
     // clear the current pushState
     // history.pushState({}, '', '/');
-    DelayedPushState.push({}, '', '/');
+    if (typeof DelayedPushState !== 'undefined') {
+      DelayedPushState.push({}, '', '/');
+    }
 
     if (this.bp.isMobile()) {
         // if mobile, check to see if there are any other windows open

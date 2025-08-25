@@ -1,6 +1,7 @@
 /* Buddy Pond - WindowManager.js - Marak Squires 2023 */
 import TaskBar from './TaskBar.js';
 import Window from "./Window.js";
+import Panel from "./Panel.js"
 
 export default class WindowManager {
     constructor(ui, options = {}) {
@@ -26,6 +27,9 @@ export default class WindowManager {
             this._openWindow = options.openWindow;
         } else {
             this._openWindow = function (name, config) {
+                if (options.panel) {
+                    config = { ...config, panel: true };
+                }
                 const window = this.createWindow(config);
                 window.hydrate(config);
             }
@@ -33,73 +37,68 @@ export default class WindowManager {
 
         // Remark: Why is TaskBar in the WindowManager?
         // shouldn't this be in the UI class?
+        /*
         this.taskBar = new TaskBar({
             bp: this.bp,
             homeCallback: () => {
-
-                if (!this.state) {
-                    // save current window positions
-                    this.lastPositionsBeforeArranged = this.windows.map(w => {
-                        return {
-                            x: w.x,
-                            y: w.y,
-                            height: w.height,
-                            width: w.width
-                        }
-                    });
-                    // console.log('lastPositionsBeforeArranged', this.lastPositionsBeforeArranged);
-                    this.state = 'maximized';
+	
+            if (!this.state) {
+                // save current window positions
+                this.lastPositionsBeforeArranged = this.windows.map(w => {
+                return {
+                    x: w.x,
+                    y: w.y,
+                    height: w.height,
+                    width: w.width
                 }
-
-
-                if (this.state === 'minimized') {
-                    this.minimizeAllWindows();
-                    // this.arrangeHorizontalStacked();
-                    this.state = 'maximized';
-
-                } else if (this.state === 'stacked-vertical') {
-                    // stack-vertical has been removed ( for now )
-                    // it wasn't looking good as a default and was rarely used
-                    /*
-                    // restore all windows to their previous positions
-                    this.windows.forEach((w, i) => {
-                        w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
-                        w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
-                    });
-                    this.state = 'maximized';
-                    */
-
-                } else if (this.state === 'stacked-horizontal') {
-                    // this.arrangeVerticalStacked();
-                    // this.state = 'stacked-vertical';
-                    // restore all windows to their previous positions
-                    this.windows.forEach((w, i) => {
-                        w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
-                        w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
-                    });
-                    this.state = 'maximized';
-
-                } else {
-                    this.minimizeAllWindows(true);
-                    this.windows.forEach((w, i) => {
-                        w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
-                        w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
-                    });
-
-                    this.state = 'minimized';
-
-                }
-
-                // close all windows
-                // this.minimizeAllWindows();
-                // this.windowsClosed = true;
-
-                // hide all legacy BP windows
-                $('.window').hide();
-                $('.window').removeClass('window_stack');
-
+                });
+                // console.log('lastPositionsBeforeArranged', this.lastPositionsBeforeArranged);
+                this.state = 'maximized';
+            }
+	
+	
+            if (this.state === 'minimized') {
+                this.minimizeAllWindows();
+                // this.arrangeHorizontalStacked();
+                this.state = 'maximized';
+	
+            } else if (this.state === 'stacked-vertical') {
+                // stack-vertical has been removed ( for now )
+                // it wasn't looking good as a default and was rarely used
+         
+	
+            } else if (this.state === 'stacked-horizontal') {
+                // this.arrangeVerticalStacked();
+                // this.state = 'stacked-vertical';
+                // restore all windows to their previous positions
+                this.windows.forEach((w, i) => {
+                w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
+                w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
+                });
+                this.state = 'maximized';
+	
+            } else {
+                this.minimizeAllWindows(true);
+                this.windows.forEach((w, i) => {
+                w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
+                w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
+                });
+	
+                this.state = 'minimized';
+	
+            }
+	
+            // close all windows
+            // this.minimizeAllWindows();
+            // this.windowsClosed = true;
+	
+            // hide all legacy BP windows
+            $('.window').hide();
+            $('.window').removeClass('window_stack');
+	
             }
         });
+        */
 
         if (this.options.hideTaskBar) {
             this.taskBar.taskBarElement.style.display = 'none';
@@ -153,13 +152,20 @@ export default class WindowManager {
             return window;
         }
         options.bp = this.bp;
-        window = new Window(options, this);
+        if (!options.panel) {
+            window = new Window(options, this);
+        } else {
+            window = new Panel(options, this);
+        }
+
 
         window.container.addEventListener("mousedown", () => {
             this.focusWindow(window);
         });
         this.addWindow(window);
-        this.focusWindow(window); // Focus the newly created window
+        if (!options.panel) {
+          this.focusWindow(window); // Focus the newly created window
+        }
 
         // when opening a window, automatically add it to the taskbar
         //alert(window.id)
@@ -262,7 +268,7 @@ export default class WindowManager {
         }
         this.windows.forEach(window => {
 
-            if (!this.windowsHiding || force) {
+            if ((!this.windowsHiding || force) && typeof window.minimize === 'function') {
                 window.minimize(force);
             } else {
                 window.restore();

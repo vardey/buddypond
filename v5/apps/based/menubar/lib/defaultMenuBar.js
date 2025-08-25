@@ -61,9 +61,19 @@ export default function defaultMenuBar(bp) {
     `;
 
 
-  let sourceCodeStr = `<span title="View Source Code" class="open-link" data-link="https://github.com/buddypond/buddypond">
-    <i class="fa-duotone fa-regular fa-code"></i> Source Code
-  </span>`;
+ let sourceCodeStr = `
+ <div class="dropdown-wrapper desktop-settings-dropdown-menu">
+   <span class="icon trigger" title="Developers">
+    <i class="fa-duotone fa-regular fa-code"></i> Developers
+   </span>
+   <ul class="dropdown-menu" style="display: none;">
+     <li class="open-link" data-link="https://github.com/buddypond/buddypond">View Source Code</li>
+     <li class="open-link" data-link="https://buddypond.com/sdk">Developer SDK</li>
+   </ul>
+ </div>
+   `;
+ 
+  
   // use fonr-awesome sun and moon icons
   let selectLightMode = '<span class="selectLightMode float_right"><i class="fa-duotone fa-regular fa-sun" data-mode="Light" title="Light Mode"></i><i class="fa-duotone fa-regular fa-moon" data-mode="Dark" title="Dark Mode"></i></span>';
 

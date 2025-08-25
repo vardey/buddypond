@@ -211,7 +211,7 @@ let legacyCommands = {
     command: function (params, context) {
       if (params.length > 0) {
         let appName = params[0];
-        let app = bp.apps.desktop.appList[appName];
+        let app = bp.apps.list[appName];
         if (!app) {
           console.log(`App ${appName} not found in appList`);
           return;
@@ -241,7 +241,7 @@ let legacyCommands = {
     command: function (params) {
       if (params.length > 0) {  
         let appName = params[0];
-        let app = bp.apps.desktop.appList[appName];
+        let app = bp.apps.list[appName];
         if (!app) {
           console.log(`App ${appName} not found in appList`);
           bp.open('pad');
