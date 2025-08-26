@@ -269,7 +269,6 @@ export default class BuddyList {
         }
         // show help card if local storage does not have the card shown
         if (!this.showedHelp && this.bp.settings['viewed-help-card'] !== true && !this.bp.isMobile()) {
-            console.log('windowsToUpdate', windowsToUpdate)
             let chatWindow = windowsToUpdate.values().next().value;
             if (chatWindow && chatWindow.type === 'pond') {
                 this.showCard({

@@ -21,18 +21,22 @@ export default function checkForLinksInMessage(message) {
       type: 'website',
     };
 
-    // Determine file type from extension
-    let ext = contentUrl.split('.').pop().split(/\#|\?/)[0]; // Strip off hash/query
-    if (ext && typeof ext === 'string') {
-      if (buddypond.supportedImageTypesExt.includes(ext.toLowerCase())) {
-        message.card.type = 'image';
+    // Determine file type from extension (ignoring query strings and hashes)
+    try {
+      const urlObj = new URL(contentUrl);
+      const pathname = urlObj.pathname; // just "/image.png" part
+      const ext = pathname.split('.').pop().toLowerCase();
+      if (ext) {
+        if (buddypond.supportedImageTypesExt.includes(ext)) {
+          message.card.type = 'image';
+        } else if (buddypond.supportedAudioTypesExt.includes(ext)) {
+          message.card.type = 'audio';
+        } else if (buddypond.supportedVideoTypesExt.includes(ext)) {
+          message.card.type = 'video';
+        }
       }
-      if (buddypond.supportedAudioTypesExt.includes(ext.toLowerCase())) {
-        message.card.type = 'audio';
-      }
-      if (buddypond.supportedVideoTypesExt.includes(ext.toLowerCase())) {
-        message.card.type = 'video';
-      }
+    } catch (err) {
+      console.warn("Invalid URL:", contentUrl, err);
     }
 
     // YouTube link handling

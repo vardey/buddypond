@@ -49,6 +49,12 @@ export default class Motd {
               ]
             },
             {
+              date: '8/15/25',
+              notes: [
+                  'Adds Tweets App with Timeline',
+              ]
+            },
+            {
               date: '8/2/25',
               notes: [
                   'Discord Integration',
