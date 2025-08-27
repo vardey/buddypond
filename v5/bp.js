@@ -74,15 +74,12 @@ const DEV_ENDPOINTS = {
 }
 
 // Initialize application configuration based on environment
-function configureEnvironment() {
-  let devmode = window.location.hostname !== 'buddypond.com';
-  // devmode = false;
-  if (devmode) {
-    return DEV_ENDPOINTS
+function configureEnvironment(env = 'prod') {
+  if (env === 'prod') {
+    return ENDPOINTS;
   }
-  return ENDPOINTS;
+  return DEV_ENDPOINTS
 }
-
 
 // Assign endpoints to buddypond object
 function assignBuddyPondEndpoints(endpoints) {
@@ -129,23 +126,20 @@ bp.setConfig = function setConfig(config, softApply = false) {
     }
 }
 
-bp.init = async function init(config) {
+bp.init = async function init(config = {}) {
   // loads the default / required apps and deps for buddypond to function
   // load jQuery from /desktop/assets/js/jquery.min.js
-  if (config) {
-      bp.setConfig(config);
-  }
 
   // buddypond API client
   // TODO: we should be able to remove this, move it to client dep?
   await bp.appendScript('/v5/apps/based/client/lib/api.js');
-
-  let endpoints = configureEnvironment();
+  let endpoints = configureEnvironment(config.env);
   // endpoints = configureDiscordMode(endpoints);
   console.log(endpoints)
   // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
   // console.log(endpoints);
   assignBuddyPondEndpoints(endpoints);
+  bp.setConfig(endpoints);
 
   /* TODO: load scripts in parallel
   await Promise.all([

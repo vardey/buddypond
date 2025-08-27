@@ -4,6 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="description"
+    content="Buddy Pond SDK - Use any Buddy Pond App inside any existing Web Page" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://buddypond.com/sdk">
+  <meta name="twitter:site" content="@marak">
+  <meta name="twitter:creator" content="@marak">
+  <meta name="twitter:title" content="Buddy Pond SDK">
+  <meta name="twitter:description" content="Buddy Pond SDK - Use any Buddy Pond App inside any existing Web Page">
+  <meta name="twitter:image" content="https://buddypond.com/coin/buddy-the-frog-256.png">
+  
   <title>BuddyPond SDK</title>
   <link rel="stylesheet" href="sdk-styles.css">
 
@@ -16,8 +26,9 @@
     document.addEventListener('DOMContentLoaded', async (event) => {
       console.log('DOM fully loaded and parsed');
 
-
-      await bp.init();
+      await bp.init({
+        // env: 'dev'
+      });
 
       console.log(bp.apps)
       console.log('api available', bp.apps.client.api);
@@ -509,7 +520,6 @@ canBeBackground = false // Can be set as background
             }
           };
           $btn.on('click', runCode);
-          console.log('$img', $img);
           // find the closest img and add the same runCode onclick
           if ($img.length) {
             $img.css('cursor', 'pointer');
