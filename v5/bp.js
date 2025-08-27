@@ -147,7 +147,7 @@ bp.init = async function init(config = {}) {
   ]);
   */
   await bp.appendScript('/desktop/assets/js/jquery.min.js');
-  await bp.appendCSS('/desktop/assets/css/desktop.css');
+  await bp.appendCSS('/desktop/assets/css/desktop.css', false, true);
   await bp.start(['ui', 'client', 'localstorage', 'themes', 'buddyscript']);
   await bp.load('apps')
   await bp.appendScript('/v5/vendor/flexHide.js');
