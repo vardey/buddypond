@@ -153,7 +153,7 @@ bp.init = async function init(config = {}) {
   await bp.appendScript('/v5/vendor/flexHide.js');
 
   await bp.appendScript('/desktop/assets/js/jquery-ui.min.js');
-  await bp.appendCSS('/desktop/assets/css/jquery-ui.min.css');
+  await bp.appendCSS('/desktop/assets/css/jquery-ui.min.css', false, true);
 
 }
 
@@ -354,7 +354,6 @@ bp.fetchJSON = async function fetchJSON(url) {
 bp.appendCSS = async function appendCSS(url, forceReload = false, forceRemote = false) {
 
     let fullUrl = url;
-
     // If it's not absolute or blob, it's local
     if (!url.startsWith('http') && !url.startsWith('blob:')) {
         if (bp.mode === 'prod' && forceRemote !== true) {
@@ -379,7 +378,7 @@ bp.appendCSS = async function appendCSS(url, forceReload = false, forceRemote = 
     }
 
     fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
-
+    // console.log('appendCSS fullUrl', fullUrl);  
     if (bp._cache.css[fullUrl]) {
         if (!forceReload) {
             return 'cached';
