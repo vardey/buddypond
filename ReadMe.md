@@ -31,6 +31,7 @@
   </tr>
 </table>
 
+
  - Cloud OS
  - Desktop and Mobile Interfaces
  - Buddy Lists! Add Your Buddies
@@ -56,7 +57,6 @@
 
 [jun-15-spell-book.webm](https://github.com/user-attachments/assets/7754495f-dd39-42d0-b933-6f5058f7ab0c)
 
-
 ## Quick Start
 
 Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
@@ -77,6 +77,12 @@ Type `/bs` in any chat window to see `BuddyScript` commands.
 `BuddyScript` is an integrated scripting languge in Buddy Pond that allows you to fully control the Desktop Application and all Apps through chat commands.
 
 ## Developers Guide
+
+### Developer SDK
+
+You can run any Buddy Pond app inside your own applications using the Buddy Pond SDK. see: https://buddypond.com/sdk
+
+### Custom Apps
 
 If you wish to develop a custom application for Buddy Pond, you can use our BuddyApp template located at:
 
