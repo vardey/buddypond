@@ -58,10 +58,12 @@ export default class Youtube {
             maximizable: true,
             closable: true,
             focusable: true,
-            maximized: false,
+            maximized: true,
             minimized: false,
             onClose: () => this.close()
         });
+
+        // this.youtubeWindow.maximize();
 
         // Wait for YouTube API to be ready
         while (!this.apiReady) {

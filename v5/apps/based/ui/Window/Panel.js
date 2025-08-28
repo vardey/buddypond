@@ -36,7 +36,7 @@ class Panel {
     this.width = '100%';
     this.height = '100%';
 
-
+    console.log('Panel options', options);
     this.initContentArea();
 
     // append the content to the container
@@ -86,6 +86,8 @@ Panel.prototype.initContentArea = function () {
     if (this.iframeContent.startsWith('/')) {
       if (window.discordMode) {
         this.iframeContent = `/.proxy${this.iframeContent}`;
+      } else {
+        this.iframeContent = `${this.bp.config.host}${this.iframeContent}`;
       }
     }
 
@@ -94,7 +96,7 @@ Panel.prototype.initContentArea = function () {
     // Remark: This is legacy settings for iframe message handling bootstrapping
     // In more modern applications, we use broadcast channels or other methods
     // It's important we don't attempt to setup message handling for iframes that are not from the same origin
-    let currentOrigin = window.location.origin;
+    let currentOrigin = bp.config.host;
     let iframeOrigin = this.iframe.src;
 
     // check if currentOrigin can be found in iframeOrigin

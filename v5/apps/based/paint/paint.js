@@ -48,9 +48,9 @@ export default class Paint {
             console.log("checkings embed params", params);
             if (params.src) {
                 // send the base64 source as part of the frame
-                $('#paintIframe', this.paintWindow.content).attr('src', '/v5/apps/based/paint/vendor/index.html#load:' + encodeURI(params.src));
+                $('#paintIframe', this.paintWindow.content).attr('src', this.bp.config.host + '/v5/apps/based/paint/vendor/index.html#load:' + encodeURI(params.src));
             } else {
-                $('#paintIframe', this.paintWindow.content).attr('src', '/v5/apps/based/paint/vendor/index.html');
+                $('#paintIframe', this.paintWindow.content).attr('src', this.bp.config.host + '/v5/apps/based/paint/vendor/index.html');
             }
 
 

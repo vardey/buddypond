@@ -129,17 +129,22 @@ bp.setConfig = function setConfig(config, softApply = false) {
 bp.init = async function init(config = {}) {
   // loads the default / required apps and deps for buddypond to function
   // load jQuery from /desktop/assets/js/jquery.min.js
-
+  if (typeof config.host === 'undefined') {
+    config.host = 'https://buddypond.com';
+  }
+  bp.config.host = config.host;
   // buddypond API client
   // TODO: we should be able to remove this, move it to client dep?
-  await bp.appendScript('/v5/apps/based/client/lib/api.js');
+  await bp.appendScript('/v5/apps/based/client/lib/api.js', false, true);
   let endpoints = configureEnvironment(config.env);
   // endpoints = configureDiscordMode(endpoints);
   console.log(endpoints)
   // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
   // console.log(endpoints);
   assignBuddyPondEndpoints(endpoints);
+
   bp.setConfig(endpoints);
+  bp.config.host = config.host; // ensure host is always set
 
   /* TODO: load scripts in parallel
   await Promise.all([
@@ -147,13 +152,12 @@ bp.init = async function init(config = {}) {
   ]);
   */
   await bp.appendScript('/desktop/assets/js/jquery.min.js');
-  await bp.appendCSS('/desktop/assets/css/desktop.css', false, true);
+  await bp.appendCSS(bp.config.host + '/desktop/assets/css/desktop.css', false, true);
   await bp.start(['ui', 'client', 'localstorage', 'themes', 'buddyscript']);
   await bp.load('apps')
-  await bp.appendScript('/v5/vendor/flexHide.js');
-
-  await bp.appendScript('/desktop/assets/js/jquery-ui.min.js');
-  await bp.appendCSS('/desktop/assets/css/jquery-ui.min.css', false, true);
+  await bp.appendScript(bp.config.host + '/v5/vendor/flexHide.js');
+  await bp.appendScript(bp.config.host + '/desktop/assets/js/jquery-ui.min.js');
+  await bp.appendCSS(bp.config.host + '/desktop/assets/css/jquery-ui.min.css', false, true);
 
 }
 
@@ -272,11 +276,11 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     }
 
     if (!buddypond) {
-        modulePath = app;
+        modulePath = bp.config.host + app;
     }
 
     modulePath += '?v=' + bp.version; // append version to URL to prevent caching issues
-    // console.log('importModule modulePath', modulePath, app, config, buddypond);
+    console.log('importModule modulePath', modulePath, app, config, buddypond);
 
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {
@@ -335,9 +339,9 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
         // discord mode requires we proxy the request
         fullUrl = `/.proxy/${url}`;
     }
+    fullUrl = bp.config.host + fullUrl;
     fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
-    // console.log('fetchHTMLFragment', fullUrl);
-    // console.log('fetchHTMLFragment', fullUrl);
+    console.log('fetchHTMLFragment', fullUrl);
     if (bp._cache.html[fullUrl]) {
         return bp._cache.html[fullUrl];
     }
@@ -417,6 +421,7 @@ bp.appendScript = async function appendScript(url) {
     // if (!document.querySelector(`script[src="${url}"]`)) {
     let script = document.createElement('script');
     script.src = fullUrl;
+    console.log('appendScript', fullUrl);
     document.head.appendChild(script);
     // on load resolve promise
     return new Promise((resolve, reject) => {

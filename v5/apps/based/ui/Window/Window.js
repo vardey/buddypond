@@ -51,7 +51,7 @@ class Window {
         }
 
         this.title = title;
-        this.icon = icon;
+        this.icon = bp.config.host + '/' + icon;
         this.width = width;
         this.height = height;
 
@@ -143,6 +143,8 @@ class Window {
             if (this.iframeContent.startsWith('/')) {
                 if (window.discordMode) {
                     this.iframeContent = `/.proxy${this.iframeContent}`;
+                } else {
+                    this.iframeContent = `${this.bp.config.host}${this.iframeContent}`;
                 }
             }
 
@@ -153,7 +155,7 @@ class Window {
             // Remark: This is legacy settings for iframe message handling bootstrapping
             // In more modern applications, we use broadcast channels or other methods
             // It's important we don't attempt to setup message handling for iframes that are not from the same origin
-            let currentOrigin = window.location.origin;
+            let currentOrigin = bp.config.host;
             let iframeOrigin = this.iframe.src;
 
             // check if currentOrigin can be found in iframeOrigin
@@ -540,6 +542,7 @@ class Window {
     }
 
     startResize(e) {
+        // alert('start resize')
         const container = this.container;
         const startX = e.clientX;
         const startY = e.clientY;
@@ -568,6 +571,15 @@ class Window {
         document.addEventListener("mouseup", onUp);
         document.addEventListener("touchmove", onMove, { passive: false });
         document.addEventListener("touchend", onUp);
+
+        // Disable pointer events on iframe
+        const iframes = this.container.querySelectorAll('iframe');
+        console.log('Disabling pointer events on iframes during resize', iframes);
+        iframes.forEach(iframe => {
+            iframe.style.pointerEvents = 'none';
+        });
+
+
     }
 
     resize(e) {
@@ -586,6 +598,11 @@ class Window {
 
     stopResize() {
         this.isResizing = false;
+        // Restore pointer events on iframe
+        const iframes = this.container.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+            iframe.style.pointerEvents = 'auto';
+        });
         // TODO: save the window state
 
     }

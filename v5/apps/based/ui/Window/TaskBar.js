@@ -221,7 +221,6 @@ export default class TaskBar {
 
     addItem(config) {
         let { app, id, context, label = "", onClick, icon, isShortcut = true, anchor } = config;
-
         if (typeof onClick !== 'function') {
             onClick = async (ev, itemElement) => {
                 let existingWindow = this.bp.apps.ui.windowManager.getWindow(id);
@@ -269,7 +268,12 @@ export default class TaskBar {
             itemElement.appendChild(svgContainer);
         } else if (icon) {
             const itemIcon = document.createElement("img");
-            itemIcon.src = icon;
+            // check if icon already starts with http
+            if (!icon.startsWith('http')) {
+              itemIcon.src = this.bp.config.host + '/' + icon;
+            } else {
+              itemIcon.src = icon;
+            }
             itemIcon.height = 32;
             itemIcon.width = 32;
             itemIcon.alt = label;

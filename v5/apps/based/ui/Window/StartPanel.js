@@ -153,7 +153,12 @@ export default class StartPanel {
             tile.appendChild(svgContainer);
         } else {
             const img = document.createElement('img');
-            img.src = icon;
+            // check if icon already starts with http 
+            if (!icon.startsWith('http')) {
+              img.src = this.bp.config.host + '/' + icon;
+            } else {
+              img.src = icon;
+            }
             img.alt = name;
             tile.appendChild(img);
         }

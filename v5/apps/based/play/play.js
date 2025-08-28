@@ -26,6 +26,11 @@ export default class Play {
             return;
         }
     
+        // check if mediaPath starts with http, if not prepend the host
+        if (!mediaPath.startsWith('http')) {
+            mediaPath = this.bp.config.host + '/' + mediaPath;
+        }
+
         // Mark the media as playing
         Play.playing.set(mediaPath, true);
     

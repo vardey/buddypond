@@ -85,7 +85,7 @@ export default class UI {
         if (!this.options.noTabs) {
             // what happened here with config? we shouldn't need to reference host here,
             // TODO: check implementation of importModule with options
-            let SimpleTabs = await this.bp.importModule(this.bp.config.host + '/v5/apps/based/ui/SimpleTabs.js', {}, false)
+            let SimpleTabs = await this.bp.importModule('/v5/apps/based/ui/SimpleTabs.js', {}, false)
             this.Tabs = SimpleTabs.default;
 
         }

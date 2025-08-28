@@ -54,7 +54,7 @@ export default function renderAppList(appStats = {}) {
         }
         return `
             <div class="bp-pads-app" data-app="${name}">
-                <img src="${app.icon}" alt="${app.label} icon" class="bp-pads-app-icon">
+                <img src="${bp.config.host + '/' + app.icon}" alt="${app.label} icon" class="bp-pads-app-icon">
                 <div class="bp-pads-app-info">
                     <h4 class="bp-pads-app-label">${app.label}</h4>
                     <p class="bp-pads-app-description">${app.description}</p>

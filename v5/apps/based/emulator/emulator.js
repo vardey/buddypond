@@ -44,13 +44,10 @@ export default class Emulator {
         const emulatorWindow = this.createEmulatorWindow(context, windowId);
         this.emulatorWindows[context].push({ id: windowId, win: emulatorWindow });
 
-
-
-
         const content = emulatorWindow.content;
         const logo = document.createElement('img');
         logo.id = `emulator-logo-${context}`;
-        logo.src = this.emulatorIcons[context] || this.emulatorIcons.nes;
+        logo.src = this.bp.config.host + '/' + (this.emulatorIcons[context] || this.emulatorIcons.nes);
         logo.style.position = 'absolute';
         logo.style.top = '50%';
         logo.style.left = '50%';
