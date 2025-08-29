@@ -8,7 +8,7 @@ export default function showContextMenu(x, y, buddyName) {
         left: x,
         zIndex: 99999,
         display: 'block',
-        background: 'white',
+        background: 'var(--desktop_element-background)',
         border: '1px solid #ccc',
         padding: '10px',
         cursor: 'pointer'
