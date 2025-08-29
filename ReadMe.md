@@ -88,15 +88,25 @@ See full documentation here: [https://buddypond.com/sdk](https://buddypond.com/s
 1. Include the SDK in your webpage:
    ```html
    <script src="https://buddypond.com/bp.js"></script>
-   <script>
-  // Initialize BuddyPond
-  const bp = new BuddyPond();
 
-  // Load an app
-  bp.loadApp("desktop").then(app => {
-    console.log("BuddyPond Desktop loaded:", app);
-  });
-</script>
+2. Initialize the SDK and open apps:
+   ```html
+   <script>
+   document.addEventListener('DOMContentLoaded', async () => {
+       await bp.init();
+
+       // Open the fluid simulation app
+       bp.open('fluid-simulation', {
+           panel: '.targetDiv' // optional, defaults to Window
+       });
+
+       // Open the taskbar app (fixed bottom)
+       bp.open('taskbar');
+
+       // Open buddylist app as a window
+       bp.open('buddylist');
+   });
+   </script>
 
 ### Custom Apps
 
