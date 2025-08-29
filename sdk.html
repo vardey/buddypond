@@ -12,7 +12,7 @@
   <meta name="twitter:creator" content="@marak">
   <meta name="twitter:title" content="Buddy Pond SDK">
   <meta name="twitter:description" content="Buddy Pond SDK - Use any Buddy Pond App inside any existing Web Page">
-  <meta name="twitter:image" content="https://buddypond.com/coin/buddy-the-frog-256.png">
+  <meta name="twitter:image" content="https://buddypond.com/coin/buddy-the-frog-16-9.png">
   
   <title>BuddyPond SDK</title>
   <link rel="stylesheet" href="sdk-styles.css">
@@ -27,7 +27,8 @@
       console.log('DOM fully loaded and parsed');
 
       await bp.init({
-        // env: 'dev'
+        // env: 'dev',
+        // host: 'http://192.168.200.59'
       });
 
       console.log(bp.apps)
