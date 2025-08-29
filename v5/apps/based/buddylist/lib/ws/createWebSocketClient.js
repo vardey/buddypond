@@ -30,27 +30,8 @@ export default function createWebSocketClient() {
           // console.log('Sending ping to buddylist WebSocket');
           wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
         }
-      }, 30000);
+      }, 25000);
 
-      /*
-      this.updateStatusInterval = setInterval(() => {
-        let status = 'online'; // Default status
-        try {
-          status = bp.apps.buddylist.data.profileState.status;
-        } catch (error) {
-          console.log('Error retrieving profile state status for updateStatusInterval:', error);
-        }
-        // console.log('Sending status update to buddylist:', status);
-        this.bp.emit('profile::status', status);
-      }, 1000 * 60 * 5); // Refresh status every 5 minutes
-      */
-      /*
-      this.pingInterval = setInterval(() => {
-        if (wsClient.readyState === WebSocket.OPEN) {
-          wsClient.send(JSON.stringify({ action: 'ping' }));
-        }
-      }, 10000);
-      */
       resolve(wsClient); // Resolve with the WebSocket instance
     };
 
@@ -158,7 +139,6 @@ export default function createWebSocketClient() {
       console.log('WebSocket connection closed to', 'buddylist', 'Code:', event.code, 'Reason:', event.reason);
 
       clearInterval(this.pingInterval);
-      clearInterval(this.updateStatusInterval);
 
       bp.emit('buddylist-websocket::disconnected', { code: event.code, reason: event.reason });
 
@@ -173,10 +153,8 @@ export default function createWebSocketClient() {
           this.reconnectAttempts++;
           bp.emit('buddylist-websocket::reconnecting', { attempt: this.reconnectAttempts });
           try {
-            const newWsClient = await this.createWebSocketClient(); // Attempt to reconnect
+            this.wsClient = await this.createWebSocketClient(); // Attempt to reconnect
             // Update event listeners to the new WebSocket instance
-            Object.assign(wsClient, newWsClient);
-            this.wsClient = newWsClient;
           } catch (error) {
             console.error('Reconnect failed:', error);
           }

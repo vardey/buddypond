@@ -280,7 +280,7 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     }
 
     modulePath += '?v=' + bp.version; // append version to URL to prevent caching issues
-    console.log('importModule modulePath', modulePath, app, config, buddypond);
+    // console.log('importModule modulePath', modulePath, app, config, buddypond);
 
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {
@@ -341,7 +341,7 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     }
     fullUrl = bp.config.host + fullUrl;
     fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
-    console.log('fetchHTMLFragment', fullUrl);
+    // console.log('fetchHTMLFragment', fullUrl);
     if (bp._cache.html[fullUrl]) {
         return bp._cache.html[fullUrl];
     }

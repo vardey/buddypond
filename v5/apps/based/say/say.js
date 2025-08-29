@@ -87,8 +87,8 @@ export default class Say {
       // TODO: move this to above the processedMessages() delegation
       let processedCards = bp.get('processedCards') || [];
 
-      console.log('say message.uuid', message.uuid);
-      console.log('processedCards', processedCards);
+      // console.log('say message.uuid', message.uuid);
+      // console.log('processedCards', processedCards);
 
       // check if message.uuid is already in processedCards, if so, return
       if (processedCards.includes(message.uuid)) {
