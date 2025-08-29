@@ -461,10 +461,13 @@
         line-height: 1.4;
         /* Unchanged, good for readability */
     }
+    .welcome-footer {
+      padding: 0px;
+    }
 
     .welcome-nav-links {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 0.625rem;
         background: none;
         justify-content: center;
@@ -482,7 +485,7 @@
         border-radius: 0.3125rem;
         /* ~5px */
         transition: background 0.3s, transform 0.1s;
-        text-align: left;
+        text-align: center;
     }
 
     .welcomeForm button {
