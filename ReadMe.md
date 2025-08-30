@@ -80,7 +80,33 @@ Type `/bs` in any chat window to see `BuddyScript` commands.
 
 ### Developer SDK
 
-You can run any Buddy Pond app inside your own applications using the Buddy Pond SDK. see: https://buddypond.com/sdk
+You can run any Buddy Pond app inside your own applications using the Buddy Pond SDK.  
+See full documentation here: [https://buddypond.com/sdk](https://buddypond.com/sdk)
+
+#### Quick Start Example
+
+1. Include the SDK in your webpage:
+   ```html
+   <script src="https://buddypond.com/bp.js"></script>
+
+2. Initialize the SDK and open apps:
+   ```html
+   <script>
+   document.addEventListener('DOMContentLoaded', async () => {
+       await bp.init();
+
+       // Open the fluid simulation app
+       bp.open('fluid-simulation', {
+           panel: '.targetDiv' // optional, defaults to Window
+       });
+
+       // Open the taskbar app (fixed bottom)
+       bp.open('taskbar');
+
+       // Open buddylist app as a window
+       bp.open('buddylist');
+   });
+   </script>
 
 ### Custom Apps
 
