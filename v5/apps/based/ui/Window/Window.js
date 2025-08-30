@@ -51,7 +51,12 @@ class Window {
         }
 
         this.title = title;
-        this.icon = bp.config.host + '/' + icon;
+
+        // only append bp.config.host if icon doesn't start with http
+        if (icon && icon.length && !icon.startsWith('http')) {
+          this.icon = bp.config.host + '/' + icon;
+        }
+
         this.width = width;
         this.height = height;
 
@@ -103,11 +108,6 @@ class Window {
         this.onOpen = onOpen;
         this.onLoad = onLoad;
         this.onMessage = onMessage;
-
-        this.startDrag = this.startDrag.bind(this);
-        this.drag = this.drag.bind(this);
-        this.stopDrag = this.stopDrag.bind(this);
-
 
         this.createWindow();
         this.open();
@@ -369,93 +369,6 @@ class Window {
             el.classList.add('disabled');
         }
 
-    }
-
-    startDrag(e) {
-        this.isDragging = true;
-        this.titleBar.style.cursor = "grabbing";
-
-        // Disable pointer events on iframe
-        const iframes = this.container.querySelectorAll('iframe');
-        iframes.forEach(iframe => {
-            iframe.style.pointerEvents = 'none';
-        });
-
-        // Get coordinates from mouse or touch event
-        const { clientX, clientY } = this.getEventCoordinates(e);
-        this.offsetX = clientX - this.container.offsetLeft;
-        this.offsetY = clientY - this.container.offsetTop;
-
-        // Add event listeners for both mouse and touch events
-        document.addEventListener('mousemove', this.drag);
-        document.addEventListener('touchmove', this.drag, { passive: false });
-        document.addEventListener('mouseup', this.stopDrag);
-        document.addEventListener('touchend', this.stopDrag);
-    }
-
-    drag(e) {
-        if (!this.isDragging) return;
-
-        // Prevent default behavior for touchmove to avoid scrolling
-        e.preventDefault();
-
-        // Get coordinates from mouse or touch event
-        const { clientX, clientY } = this.getEventCoordinates(e);
-
-        // Update container position
-        // Ensure window does not drag off the screen
-        let menuBarHeight = 42;
-        let bottomLimit = window.innerHeight - 52; // 50px from bottom
-        if (clientY > menuBarHeight && clientY < bottomLimit) {
-            this.container.style.top = `${clientY - this.offsetY}px`;
-        }
-        let leftLimit = 52; // 0px from left
-        let rightLimit = window.innerWidth - 52; // 0px from right
-        if (clientX > leftLimit && clientX < rightLimit) {
-            this.container.style.left = `${clientX - this.offsetX}px`;
-        }
-    }
-
-    stopDrag() {
-        this.isDragging = false;
-        this.titleBar.style.cursor = "grab";
-
-        // Restore pointer events on iframe
-        const iframes = this.container.querySelectorAll('iframe');
-        iframes.forEach(iframe => {
-            iframe.style.pointerEvents = 'auto';
-        });
-
-        // Remove event listeners
-        document.removeEventListener('mousemove', this.drag);
-        document.removeEventListener('touchmove', this.drag);
-        document.removeEventListener('mouseup', this.stopDrag);
-        document.removeEventListener('touchend', this.stopDrag);
-
-        // Save window state
-        this.x = this.container.offsetLeft;
-        this.y = this.container.offsetTop;
-        this.z = Number(this.container.style.zIndex);
-        if (this.windowManager) {
-            this.windowManager.saveWindowsState();
-        } else {
-            console.warn('windowManager is not defined');
-        }
-    }
-
-    getEventCoordinates(e) {
-        let clientX, clientY;
-        if (e.type.startsWith('touch')) {
-            // Use the first touch point for dragging
-            const touch = e.touches[0] || e.changedTouches[0];
-            clientX = touch.clientX;
-            clientY = touch.clientY;
-        } else {
-            // Mouse event
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }
-        return { clientX, clientY };
     }
 
     // Restore the window

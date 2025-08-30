@@ -1,70 +1,67 @@
 export default function maximize({ fullWindow = false } = {}) {
+  // Cache menu bar height (aligned with WindowDrag's static caching suggestion)
   const getMenuBarOffset = () => {
     const normalMenuBarHeight = 21;
-    const currentMenuBarHeight = $('.desktop-menu-bar').height() || normalMenuBarHeight;
-    const diff = currentMenuBarHeight - normalMenuBarHeight + (normalMenuBarHeight + 2); // add 2px for border
-    return diff;
+    const menuBar = document.querySelector('.desktop-menu-bar');
+    const currentMenuBarHeight = menuBar?.offsetHeight || normalMenuBarHeight;
+    return currentMenuBarHeight - normalMenuBarHeight + (normalMenuBarHeight + 2); // Add 2px for border
+  };
+
+  // Helper to apply styles using transforms
+  const applyTransformStyles = (width, height, translateX, translateY) => {
+    this.container.style.width = width;
+    this.container.style.height = height;
+    this.container.style.top = '0px'; // Reset top/left to avoid conflicts
+    this.container.style.left = '0px';
+    this.container.style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+
+    // Update WindowDrag state to sync transform
+    if (this.dragInstance) { // Assuming WindowDrag instance is stored as this.dragInstance
+      this.dragInstance.tx = translateX;
+      this.dragInstance.ty = translateY;
+      this.dragInstance.nextX = translateX;
+      this.dragInstance.nextY = translateY;
+      this.dragInstance.isDragging = false; // Prevent drag interference
+    }
   };
 
   const applyMobileStyles = () => {
-    this.container.style.width = "100vw";
-    this.container.style.height = 'calc(var(--vh) * 90)';
-    let relativeTop = window.scrollY;
-    let relativeLeft = window.scrollX;
-    this.container.style.top = `${relativeTop}px`;
-    this.container.style.left = `${relativeLeft}px`;
+    const translateX = window.scrollX;
+    const translateY = window.scrollY;
+    applyTransformStyles('100vw', 'calc(var(--vh) * 90)', translateX, translateY);
+    this.isMaximized = true;
   };
 
   const applyDiscordViewStyles = (isFullWindow) => {
     if (isFullWindow) {
-      this.container.style.width = "calc(100vw - 75px)";
-      this.container.style.height = 'calc(var(--vh) * 95)';
-      this.container.style.top = "20px";
-      this.container.style.left = "75px";
+      applyTransformStyles('calc(100vw - 75px)', 'calc(var(--vh) * 95)', 75, 20);
     } else {
-      this.container.style.width = "90vw";
-      this.container.style.height = 'calc(var(--vh) * 90)';
-      this.container.style.top = "0";
-      this.container.style.left = "75px";
+      applyTransformStyles('90vw', 'calc(var(--vh) * 90)', 75, 0);
     }
+    this.isMaximized = true;
   };
 
   const applyDefaultUnmaximizedStyles = () => {
-    this.container.style.width = `${this.width}px`;
-    this.container.style.height = `${this.height}px`;
-
-    // top and left values should be relative to the current scroll position of the window
-    let relativeTop = 50 + window.scrollY;
-    let relativeLeft = 50 + window.scrollX;
-    this.container.style.top = `${relativeTop}px`;
-    this.container.style.left = `${relativeLeft}px`;
+    const translateX = 50 + window.scrollX;
+    const translateY = 50 + window.scrollY;
+    applyTransformStyles(`${this.width}px`, `${this.height}px`, translateX, translateY);
     this.isMaximized = false;
   };
 
   const applyMaximizedDiscordViewStyles = (isFullWindow) => {
     if (isFullWindow) {
-      this.container.style.width = "100vw";
-      this.container.style.height = 'calc(var(--vh) * 95)';
-      this.container.style.top = "20px";
-      this.container.style.left = "0";
+      applyTransformStyles('100vw', 'calc(var(--vh) * 95)', 0, 20);
     } else {
-      this.container.style.width = "calc(var(--vw) - 72px)";
-      this.container.style.height = 'calc(var(--vh) * 100)';
-      this.container.style.top = "20px";
-      this.container.style.left = "72px";
+      applyTransformStyles('calc(100vw - 72px)', 'calc(var(--vh) * 100)', 72, 20);
     }
+    this.isMaximized = true;
   };
 
   const applyDefaultMaximizedStyles = () => {
     const pixelOffset = getMenuBarOffset();
-    this.container.style.width = "100vw";
-    this.container.style.height = "calc(100vh - 104px)";
-
-    // Adjust top position based on menu bar height
-    let relativeTop = parseInt(pixelOffset, 10) + window.scrollY;
-    let relativeLeft = 0 + window.scrollX;
-    this.container.style.top = `${relativeTop}px`;
-    this.container.style.left = `${relativeLeft}px`;
+    const translateX = window.scrollX;
+    const translateY = pixelOffset + window.scrollY;
+    applyTransformStyles('100vw', 'calc(100vh - 104px)', translateX, translateY);
     this.isMaximized = true;
   };
 

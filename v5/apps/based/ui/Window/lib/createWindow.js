@@ -1,3 +1,5 @@
+import WindowDrag from "./WindowDrag.js";
+
 export default function createWindow() {
     // Create the main window container
     this.container = document.createElement("div");
@@ -111,22 +113,11 @@ export default function createWindow() {
 
     this.container.style.zIndex = 99;
 
-    // add a mousedown handler to container itself to set 'window-active' status
-    this.container.addEventListener('mousedown', () => {
+    // add a pointerdown handler to container itself to set 'window-active' status
+    this.container.addEventListener('pointerdown', () => {
         // set all windows to inactive
         document.querySelectorAll('.window-container').forEach((window) => {
-            window.classList.remove('window-active');
-            window.isActive = false;
-        });
-        // set this window to active
-        this.container.classList.add('window-active');
-        this.isActive = true;
-    });
-
-    // same for touchstart
-    this.container.addEventListener('touchstart', () => {
-        // set all windows to inactive
-        document.querySelectorAll('.window-container').forEach((window) => {
+            if (window.id === this.id) return; // skip self
             window.classList.remove('window-active');
             window.isActive = false;
         });
@@ -173,8 +164,8 @@ export default function createWindow() {
 
     // Drag functionality
     // Add mouse and touch event listeners to the titleBar
-    this.titleBar.addEventListener('mousedown', this.startDrag);
-    this.titleBar.addEventListener('touchstart', this.startDrag, { passive: false });
+    // this.titleBar.addEventListener('mousedown', this.startDrag);
+    // this.titleBar.addEventListener('touchstart', this.startDrag, { passive: false });
 
     // Touch events for mobile
 
@@ -216,6 +207,12 @@ export default function createWindow() {
     this.titleBar.appendChild(titleBarSpan);
     this.titleBar.appendChild(controls);
 
+
+    if (!this.bp.isMobile()) {
+        this.dragInstance = new WindowDrag(this.container, this.titleBar);
+    }
+
+
     this.initContentArea();
 
     // Append components
@@ -223,11 +220,11 @@ export default function createWindow() {
     this.container.appendChild(this.content);
 
     if (this.parent) {
-      if (typeof this.parent === 'string'){
-        $(this.parent).append(this.container);
-      } else {
-        this.parent.appendChild(this.container);
-      }
+        if (typeof this.parent === 'string') {
+            $(this.parent).append(this.container);
+        } else {
+            this.parent.appendChild(this.container);
+        }
     }
 
     // Resizing
