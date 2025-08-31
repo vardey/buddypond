@@ -137,6 +137,7 @@
     padding: 2px 8px;
     /* background: #ece9d8; */
     border-top: 1px solid #999;
+    background: var(--desktop_element-background);
   }
 
   .bp-file-explorer-statusbar .usage-stats {
