@@ -33,10 +33,9 @@ export default function close() {
     // console.log('removeWindow', this.id);
     this.windowManager.removeWindow(this.id);
 
-
-    if (this.windowManager.taskBar) {
+    if (this.bp.apps.taskbar && this.bp.apps.taskbar.taskBar) {
         // remove the chat window from the taskbar
-        this.windowManager.taskBar.closeItem(this.id);
+        this.bp.apps.taskbar.taskBar.closeItem(this.id);
     }
 
     // TODO: save the window state ??? removeWindow could do it..?
