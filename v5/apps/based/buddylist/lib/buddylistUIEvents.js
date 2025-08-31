@@ -204,11 +204,11 @@ export default function buddylistUIEvents() {
   // Right-click event on elements with class .buddy-message-sender
   /*
   $(document).on('contextmenu', function (e) {
-
+ 
     if (!$(e.target).hasClass('buddy-message-sender')) {
       return true;
     }
-
+ 
     e.preventDefault(); // Prevent default context menu
     let chatMessage = $(e.target).closest('.chatMessage'); // Get the chat message element
     console.log('using chatMessage', chatMessage.html());
@@ -216,27 +216,27 @@ export default function buddylistUIEvents() {
        // set the removeMessage to disabled class
       $('#customContextMenu').addClass('disabled');
     }
-
+ 
     let from = chatMessage.attr('data-from');
     let to = chatMessage.attr('data-to');
     let uuid = chatMessage.attr('data-uuid');
     let type = chatMessage.attr('data-type');
-
+ 
     console.log('type', type, 'from', from, 'uuid', uuid);
-
+ 
     // Position the custom context menu at the mouse coordinates
     $('#customContextMenu').css({
       top: e.pageY + 'px',
       left: e.pageX + 'px',
       display: 'block'
     });
-
+ 
     $('#customContextMenu').off('click').on('click', async () => {
       // Replace 'openProfile' with your actual function to open the profile
       //openProfile(buddyName);
-
+ 
       let context = to;
-
+ 
       await api.removeMessage({type, from, to, uuid});
       // $(this).hide(); // Hide the context menu after click
     });
@@ -254,25 +254,103 @@ export default function buddylistUIEvents() {
 
   let d = $(document);
 
-  d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
 
+  /*
+  d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
+ 
     let form = $(this).parent();
     let url = $('.image', form).attr('src');
     let output = $(this).data('output');
     let context = $(this).data('context');
-
+ 
     let cardContainer = $(this).parent().parent();
     console.log('cardContainer', cardContainer);
     url = $('.bp-image', cardContainer).attr('src');
     // url = buddypond.host + url;
     console.log('remixPaint', url, output, context);
-
+ 
     bp.open('paint', {
       src: url,
       output: output,
       context: context,
     });
+ 
+  });
+  */
 
+  // TODO: move these events to chatWindowUIEvents.js
+  // editor configuration: update icon paths if you prefer different icons
+  const _remixEditors = [
+    { key: 'paint', title: 'Paint', icon: 'desktop/assets/images/icons/icon_paint_64.png' },
+    { key: 'minipaint', title: 'miniPaint', icon: 'desktop/assets/images/icons/icon_minipaint_64.png' },
+    { key: 'painterro', title: 'Painterro', icon: 'desktop/assets/images/icons/icon_painterro_64.png' },
+    { key: 'chalkboard', title: 'Chalkboard', icon: 'desktop/assets/images/icons/icon_chalkboard_64.png' }
+  ];
+
+  // Open / toggle the left→right menu when clicking the paint icon
+  d.on('click', 'img.remixPaint', function (ev) {
+    ev.stopPropagation();
+
+    const $img = $(this);
+    const $card = $img.closest('.image-card');
+    const $controls = $img.closest('.image-controls');
+
+    // If we don't already have a wrapper, wrap the button and create the menu
+    let $wrapper = $img.parent('.remix-wrapper');
+    if ($wrapper.length === 0) {
+      // wrap the img element in a remix-wrapper
+      $img.wrap('<div class="remix-wrapper"></div>');
+      $wrapper = $img.parent();
+
+      // ensure the wrapper has correct absolute placement (fallback)
+      $wrapper.css({ position: 'absolute', left: '0px', top: '6px' });
+
+      // build the menu DOM
+      const $menu = $('<div class="remix-menu" aria-hidden="true"></div>');
+      _remixEditors.forEach(ed => {
+        const $opt = $(`
+        <button class="remix-option" type="button" title="${ed.title}" data-editor="${ed.key}">
+          <img src="${ed.icon}" alt="${ed.title}" />
+        </button>
+      `);
+        $menu.append($opt);
+      });
+
+      // append menu to wrapper after the image
+      $img.after($menu);
+    }
+
+    // toggle menu open/closed
+    const $menu = $wrapper.find('.remix-menu').first();
+    $menu.toggleClass('open');
+  });
+
+  // Option click handler: launches the selected editor with the same payload
+  d.on('click', '.remix-wrapper .remix-option', function (ev) {
+    ev.stopPropagation();
+
+    const $opt = $(this);
+    const editor = $opt.data('editor');
+
+    const $card = $opt.closest('.image-card');
+    const url = $card.find('.bp-image').attr('src') || $card.find('img.image').attr('src');
+    const output = $card.find('.remixPaint').data('output');
+    const context = $card.find('.remixPaint').data('context');
+
+    // open the chosen editor (assumes bp.open supports these editor keys)
+    bp.open(editor, {
+      src: url,
+      output: output,
+      context: context
+    });
+
+    // close menu
+    $card.find('.remix-menu.open').removeClass('open');
+  });
+
+  // Close any open menus when clicking elsewhere
+  $(document).on('click', function () {
+    $('.remix-menu.open').removeClass('open');
   });
 
   // Invite a buddy link ( opens twitter with a random message )

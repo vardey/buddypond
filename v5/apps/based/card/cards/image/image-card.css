@@ -1,31 +1,124 @@
 .image-card {
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    position: relative;
-  }
-  
-  .image-title {
-    color: #333;
-    font-weight: bold;
-    font-size: 16px;
-  }
-  
-  .image-details {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .image-controls img {
-    cursor: pointer;
-    margin-right: 5px;
-  }
-  
-  .image-image {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.image-title {
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.image-details {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.image-controls img {
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.image-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.remixPaint {
+  position: absolute;
+  left: 0px;
+  top: 6px;
+  width: 32px;
+  height: 32px;
+  z-index: 99;
+  display: block;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.remixPaint:hover {
+  cursor: pointer;
+  opacity: 0.44;
+}
+
+.aim-chat-message:hover .remixPaint {
     display: block;
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-  }
-  
+    opacity: 1;
+    transition: opacity 320ms ease-in-out;
+}
+
+
+/* wrapper around the button + menu */
+.remix-wrapper {
+  position: absolute;
+  left: 0;
+  top: 6px; /* matches your old .remixPaint top */
+  z-index: 220;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+/* inside wrapper, keep the original paint icon visually the same */
+.remix-wrapper .remixPaint {
+  position: relative;   /* override the old absolute so wrapper controls placement */
+  left: auto;
+  top: auto;
+  margin: 0;
+  width: 32px;
+  height: 32px;
+}
+
+/* the menu: hidden by scaling on X axis, opens left->right */
+.remix-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 160ms cubic-bezier(.2,.9,.2,1);
+  pointer-events: none; /* avoid clicks when closed */
+  will-change: transform;
+  z-index: 100;
+  padding: 8px;
+  background: var(--desktop_element-background);
+
+}
+
+/* visible state */
+.remix-menu.open {
+  transform: scaleX(1);
+  pointer-events: auto;
+}
+
+/* option buttons inside the menu */
+.remix-option {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* small hover affordance */
+.remix-option:hover {
+  background: rgba(0,0,0,0.06);
+}
+
+/* icons inside option buttons */
+.remix-option img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

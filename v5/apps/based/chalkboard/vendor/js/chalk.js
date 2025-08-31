@@ -7,26 +7,23 @@ function chalkboard() {
   // app will broadcast to the desktop channel itself
   const channel = new BroadcastChannel("buddypond-desktop");
   channel.postMessage({ type: "app", app: "chalkboard", action: "open" });
-  
+
   // app doesn't need to listen for desktop messages, but can if needed
   //channel.onmessage = (event) => console.log("chalkboard received:", event.data);
 
   // TODO: we could have better control of saving instead of using the timer
   // this implies an additional broadcast channel with specific app namespace
   // probably better than having each app listen for all desktop messages by default...
-  const reciever = new BroadcastChannel("buddypond-chalkboard");
-  reciever.onmessage = (event) => {
-
-    if (event.data.action = 'saved') {
-      // re-enable the save button
-      const saveButton = document.querySelector(".save-button");
-      if (saveButton) {
-        saveButton.disabled = false;
-        saveButton.innerHTML = "Save";
+  const receiver = new BroadcastChannel("buddypond-chalkboard");
+  receiver.onmessage = (event) => {
+    if (event.data.action === 'load') {
+      console.log('chalkboard received load command', event.data);
+      if (event.data.src) {
+        loadImageToCanvas(event.data.src);
+      } else {
+        console.error('chalkboard load command missing src');
       }
-      console.log("chalkboard received save confirmation:", event.data);
     }
-
   };
 
   cleanupExistingElements();
@@ -45,6 +42,8 @@ function chalkboard() {
 
   const chalk = document.querySelector(".chalk");
   const patImg = document.getElementById("pattern");
+  patImg.crossOrigin = "anonymous";
+
 
   canvas.style.cursor = "none";
   document.onselectstart = () => false;
@@ -151,6 +150,12 @@ function chalkboard() {
     ctx.clearRect(x - eraserWidth / 2, y - eraserHeight / 2, eraserWidth, eraserHeight);
   }
 
+  function loadImageToCanvas(src) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => ctx.drawImage(img, 0, 0, width, height);
+    img.src = src;
+  }
   function saveImage() {
     const saveButton = document.querySelector(".save-button");
 
@@ -186,13 +191,16 @@ function chalkboard() {
     const imgCtx = imgCanvas.getContext("2d");
     imgCanvas.width = width;
     imgCanvas.height = height;
+
+    // Fill background with pattern
     imgCtx.fillStyle = imgCtx.createPattern(patImg, "repeat");
     imgCtx.fillRect(0, 0, width, height);
 
-    // Layer image
-    const layimage = new Image();
-    layimage.onload = () => {
-      imgCtx.drawImage(layimage, 0, 0);
+    // Copy the working canvas directly
+    imgCtx.drawImage(canvas, 0, 0);
+
+    // Export safely
+    try {
       const compimage = imgCanvas.toDataURL("image/png");
       channel.postMessage({
         type: "app",
@@ -201,8 +209,10 @@ function chalkboard() {
         image: compimage,
         timestamp: Date.now()
       });
-    };
-    layimage.src = canvas.toDataURL("image/png");
+    } catch (err) {
+      console.error("Failed to save image:", err);
+      alert("Sorry, unable to save this drawing due to cross-origin image restrictions.");
+    }
   }
 
 
@@ -225,7 +235,7 @@ function chalkboard() {
   function createUI() {
     const panel = document.createElement("div");
     panel.className = "panel";
- panel.innerHTML = `
+    panel.innerHTML = `
   <a class="save-button" target="_blank">Save</a>
   <button id="clearBtn">Clear</button>
   <input type="color" id="colorPicker" class="colorPicker" value="#ffffff" title="Pick Chalk Color">
@@ -234,6 +244,8 @@ function chalkboard() {
     document.body.prepend(panel);
 
     const pattern = document.createElement("img");
+    pattern.crossOrigin = "anonymous";
+
     pattern.src = "img/bg.png";
     pattern.id = "pattern";
     pattern.width = 50;

@@ -270,3 +270,30 @@
         line-height: 1.4; /* Unchanged, good for readability */
     }
 }
+
+.button-bar-item {
+  position: relative;
+  display: inline-block;
+}
+
+.button-dropdown {
+  position: absolute;
+  bottom: 100%; /* makes it drop *up* above the bar */
+  left: 0;
+  background: var(--desktop_element-background);
+  border: 1px solid #444;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.button-dropdown .dropdown-item {
+  display: flex;
+  padding: 4px 8px;
+  cursor: pointer;
+  align-items: center;
+  
+}
+
+.button-dropdown .dropdown-item:hover {
+  background: var(--desktop_element_hover-background);
+}

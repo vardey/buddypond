@@ -1199,21 +1199,6 @@ iframe {
   width: 100%;
 }
 
-.remixPaint {
-  position: absolute;
-  left: 0px;
-  top: 6px;
-  width: 32px;
-  height: 32px;
-  z-index: 99;
-  display: block;
-  cursor: pointer;
-}
-
-.remixPaint:hover {
-  cursor: pointer;
-  opacity: 0.44;
-}
 
 .remixGif {
   position: absolute;

@@ -283,6 +283,15 @@ export default {
     "onClick": "bp.open('audio-player')",
     "categories": ["media", "audio"]
   },
+  /*
+  "gifstudio": {
+    "icon": "desktop/assets/images/icons/icon_gifstudio_64.png",
+    "label": "Gif Studio",
+    "description": "Create and edit GIFs",
+    "onClick": "bp.open('gifstudio')",
+    "categories": ["media", "creative"]
+  },
+  */
   "paint": {
     "icon": "desktop/assets/images/icons/icon_paint_64.png",
     "label": "Paint",

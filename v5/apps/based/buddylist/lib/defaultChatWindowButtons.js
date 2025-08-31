@@ -104,12 +104,46 @@ export default function defaultChatWindowButtons(bp) {
         */
         {
             text: 'BuddyPaint',
-            image: 'desktop/assets/images/icons/icon_paint_64.png',
-            onclick: (ev) => {
-                let context = ev.target.dataset.context;
-                let type = ev.target.dataset.type;
-                bp.open('paint', { type: type || 'buddy', output: type || 'buddy', context: context });
-            }
+            image: 'desktop/assets/images/icons/icon_drawing_64.png',
+            children: [
+               {
+                  text: 'Chalkboard',
+                  image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+                  onclick: (ev) => {
+                      let context = ev.target.dataset.context;
+                      let type = ev.target.dataset.type;
+                      bp.open('chalkboard', { type: type || 'buddy', output: type || 'buddy', context: context });
+                  }
+              },
+               {
+                  text: 'miniPaint',
+                  image: 'desktop/assets/images/icons/icon_minipaint_64.png',
+                  onclick: (ev) => {
+                      let context = ev.target.dataset.context;
+                      let type = ev.target.dataset.type;
+                      bp.open('minipaint', { type: type || 'buddy', output: type || 'buddy', context: context });
+                  }
+              },
+              {
+                  text: 'Paint',
+                  image: 'desktop/assets/images/icons/icon_paint_64.png',
+                  onclick: (ev) => {
+                      let context = ev.target.dataset.context;
+                      let type = ev.target.dataset.type;
+                      bp.open('paint', { type: type || 'buddy', output: type || 'buddy', context: context });
+                  }
+              },
+              {
+                  text: 'Painterro',
+                  image: 'desktop/assets/images/icons/icon_painterro_64.png',
+                  onclick: (ev) => {
+                      let context = ev.target.dataset.context;
+                      let type = ev.target.dataset.type;
+                      bp.open('painterro', { type: type || 'buddy', output: type || 'buddy', context: context });
+                  }
+              }
+            ],
+        
         },
         {
             text: 'BuddySnap',

@@ -486,11 +486,13 @@ class Window {
         document.addEventListener("touchend", onUp);
 
         // Disable pointer events on iframe
+        /*
         const iframes = this.container.querySelectorAll('iframe');
         console.log('Disabling pointer events on iframes during resize', iframes);
         iframes.forEach(iframe => {
             iframe.style.pointerEvents = 'none';
         });
+        */
 
 
     }
