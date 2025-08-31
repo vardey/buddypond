@@ -118,7 +118,7 @@ export default class Painterro {
       icon: 'desktop/assets/images/icons/icon_painterro_64.png',
       x: 250,
       y: 75,
-      width: 800,
+      width: 880,
       height: 400,
       parent: $('#desktop')[0],
       iframeContent: '/v5/apps/based/painterro/vendor/painterro.html?context=' + this.context + '&output=' + this.output,
