@@ -196,13 +196,15 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   return chatMessage;
 }
 
-function insertChatMessage(chatWindow, message, chatMessage) {
+// Remark: Origina unoptimized version, left here for reference
+// TODO: remove this after new code path has been verified in production for some time
+/*
+function insertChatMessageLegacy(chatWindow, message, chatMessage) {
   // console.log('insertChatMessage', chatWindow, message, chatMessage);
   let aimMessages = chatWindow.content.querySelector('.aim-messages');
 
   if (message.type === 'pond') {
     // console.log('Inserting message into pond chat window', message);
-    // TODO: find the specific .aim-messages-container for the pond
     aimMessages = chatWindow.content.querySelector(`.aim-messages-container[data-context="${message.to}"] .aim-messages`);
     // console.log('Pond messages container found:', aimMessages);
   }
@@ -219,6 +221,7 @@ function insertChatMessage(chatWindow, message, chatMessage) {
   for (const existingMessage of allMessages) {
     const existingId = parseInt(existingMessage.getAttribute('data-id'), 10);
     if (message.id < existingId) {
+      // Remark: insertBefore is taking up a lot of CPU time when loading large chat histories
       aimMessages.insertBefore(chatMessage, existingMessage);
       inserted = true;
       break;
@@ -226,6 +229,67 @@ function insertChatMessage(chatWindow, message, chatMessage) {
   }
 
   if (!inserted) {
+    aimMessages.appendChild(chatMessage);
+  }
+
+  return chatMessage;
+}
+*/
+
+// Remark: new optimized version using binary search, may be able to optimize further
+function insertChatMessage(chatWindow, message, chatMessage) {
+  let aimMessages = chatWindow.content.querySelector('.aim-messages');
+
+  if (message.type === 'pond') {
+    aimMessages = chatWindow.content.querySelector(
+      `.aim-messages-container[data-context="${message.to}"] .aim-messages`
+    );
+  }
+
+  if (!aimMessages) {
+    console.log('aim-messages not found. chat window is not yet ready...');
+    return;
+  }
+
+  const children = aimMessages.children;
+  const count = children.length;
+
+  // ✅ Fast path: append if empty or greater than last message ID
+  if (
+    count === 0 ||
+    message.id > parseInt(children[count - 1].getAttribute('data-id'), 10)
+  ) {
+    aimMessages.appendChild(chatMessage);
+    return chatMessage;
+  }
+
+  // ✅ Binary search for insertion point
+  let low = 0;
+  let high = count - 1;
+  let insertBeforeNode = null;
+
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+    const midId = parseInt(children[mid].getAttribute('data-id'), 10);
+
+    if (isNaN(midId)) {
+      console.warn(`Invalid data-id on message node:`, children[mid]);
+      low = mid + 1;
+      continue;
+    }
+
+    if (message.id < midId) {
+      insertBeforeNode = children[mid];
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+
+  if (insertBeforeNode) {
+    aimMessages.insertBefore(chatMessage, insertBeforeNode);
+  } else {
+    // fallback, though fast path usually covers this
     aimMessages.appendChild(chatMessage);
   }
 

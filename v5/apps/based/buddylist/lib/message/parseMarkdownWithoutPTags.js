@@ -121,6 +121,9 @@ function normalizeEmoji(str) {
 function isEmojiOnly(text) {
   if (!text) return false;
 
+  // if text is longer than 7 length, return false immediately
+  if (text.length > 7) return false;
+
   const graphemes = splitEmojiGraphemes(text);
   const emojiList = new Set(Object.keys(EMOJIS));
 

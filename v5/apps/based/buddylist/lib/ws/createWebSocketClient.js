@@ -1,5 +1,5 @@
 // Remark: createWebSocketClient is a prototype method of Client, as Client.createWebSocketClient()
-export default function createWebSocketClient() {
+export default function createWebSocketClient(reconnect = false) {
   // Track reconnect state
 
   console.log(`Creating WebSocket client for buddylist`);
@@ -22,6 +22,17 @@ export default function createWebSocketClient() {
           qtokenid: buddypond.qtokenid,
         })
       );
+
+      if (reconnect) {
+        wsClient.send(JSON.stringify({
+          action: "setStatus",
+          buddyname: buddypond.me,
+          status: 'online',
+        }));
+
+      }
+
+      // alert('set initial status to offline');
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
 
@@ -153,7 +164,7 @@ export default function createWebSocketClient() {
           this.reconnectAttempts++;
           bp.emit('buddylist-websocket::reconnecting', { attempt: this.reconnectAttempts });
           try {
-            this.wsClient = await this.createWebSocketClient(); // Attempt to reconnect
+            this.wsClient = await this.createWebSocketClient(true); // Attempt to reconnect
             // Update event listeners to the new WebSocket instance
           } catch (error) {
             console.error('Reconnect failed:', error);
