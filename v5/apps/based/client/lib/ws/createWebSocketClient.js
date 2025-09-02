@@ -85,7 +85,7 @@ export default function createWebSocketClient(chatId) {
     }
 
       this.pingInterval = setInterval(() => {
-        if (wsClient.readyState === WebSocket.OPEN) {
+        if (wsClient && wsClient.readyState === WebSocket.OPEN) {
           // console.log('Sending ping to buddylist WebSocket');
           wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
         }

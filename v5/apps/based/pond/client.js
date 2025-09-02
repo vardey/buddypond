@@ -30,7 +30,7 @@ export default class HotPondsWebSocketClient {
         this.ws = ws;
 
         this.pingInterval = setInterval(() => {
-          if (this.ws.readyState === WebSocket.OPEN) {
+          if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             // console.log('Sending ping to hotponds WebSocket');
             this.ws.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
           }
