@@ -421,7 +421,7 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, data, c
   }
 
   // console.log('nonCircularMsg', nonCircularMsg);
-  console.log('Pond', `About to send a Pond message: ${nonCircularMsg.text} -> ${nonCircularMsg.type}/${nonCircularMsg.to}`);
+  // console.log('Pond', `About to send a Pond message: ${nonCircularMsg.text} -> ${nonCircularMsg.type}/${nonCircularMsg.to}`);
   nonCircularMsg.action = 'send';
   console.log(nonCircularMsg)
 

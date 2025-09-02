@@ -7,28 +7,30 @@ export default class SoundRecorder {
     async init() {
         this.bp.log('Hello from SoundRecorder');
 
+        // TODO: make this a broadcast channel, the youtube app also uses message event, triggering this code
         let eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
         let eventer = window[eventMethod];
         let messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
     
         // Listen to message from child window
         eventer(messageEvent, (e) => {
-            console.log("desktop.app.soundrecorder: message received", e);
+          // console.log("desktop.app.soundrecorder: message received", e);
           let key = e.message ? 'message' : 'data';
           let data = e[key];
           if (data === 'app_soundrecorder_needs_close') {
             // close the window
             this.soundRecorderWindow.close();
-
             return;
           }
     
           try {
             let message = JSON.parse(data);
-            console.log(`desktop.app.soundrecorder: message received:`, message);
-            console.log('emit buddy::sendMessage', message);
-            bp.emit('buddy::sendMessage', message);
-    
+            if (data.app === 'soundrecorder') {
+              console.log(`desktop.app.soundrecorder: message received:`, message);
+              console.log('emit buddy::sendMessage', message);
+              bp.emit('buddy::sendMessage', message);
+
+            }
           } catch (err) {
             console.error('desktop.app.soundrecorder: error parsing message:', err);        
           }

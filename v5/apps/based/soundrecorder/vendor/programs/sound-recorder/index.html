@@ -149,15 +149,12 @@
                 to: context,
                 from: buddypond.me,
                 type: type,
-                text: uploadedUrl
+                text: uploadedUrl,
+                app: 'soundrecorder'
               };
               console.log("sending multimedia message to iframe", message);
 
               parent.postMessage(JSON.stringify(message), '*');
-
-
-
-
 
             })
           }

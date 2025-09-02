@@ -1,6 +1,14 @@
 // Remark: createWebSocketClient is a prototype method of Client, as Client.createWebSocketClient()
 export default function createWebSocketClient(reconnect = false) {
   // Track reconnect state
+  console.log('createWebSocketClient called, reconnect:', reconnect);
+   // If a socket already exists and is open/connecting, reuse it
+  if (this.wsClient && 
+      (this.wsClient.readyState === WebSocket.OPEN || 
+       this.wsClient.readyState === WebSocket.CONNECTING)) {
+    console.log("Reusing existing WebSocket client");
+    return Promise.resolve(this.wsClient);
+  }
 
   console.log(`Creating WebSocket client for buddylist`);
   return new Promise((resolve, reject) => {
