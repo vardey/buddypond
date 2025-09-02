@@ -25,7 +25,7 @@ export default class SoundRecorder {
     
           try {
             let message = JSON.parse(data);
-            if (data.app === 'soundrecorder') {
+            if (message.app === 'soundrecorder') {
               console.log(`desktop.app.soundrecorder: message received:`, message);
               console.log('emit buddy::sendMessage', message);
               bp.emit('buddy::sendMessage', message);
