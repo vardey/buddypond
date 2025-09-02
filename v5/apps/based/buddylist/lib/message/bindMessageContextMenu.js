@@ -348,11 +348,8 @@ function replyMessage(messageData, originalMessage) {
   `;
   //   <span class="aim-reply-text">${messageData.text}</span>
 
-
   // Insert reply box above .aim-message-sender
-  console.log("originalMessage", originalMessage)
   const messageSender = $(originalMessage).parent().parent().parent().parent().find('.aim-message-sender')[0];
-  console.log('REEE messageSender', messageSender);
   if (!messageSender) {
     console.error('No message sender found');
     return;

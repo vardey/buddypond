@@ -13,6 +13,11 @@ export default class HotPondsWebSocketClient {
   }
 
   async connect() {
+
+    if (this.ws && (this.ws.readyState === WebSocket.CONNECTING || this.ws.readyState === WebSocket.OPEN)) {
+      return this;
+    }
+
     const url = `${this.endpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`;
     console.log(`🔌 Connecting to HotPonds...`);
 
@@ -55,10 +60,10 @@ export default class HotPondsWebSocketClient {
         let action = data.action;
 
         switch (action) {
-            case 'activePonds':
-                // console.log('Active ponds:', data.ponds);
-                this.bp?.emit('hotpond::activePonds', data.ponds);
-                break;
+          case 'activePonds':
+            // console.log('Active ponds:', data.ponds);
+            this.bp?.emit('hotpond::activePonds', data.ponds);
+            break;
         }
 
         // this.bp?.emit('hotpond::message', { pondId: this.pondId, message: data });
@@ -67,6 +72,8 @@ export default class HotPondsWebSocketClient {
       const onClose = (event) => {
         console.warn(`⚠️ WebSocket closed [${event.code}]: ${event.reason}`);
         clearInterval(this.pingInterval);
+        this._teardown?.();
+        this.ws = null;
         this.bp?.emit('hotpond::disconnected', {
           pondId: this.pondId,
           code: event.code,
@@ -81,7 +88,7 @@ export default class HotPondsWebSocketClient {
           console.log(`⏳ Reconnecting in ${Math.floor(delay)}ms...`);
           setTimeout(() => {
             this.reconnectAttempts++;
-            this.connect().catch(() => {});
+            this.connect().catch(() => { });
             this.bp?.emit('hotpond::reconnecting', { attempt: this.reconnectAttempts });
           }, delay);
         } else {
@@ -118,10 +125,14 @@ export default class HotPondsWebSocketClient {
   disconnect() {
     if (this.ws) {
       this.isIntentionallyClosed = true;
+
+      clearInterval(this.pingInterval);
       this._teardown?.();
+
       this.ws.close(1000, 'Normal closure');
-      this.bp?.emit('hotpond::closed', { pondId: this.pondId });
       this.ws = null;
+
+      this.bp?.emit('hotpond::closed', { pondId: this.pondId });
     }
   }
 

@@ -1,5 +1,5 @@
 export default async function sendMessageHandler(e, chatWindow, windowType, contextName) {
-  console.log('sendMessageHandler called', e, chatWindow, windowType, contextName);
+  // console.log('sendMessageHandler called', e, chatWindow, windowType, contextName);
   const message = $('.aim-input', chatWindow.content).val();
 
   const _data = {
@@ -320,7 +320,7 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
   }
   */
 
-  console.log('emitting message', _data);
+  // console.log('emitting message', _data);
   this.bp.emit('buddy::sendMessage', _data);
 
   // Clear input
