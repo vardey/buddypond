@@ -46,7 +46,6 @@ export default class SimpleTabs {
         // always navigate to the first tab
         //alert('navigating to first tab');
         let tabId = this.container.find('.tab-list li a').first();
-        console.log('init tabId', tabId);
         this.navigateToTab($(tabId).attr('href'));
     }
 
