@@ -168,11 +168,42 @@ bp.start = async function start(apps = []) {
     }
 }
 
+// Allows lookup of apps by name or alias
+bp.findApp = function findApp(appName) {
+  // searches bp.apps.list for appName directly or in alias array
+  let result = null;
+  if (bp.apps.list) {
+      let appList = bp.apps.list;
+      // iterate through all entries in appList and see if appName matches any entries in alias array
+      for (let key in appList) {
+          let appData = bp.apps.list[key];
+          if (key === appName) {
+              result = key;
+              break;
+          }
+          if (appData && appData.alias && Array.isArray(appData.alias) && appData.alias.includes(appName)) {
+              result = key; // found an alias
+              break;
+          }
+      }
+  }
+  return result;
+}
+
 // example usage: bp.open(['buddylist', { name: 'clock' }, 'entity']);
 bp.open = async function open(app, config = { context: 'default' }) {
     // console.log('bp.open', app, config)
     let appName = app;
     if (typeof app === 'string') {
+
+        // allows app lookup by id or alias
+        let result = bp.findApp(appName);
+
+        if (result) {
+            appName = result;
+        }
+
+        /*
         // See if the requested app is an alias in the desktop appList
         // This allows for loading apps by their alias names
         if (this.apps.list && this.apps.list) {
@@ -186,6 +217,7 @@ bp.open = async function open(app, config = { context: 'default' }) {
                 }
             }
         }
+        */
 
         // console.log('string loading async import app', appName);
         try {
@@ -415,13 +447,20 @@ bp.appendScript = async function appendScript(url) {
         fullUrl = `${bp.config.host}${url}`;
     }
 
+    // check cache if script was already loaded
+    fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
+    if (bp._cache.js[fullUrl]) {
+        return 'cached';
+    }
+    bp._cache.js[fullUrl] = new Date().getTime();
+
     // fetching JS should immediately apply to the document
     // Remark: We could check for duplicates here based on the URL
     // Better in dev mode to always fetch the JS and write it to the document
     // if (!document.querySelector(`script[src="${url}"]`)) {
     let script = document.createElement('script');
     script.src = fullUrl;
-    console.log('appendScript', fullUrl);
+    // console.log('appendScript', fullUrl);
     document.head.appendChild(script);
     // on load resolve promise
     return new Promise((resolve, reject) => {

@@ -79,8 +79,8 @@ export default class StickMan {
     }
 
     async startStickMan() {
-        this.video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
+        this.video = document.getElementById('stickman-video');
+        const canvas = document.getElementById('stickman-canvas');
         const ctx = canvas.getContext('2d');
         const status = document.getElementById('status');
 

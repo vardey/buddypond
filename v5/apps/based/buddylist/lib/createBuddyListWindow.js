@@ -77,6 +77,7 @@ export default function createBuddyListWindow() {
                 this.client.disconnect();
                 this.client = null;
             }
+            this.bp.connected = false;
         }
     });
 

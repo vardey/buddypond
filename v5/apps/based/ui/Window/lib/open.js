@@ -1,5 +1,5 @@
 export default function open() {
-    console.log('Window open:', this.id, this.title, this.app, this.type, this.context);
+    // console.log('Window open:', this.id, this.title, this.app, this.type, this.context);
     // set focus to this window ( first )
     this.focus();
 

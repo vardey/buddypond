@@ -28,6 +28,8 @@ export default class Welcome {
         // focus on the username input field
         $('.welcomeForm input[name="username"]', this.win.content).focus();
 
+        return this.win;
+
     }
 
      window() {

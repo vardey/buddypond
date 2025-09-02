@@ -527,6 +527,16 @@ export default {
     "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
   },
 
+  "welcome": {
+    "icon": "desktop/assets/images/icons/icon_buddy-frog_64.png",
+    "label": "Welcome",
+    "description": "Welcome to BuddyPond",
+    "onClick": "bp.open('welcome')",
+    "categories": ["social", "community"],
+    "enumerable": false, // do not show in the app list
+  },
+
+
   /*
   "gamblor-coinflip": {
     "icon": "",

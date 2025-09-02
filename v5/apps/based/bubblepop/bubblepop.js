@@ -149,8 +149,8 @@ export default class BubblePop {
     }
 
     async startBubblePop() {
-        this.video = document.getElementById('video');
-        this.canvas = document.getElementById('canvas');
+        this.video = document.getElementById('bubblepop-video');
+        this.canvas = document.getElementById('bubblepop-canvas');
         const ctx = this.canvas.getContext('2d');
         const status = document.getElementById('status');
         const scoreDisplay = document.getElementById('score-display');

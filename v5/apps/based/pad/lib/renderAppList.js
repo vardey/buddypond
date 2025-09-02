@@ -119,6 +119,7 @@ export default function renderAppList(appStats = {}) {
         // sort appsToRender by label
         appsToRender.sort((a, b) => a[1].label.localeCompare(b[1].label));
         appsToRender.forEach(([name, app]) => {
+            if (app.enumerable === false) return; // skip non-enumerable apps
             appContainer.append(renderAppCard(name, app));
         });
     }

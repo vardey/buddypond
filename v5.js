@@ -1,5 +1,7 @@
 const localIp = window.location.origin;
 const currentPath = window.location.pathname;
+const localToken = localStorage.getItem('qtokenid');
+
 
 // Endpoint Constants
 const ENDPOINTS = {
@@ -68,7 +70,7 @@ function configureDiscordMode(endpoints) {
 
   window.discordMode = isDiscordProxy;
   window.discordView = isDiscordProxy || isDiscordView;
-  console.log('discordMode:', window.discordMode, 'discordView:', window.discordView);
+  // console.log('discordMode:', window.discordMode, 'discordView:', window.discordView);
   if (window.discordMode) {
     const host = window.location.origin;
     return {
@@ -148,6 +150,7 @@ window.bp_init = async function () {
   $(document).ready(async function () {
 
     setConfig(endpoints);
+    bp.qtokenid = localToken;
 
     bp.loadedFromApp = loadedFromApp;
 
@@ -256,7 +259,15 @@ async function handleAppRouting(currentPath, urlParams) {
   if (!currentPath.startsWith('/app/')) return false;
 
   const appName = currentPath.split('/')[2];
-  console.log('Opening app:', appName);
+  // console.log('Opening app:', appName);
+
+  // search for app by name or alias before attempting to open it
+  let result = bp.findApp(appName);
+
+  if (!result || result.length === 0) {
+    console.log('App not found:', appName);
+    return false;
+  }
 
   let appContext = urlParams.has('context') ? urlParams.get('context') : 'default';
 
@@ -272,7 +283,7 @@ async function handleAppRouting(currentPath, urlParams) {
     urlParams
   });
 
-  console.log('Opened app:', win);
+  // console.log('Opened app:', win);
   if (win) {
     if (!win.isMaximized && win.maximize) {
       win.maximize();
@@ -283,11 +294,13 @@ async function handleAppRouting(currentPath, urlParams) {
   bp.loadedFromApp = false;
   const allCommands = bp.apps.buddyscript.commands;
   // only show welcome if qtokenid is not set
+  /*
   if (!bp.qtokenid && !window.discordView) {
     console.log('No qtokenid found, opening welcome app');
     await bp.open({ name: 'welcome', autocomplete: allCommands, openDefaultPond: true });
     return false;
   }
+  */
 
 }
 
@@ -303,7 +316,7 @@ window.bp_loadApps = async function bp_loadApps() {
   // defer loading of apps that are not essential for the initial experience
   // but will be clicked or loaded from chat window or other places
   // this is used to increase responsiveness of user experience ( i.e. clicking on buttons )
-  // TODO: ensure this starts *after* app is ready. this should be OK for now, but we could tighten the timing
+  /* Remark: This is now handled inside buddylist app after login
   function deferLoad() {
     setTimeout(async () => {
       console.log('Now defer loading additional apps...');
@@ -340,6 +353,8 @@ window.bp_loadApps = async function bp_loadApps() {
     }, 7000);
   }
   window.deferLoad = deferLoad;
+  */
+
 };
 
 function setConfig(endpoints) {
@@ -425,24 +440,22 @@ async function loadCoreApps() {
   // loadedFromApp indicates a direct app like like /app/paint was provided
   //
   if (!bp.loadedFromApp) {
-    // bp.open('motd');
-    // if we are not logged in, open the welcome app
-    // this will also load the buddylist app
     console.log('No qtokenid found, opening welcome app');
+    // If this is not the discord view
     if (!window.discordView) {
-      //
-      // If this is not the Discord view, load the initial welcome app
-      // This app will attempt verify the token and load the buddylist app
-      //
-      await bp.open({
-        name: 'welcome',
-        autocomplete: allCommands,
-        // openDefaultPond: true // for now
-      });
+      // If no token exists, show the welcome screen by default
+      if (!bp.qtokenid) {
+        await bp.open({
+          name: 'welcome',
+          autocomplete: allCommands
+        });
+      } else {
+        // If a token exists, open the buddylist directly
+        await this.bp.open('buddylist');
+      }
+
     }
-    //
     // If this is the Discord view, we will open the coin leaderboard and show a welcome message
-    //
     if (window.discordView) {
       bp.open('coin', {
         type: 'leaderboard'
@@ -454,15 +467,16 @@ async function loadCoreApps() {
   } else {
     // a direct app like /app/paint was provided
     if (!window.discordView) {
-      await bp.open({
-        name: 'welcome',
-        autocomplete: allCommands
-      });
+      if (!bp.qtokenid) {
+        await bp.open({
+          name: 'welcome',
+          autocomplete: allCommands
+        });
+      } else {
+        await this.bp.open('buddylist');
+      }
     }
   }
-
-  // Remark: Do we need to load the pond here, or can we wait until login is successful?
-  // await bp.load('pond');
 
   const isDiscordProxy = window.location.hostname.includes('discord');
   if (isDiscordProxy) {
@@ -470,9 +484,7 @@ async function loadCoreApps() {
   }
 
   // load any other apps that are non-essential but still useful
-  // bp.load('console');
   bp.load('clock');
-  bp.load('say');
   bp.load('droparea');
   bp.load('file-viewer');
   bp.load('rewards');

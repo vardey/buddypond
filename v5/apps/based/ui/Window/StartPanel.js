@@ -68,6 +68,7 @@ export default class StartPanel {
         const allAppEntries = Object.entries(appList);
         allAppEntries.forEach(([appName, appData]) => {
             if (appData.adminOnly && this.bp.me !== 'Marak') return;
+            if (appData.enumerable === false) return;
             appData.app = appData.app || appName;
             appData.id = appData.id || appName;
             const app = this.createAppTile(appData, appData.icon);

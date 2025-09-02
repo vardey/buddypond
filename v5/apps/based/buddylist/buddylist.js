@@ -315,7 +315,8 @@ export default class BuddyList {
     handleAuthentication() {
 
         if (this.bp.connected) {
-            // return;
+          // if we are already connected, do nothing
+          return; 
         }
 
         const api = this.bp.apps.client.api;
@@ -357,7 +358,7 @@ export default class BuddyList {
     // maybe also could connect to the websocket server for buddylist?
     // opening the default window initializes the messages client
     async handleAuthSuccess(qtoken) {
-        // console.log('handleAuthSuccess', qtoken);
+        console.log('buddylist.handleAuthSuccess', qtoken);
         this.bp.connected = true;
         this.bp.me = qtoken.me;
         this.bp.qtokenid = qtoken.qtokenid;

@@ -119,8 +119,6 @@ export default class Portfolio {
 
         this.eventBind(this.portfolioWindow.content);
 
-        console.log('focus the portfolioWindow');
-
         // focus the window
         this.portfolioWindow.focus();
    
