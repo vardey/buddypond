@@ -685,7 +685,10 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   // console.log('buddypond.uploadsEndpoint', buddypond.uploadsEndpoint, buddypond);
   if (!buddypond.uploadsEndpoint) {
     // shouldn't have lost scope here? what happened?
-    buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
+    // happening with soundrecorder app, but not other file uploaders?
+    // sometimes this scope is lost? figure out why?
+    // might be due to bp.emit('buddy::sendMessage') scope?
+    buddypond.uploadsEndpoint = 'https://buddypond.com/api/uploads';
   }
   const signedUrlRequest = `${buddypond.uploadsEndpoint}/generate-signed-url?v=6&fileName=${filePath}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
 
