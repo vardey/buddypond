@@ -259,6 +259,9 @@ function renderBuddyPad(currentPath) {
   buddypadIframe.style.height = '800px';
   buddypadIframe.style.border = 'none';
 
+  // reset all CSS body styles
+  $('body').css({ padding: '0', margin: '0', border: 'none', overflow: 'auto', background: 'none' });
+
   $('body').append(buddypadIframe);
 
   const filesSrc = `https://files.buddypond.com${currentPath}`;
