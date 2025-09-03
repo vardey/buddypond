@@ -29,8 +29,12 @@ const ENDPOINTS = {
   //buddylistWs: 'wss://buddypond.com/api/buddylist/ws/buddylist',
   buddylistWs: 'wss://a.buddypond.com/api/buddylist/ws/buddylist',
   chessWs: 'wss://buddypond.com/api/chess/ws/chess',
-  messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
-  pondsWs: 'wss://buddypond.com/api/messages/ws/ponds',
+  // messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
+  // Attempting to isolate 1006 errors from CF platform
+  messagesWs: 'wss://messages.buddypond.com/api/messages/ws/messages',
+  // pondsWs: 'wss://buddypond.com/api/messages/ws/ponds',
+  // Attempting to isolate 1006 errors from CF platform
+  pondsWs: 'wss://messages.buddypond.com/api/messages/ws/ponds',
   tweetsWs: 'wss://tweets.buddypond.com/api/tweets/ws/tweets',
   videoChat: 'wss://videochat.buddypond.com/api/videochat/ws'
 };
