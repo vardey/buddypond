@@ -6,7 +6,10 @@ const localToken = localStorage.getItem('qtokenid');
 // Endpoint Constants
 const ENDPOINTS = {
   host: 'https://buddypond.com',
-  api: 'https://buddypond.com/api/buddylist',
+  // Remark: switch back to a.buddypond.com/api/buddylist ( only if non-discord mode )
+  // Attempting to isolate 1006 errors from CF platform
+  // api: 'https://buddypond.com/api/buddylist',
+  api: 'https://a.buddypond.com/api/buddylist',
   cdn: 'https://files.buddypond.com',
   admin: 'https://buddypond.com/api/admin',
   apiKeys: 'https://buddypond.com/api/api-keys',
@@ -21,7 +24,10 @@ const ENDPOINTS = {
   errors: 'https://buddypond.com/api/errors',
   randolph: 'https://buddypond.com/api/randolph',
   buddyProxy: 'https://buddypond.com/api/proxy',
-  buddylistWs: 'wss://buddypond.com/api/buddylist/ws/buddylist',
+  // Remark: switch back to a.buddypond.com/api/buddylist ( only if non-discord mode )
+  // Attempting to isolate 1006 errors from CF platform
+  //buddylistWs: 'wss://buddypond.com/api/buddylist/ws/buddylist',
+  buddylistWs: 'wss://a.buddypond.com/api/buddylist/ws/buddylist',
   chessWs: 'wss://buddypond.com/api/chess/ws/chess',
   messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
   pondsWs: 'wss://buddypond.com/api/messages/ws/ponds',
@@ -59,6 +65,9 @@ function configureEnvironment() {
   if (devmode) {
     return DEV_ENDPOINTS
   }
+
+
+
   return ENDPOINTS;
 }
 
