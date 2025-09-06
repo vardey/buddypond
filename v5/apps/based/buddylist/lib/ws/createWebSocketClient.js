@@ -47,7 +47,10 @@ export default function createWebSocketClient(reconnect = false) {
       this.pingInterval = setInterval(() => {
         if (wsClient.readyState === WebSocket.OPEN) {
           // console.log('Sending ping to buddylist WebSocket');
-          wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
+          // wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
+          // application level ping
+          wsClient.send(JSON.stringify({ action: 'ping' }) );
+
         }
       }, 25000);
 
@@ -109,8 +112,8 @@ export default function createWebSocketClient(reconnect = false) {
               })
             );
             break;
-          case 'ping':
-            // console.log('pong message received:', parseData);
+          case 'pong':
+            // console.log('buddylist pong message received:', parseData);
             break;
           case 'buddy_removed':
             // alert('buddy_removed WebSocket message received:', parseData);
