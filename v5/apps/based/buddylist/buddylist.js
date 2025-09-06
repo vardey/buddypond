@@ -99,6 +99,7 @@ export default class BuddyList {
 
     async init() {
         // Add event when user closes browser window or navigates away
+        /*
         window.addEventListener('beforeunload', (event) => {
             if (this.client) {
                 this.client.setStatus(this.bp.me, {
@@ -109,6 +110,7 @@ export default class BuddyList {
 
             }
         });
+        */
 
         await Promise.all([
             this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false),
