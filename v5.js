@@ -70,8 +70,6 @@ function configureEnvironment() {
     return DEV_ENDPOINTS
   }
 
-
-
   return ENDPOINTS;
 }
 
