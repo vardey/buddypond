@@ -386,7 +386,10 @@ function ensureMessagesContainer(contextName, chatWindow, client) {
     }
 
     // Normalize context for user list (e.g., "pond/general" -> "general")
-    const userListContext = contextName.replace("pond/", "");
+    let userListContext = contextName.replace("pond/", "");
+
+    // santitize userListContext using jQuery to prevent XSS
+    userListContext = $("<div>").text(userListContext).html();
 
     // Create message container if missing
     let existingContainer = $(`.aim-messages-container[data-context="${contextName}"]`, chatArea);

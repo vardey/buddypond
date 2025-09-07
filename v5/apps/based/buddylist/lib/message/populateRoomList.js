@@ -29,10 +29,11 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
     // Update or add room items
     sortedPonds.forEach((pond) => {
         const pondId = pond.pond_id;
-        const pondName = pondId.replace("pond/", "");
+        let pondName = pondId.replace("pond/", "");
         const isUserOpened = userOpenedPonds.includes(pondId);
         const isActive = pondId === activeContext;
-
+        // Sanitize pond name using jQuery to prevent XSS
+        pondName = $("<div>").text(pondName).html();
         const existingItem = existingItems.get(pondId);
         if (existingItem) {
             // Update existing item only if data has changed
