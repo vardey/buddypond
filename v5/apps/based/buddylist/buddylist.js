@@ -116,6 +116,7 @@ export default class BuddyList {
             this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false),
             this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false),
             await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js'),
+            await this.bp.appendScript('/v5/apps/based/buddylist/vendor/purify.min.js'),
             await bp.load('emoji-picker'),
             await bp.load('buddyscript'),
             await bp.load('card'),

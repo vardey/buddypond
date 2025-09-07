@@ -99,7 +99,21 @@ export default function parseMarkdownWithoutPTags(markdown) {
     html = markdown;
   }
 
-  return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1');
+  // sanitize: allow the tags/attrs you need, and restrict allowed URI schemes
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [
+      'a', 'span', 'strong', 'em', 'u', 's', 'div', 'br', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ul', 'ol', 'li', 'code', 'pre', 'blockquote'
+    ],
+    ALLOWED_ATTR: [
+      'href', 'target', 'rel'
+    ],
+    FORCE_BODY: true,
+    // allow only http(s), mailto, tel for href/src
+    ALLOWED_URI_REGEXP: /^(?:(https?|mailto|tel):|\/)/i
+  });
+
+  return clean.replace(/^<p>(.*?)<\/p>\s*$/s, '$1');
   // Explanation:
   // ^<p>       → Matches the opening <p> at the start
   // (.*?)      → Captures the content inside (non-greedy)
@@ -127,7 +141,7 @@ function isEmojiOnly(text) {
   const graphemes = splitEmojiGraphemes(text);
   const emojiList = new Set(Object.keys(EMOJIS));
 
-  const emojis = graphemes.filter(g => 
+  const emojis = graphemes.filter(g =>
     emojiList.has(g) || emojiList.has(normalizeEmoji(g))
   );
 
