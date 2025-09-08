@@ -534,8 +534,21 @@ export default {
     "onClick": "bp.open('welcome')",
     "categories": ["social", "community"],
     "enumerable": false, // do not show in the app list
-  },
-
+  }
+  
+  /*
+  ,
+  "gamblor": {
+    "icon": "desktop/assets/images/icons/icon_buddy-frog_64.png",
+    "label": "Casino",
+    "onClick": "bp.open('gamblor')",
+    "description": "Flip a coin and get a random result",
+    "categories": ["games", "entertainment"],
+    "author": "BuddyPond",
+    "authorUrl": "https://github.com/BuddyPond",
+    "alias": ["casino"]
+  }
+  */
 
   /*
   "gamblor-coinflip": {

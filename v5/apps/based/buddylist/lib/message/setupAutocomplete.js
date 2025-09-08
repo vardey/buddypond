@@ -126,11 +126,21 @@ export default function setupAutocomplete(chatWindow) {
                 response(matches);
             } else if (context.type === 'command') {
                 const query = context.text.slice(1).toLowerCase();
-                console.log('Command query:', query);
-                console.log('Available commands:', that.commands);
+
+                // sort that.commands by value alphabetically
+                that.commands.sort((a, b) => a.value.localeCompare(b.value));
+
+                // console.log('Command query:', query, query.length);
+                // console.log('Available commands:', that.commands);
+                if (query.length === 0) {
+                    // Remark: confirmed it makes it here
+                    response(that.commands);
+                    return;
+                }
+                // matching should be left to right, so startsWith
                 const matches = that.commands.filter(suggestion =>
-                    suggestion.value.toLowerCase().includes(query)
-                ).slice(0, 10);
+                    suggestion.value.toLowerCase().startsWith('/' + query)
+                );
                 response(matches);
             } else {
                 response([]);
@@ -179,6 +189,12 @@ export default function setupAutocomplete(chatWindow) {
             });
         }
     });
+
+    // Remark: ensures autocomplete works on first keypress
+    $input.on("input", function() {
+        $(this).autocomplete("search");
+    });
+
 }
 
 // Function to validate and normalize a shortcode name

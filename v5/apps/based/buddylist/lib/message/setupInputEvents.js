@@ -55,7 +55,8 @@ export default function setupInputEvents(windowType, contextName, chatWindow) {
         if (e.which === 13) {
             let message = $input.val().replace(/\n/g, "<br>");
             message = that.replaceShortcodes(message);
-
+            // close the autocomplete if open
+            $input.autocomplete("close");
             $input.val(message);
             $form.submit();
             e.preventDefault();
