@@ -6,6 +6,8 @@ export default function applyData(el, data, cardClass, parent) {
         $el.find('.card-website-loading').hide();
         const $content = $el.find('.card-website-content');
         $content.find('.card-website-link').attr('href', url);
+        // open in new tab
+        $content.find('.card-website-link').attr('target', '_blank');
         $content.find('.card-website-title').text(metadata.title || new URL(url).hostname);
         $content.find('.card-website-description').text(metadata.description || '');
         const $image = $content.find('.card-website-image');

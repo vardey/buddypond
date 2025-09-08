@@ -94,6 +94,44 @@ export default function parseMarkdownWithoutPTags(markdown) {
     html = markdown;
   }
 
+  // register the hook once at module init
+  if (!DOMPurify.__added_anchor_hook) {
+    DOMPurify.addHook('afterSanitizeAttributes', function (node) {
+      // only run for <a>
+      if (node.tagName && node.tagName.toLowerCase() === 'a') {
+        const href = node.getAttribute('href') || '';
+
+        // Validate URL scheme (same rules as ALLOWED_URI_REGEXP)
+        try {
+          const url = new URL(href, 'https://example.com'); // base for relative URLs
+          if (!/^(https?:|mailto:|tel:)/i.test(url.protocol)) {
+            // Disallow link entirely (or remove href)
+            node.removeAttribute('href');
+            node.removeAttribute('target');
+            node.removeAttribute('rel');
+            return;
+          }
+        } catch (e) {
+          // malformed -> remove
+          node.removeAttribute('href');
+          node.removeAttribute('target');
+          node.removeAttribute('rel');
+          return;
+        }
+
+        // Ensure anchors open safely in a new tab
+        // We force _blank and ensure rel contains noopener noreferrer
+        node.setAttribute('target', '_blank');
+
+        const existing = (node.getAttribute('rel') || '').split(/\s+/).filter(Boolean);
+        if (!existing.includes('noopener')) existing.push('noopener');
+        if (!existing.includes('noreferrer')) existing.push('noreferrer');
+        node.setAttribute('rel', existing.join(' '));
+      }
+    });
+    DOMPurify.__added_anchor_hook = true;
+  }
+
   // sanitize: allow the tags/attrs you need, and restrict allowed URI schemes
   const clean = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
