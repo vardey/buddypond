@@ -919,3 +919,65 @@
 
 
 }
+
+/* custom decorations for text */
+
+/* Colors */
+.message-decoration-color-red { color: red; }
+.message-decoration-color-blue { color: blue; }
+.message-decoration-color-green { color: green; }
+.message-decoration-color-yellow { color: yellow; }
+.message-decoration-color-purple { color: purple; }
+.message-decoration-color-orange { color: orange; }
+.message-decoration-color-black { color: black; }
+.message-decoration-color-white { color: white; }
+.message-decoration-color-gray { color: gray; }
+.message-decoration-color-cyan { color: cyan; }
+.message-decoration-color-magenta { color: magenta; }
+.message-decoration-color-pink { color: pink; }
+
+/* Font styles */
+.message-decoration-bold { font-weight: bold; }
+.message-decoration-italic { font-style: italic; }
+.message-decoration-underline { text-decoration: underline; }
+.message-decoration-strike { text-decoration: line-through; }
+
+/* Blink effect */
+@keyframes message-decoration-blink-keyframes {
+  50% { visibility: hidden; }
+}
+.message-decoration-blink {
+  animation: message-decoration-blink-keyframes 1s step-start infinite;
+}
+
+/* Hidden (reveal on hover) */
+.message-decoration-hidden { visibility: hidden; }
+.message-decoration-hidden:hover { visibility: visible; }
+
+/* Dim effect */
+.message-decoration-dim { opacity: 0.5; }
+
+/* Rainbow letters */
+.message-decoration-rainbow {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-shift 8s linear infinite;
+}
+
+@keyframes rainbow-shift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}

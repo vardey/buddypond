@@ -23,7 +23,6 @@ export default function parseMarkdownWithoutPTags(markdown) {
     }
   };
 
-
   const styleExtension = {
     name: 'style',
     level: 'inline',
@@ -47,41 +46,37 @@ export default function parseMarkdownWithoutPTags(markdown) {
         };
       }
     },
-
     renderer(token) {
       let content = this.parser.parseInline(token.tokens);
 
       // Apply modifiers in reverse order to maintain proper nesting
       token.modifiers.reverse().forEach(mod => {
         if (supportedColors.includes(mod)) {
-          content = `<span style="color: ${mod};">${content}</span>`;
+          content = `<span class="message-decoration-color-${mod}">${content}</span>`;
         } else if (mod === 'bold') {
-          content = `<strong>${content}</strong>`;
+          content = `<strong class="message-decoration-bold">${content}</strong>`;
         } else if (mod === 'italic') {
-          content = `<em>${content}</em>`;
+          content = `<em class="message-decoration-italic">${content}</em>`;
         } else if (mod === 'underline') {
-          content = `<u>${content}</u>`;
+          content = `<u class="message-decoration-underline">${content}</u>`;
         } else if (mod === 'strike') {
-          content = `<s>${content}</s>`;
+          content = `<s class="message-decoration-strike">${content}</s>`;
         } else if (mod === 'blink') {
-          // Using CSS animation instead of deprecated <blink> tag
-          content = `<span style="animation: blink 1s step-start infinite;">${content}</span>`;
+          content = `<span class="message-decoration-blink">${content}</span>`;
         } else if (mod === 'reverse') {
           content = content.split('').reverse().join('');
         } else if (mod === 'hidden') {
-          content = `<span style="visibility: hidden;" onmouseover="this.style.visibility='visible'" onmouseout="this.style.visibility='hidden'">${content}</span>`;
+          content = `<span class="message-decoration-hidden">${content}</span>`;
         } else if (mod === 'dim') {
-          content = `<span style="opacity: 0.5;">${content}</span>`;
+          content = `<span class="message-decoration-dim">${content}</span>`;
         } else if (mod === 'rainbow') {
-          content = content
-            .split('')
-            .map((char, i) => `<span style="color: hsl(${(i * 360) / content.length}, 100%, 50%);">${char}</span>`)
-            .join('');
+          content = `<span class="message-decoration-rainbow">${content}</span>`;
         }
       });
 
       return content;
     },
+
 
     walkTokens(token) {
       if (token.type === 'style') {
@@ -106,9 +101,13 @@ export default function parseMarkdownWithoutPTags(markdown) {
       'ul', 'ol', 'li', 'code', 'pre', 'blockquote'
     ],
     ALLOWED_ATTR: [
-      'href', 'target', 'rel'
+      'href', 'target', 'rel', 'class', 'data-char-index'
     ],
     FORCE_BODY: true,
+    KEEP_CONTENT: true,
+    SANITIZE_DOM: true,
+    // RETURN_TRUSTED_TYPE: true, // progressive support for supporting Trusted Types, works when available
+    // this will return DOM if supported, otherwise returns string, TODO: would need to handle both cases
     // allow only http(s), mailto, tel for href/src
     ALLOWED_URI_REGEXP: /^(?:(https?|mailto|tel):|\/)/i
   });

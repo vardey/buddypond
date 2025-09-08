@@ -7,7 +7,8 @@ export default function applyData(el, data) {
             pondLink.className = "card-pond-pond-name";
             pondLink.textContent = '#' + pondName;
             pondLink.title = `Join the ${pondName} pond`;
-            pondLink.onclick = () => {
+            pondLink.onclick = (ev) => {
+                ev.preventDefault();
                 bp.apps.buddylist.joinPond(pondName);
                 // bp.open('buddylist', { context: pondName, type: 'pond' });
             };
