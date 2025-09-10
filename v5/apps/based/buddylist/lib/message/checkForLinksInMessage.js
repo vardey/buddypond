@@ -6,7 +6,7 @@ import isValidYoutubeLink from './isValidYoutubeLink.js';
 import isValidGithubLink from './isValidGithubLink.js';
 
 export default function checkForLinksInMessage(message) {
-  const text = message.text || '';
+  const text = message.text || message.content || '';
 
   // Basic URL regex — matches http(s) links
   const urlRegex = /https?:\/\/(?:[^\s()<>\[\]{}"']+|\([^\s()]*?\))+/gi;

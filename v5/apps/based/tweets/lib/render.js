@@ -30,8 +30,8 @@ export default async function render(tweets, context, type = 'author', tweetsWin
 
   const tweetList = $('.tweets-timeline', tweetsWindow.content);
   // tweetList.empty();
-  tweets.forEach(tweet => {
-    tweetList.prepend(this.renderTweet(tweet, tweetsWindow))
-  })
+  for (const tweet of tweets) {
+    tweetList.prepend(await this.renderTweet(tweet, tweetsWindow));
+  }
 
 }

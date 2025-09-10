@@ -1,12 +1,11 @@
 import parseMarkdownWithoutPTags from '../../buddylist/lib/message/parseMarkdownWithoutPTags.js';
+import checkForLinksInMessage from '../../buddylist/lib/message/checkForLinksInMessage.js';
 
-export default function renderTweet(tweet, tweetsWindow, options = {}) {
+export default async function renderTweet(tweet, tweetsWindow, options = {}) {
   let showReplyButton = true;
   let replyButton = ``;
   let deleteButton = ``;
   let likeButton = `<a href="#" class="tweets-like" data-id="${tweet.id}">Like (${tweet.like_count || 0})</a>`;
-
-  // TODO: we need to check if the tweet.parent_id exists in the DOM, if so, we need to nest this tweet under that parent as a reply
 
   // Check if tweet already exists in DOM
   let existingTweet = $(`[data-tweet="${tweet.id}"]`, tweetsWindow.content);
@@ -18,11 +17,33 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
     $('.tweets-like', existingTweet).html(`Like (${tweet.like_count || 0})`);
     $('.tweets-reply', existingTweet).html(`Reply (${tweet.reply_count || 0})`);
 
-    tweet.content = parseMarkdownWithoutPTags(tweet.content);
+    console.log('Updating existing tweet:', tweet);
+
+    // Normalize text and run link detection (keep same parsing pipeline as new render)
+    tweet.text = tweet.content || '';
+    checkForLinksInMessage(tweet);
+    tweet.text = parseMarkdownWithoutPTags(tweet.text);
 
     // update content in case it changed (edits)
-    $('.tweets-content', existingTweet).html(tweet.content);
+    if (!tweet.card) {
+      $('.tweets-content', existingTweet).html(tweet.text);
+    }
+
     $('.tweets-meta', existingTweet).html(new Date(tweet.ctime).toLocaleString());
+
+    // --- Handle card rendering for updates ---
+    try {
+      // Remove any previous card containers so we replace them
+      existingTweet.find('.cardContainer').remove();
+
+      const cardContainer = await renderCardForTweet(tweet, existingTweet, this.bp);
+      if (cardContainer) {
+        $('.tweets-content', existingTweet).append(cardContainer);
+      }
+    } catch (err) {
+      // Already logged inside helper; keep UI stable
+      console.error('Failed to update card for tweet', tweet && tweet.id, err);
+    }
 
     // --- Handle replies differential update ---
     if (options.noRender !== true && tweet.replies && tweet.replies.length > 0) {
@@ -32,11 +53,11 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
         existingTweet.append(repliesContainer);
       }
 
-      // Render replies
+      // Render replies (differentially)
       const seenReplies = new Set();
-      tweet.replies.forEach(reply => {
+      tweet.replies.forEach(async reply => {
         seenReplies.add(reply.id);
-        const replyHtml = this.renderTweet(reply, tweetsWindow, options);
+        const replyHtml = await this.renderTweet(reply, tweetsWindow, options);
         if (replyHtml) {
           repliesContainer.append(replyHtml);
         }
@@ -88,23 +109,76 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
 
   // safely insert user content
   // this will render through the markdown parser + DOMPurify code path
-  // TODO: add ability for "cards" same as chat messages
-  tweet.content = parseMarkdownWithoutPTags(tweet.content);
+  tweet.text = tweet.content || '';
+  checkForLinksInMessage(tweet);
+  tweet.text = parseMarkdownWithoutPTags(tweet.text);
 
-  console.log('Rendering tweet:', tweet);
+  let container = null;
+  if (tweet.card && this.bp && this.bp.apps && this.bp.apps.card) {
+    console.log('tweet has card', tweet.card);
+    try {
+      container = await renderCardForTweet(tweet, $tweet, this.bp);
+      console.log('Rendering card into container', container);
+    } catch (err) {
+      console.error('Error while rendering card for new tweet', tweet && tweet.id, err);
+      container = null;
+    }
+  }
 
-  $('.tweets-content', $tweet).html(tweet.content);
+  // console.log('Rendering tweet:', tweet);
+  // console.log('With card container:', container);
+
+  // update content in case it changed (edits)
+  if (!tweet.card) {
+    $('.tweets-content', $tweet).html(tweet.text);
+  }
+
+  if (container) {
+    $('.tweets-content', $tweet).append(container);
+  }
   $('.tweets-meta', $tweet).text(new Date(tweet.ctime).toLocaleString());
 
   // append replies if any
   if (options.noRender !== true && tweet.replies && tweet.replies.length > 0) {
     let $replies = $('<div class="tweets-replies"></div>');
-    tweet.replies.forEach(reply => {
-      $replies.append(this.renderTweet(reply, tweetsWindow, options));
+    tweet.replies.forEach(async reply => {
+      $replies.append(await this.renderTweet(reply, tweetsWindow, options));
     });
     $tweet.append($replies);
   }
 
   return $tweet;
+}
 
+
+async function renderCardForTweet(tweet, $tweet, bp) {
+  // Returns a DOM element (container) for the card, or null on no-card / error.
+  if (!tweet || !tweet.card || !bp || !bp.apps || !bp.apps.card) {
+    return null;
+  }
+
+  const cardData = tweet.card || {};
+  if (Object.keys(cardData).length === 0) {
+    return null;
+  }
+
+  try {
+    // Give the card context the tweet message
+    cardData.message = tweet;
+    console.log('cccccc cardData', cardData);
+    const cardManager = bp.apps.card.cardManager;
+    // provide current $tweet HTML as the context (mirrors original behavior)
+    const _card = await cardManager.loadCard(cardData.type, cardData, $tweet.html());
+
+    const container = document.createElement('div');
+    container.classList.add('cardContainer');
+
+    // Render card into container (await if returns promise)
+    await _card.render(container);
+
+    return container;
+  } catch (err) {
+    console.error('Error rendering card for tweet', tweet && tweet.id, err);
+    return null;
+  }
 }
