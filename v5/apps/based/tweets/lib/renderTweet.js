@@ -1,6 +1,5 @@
 import parseMarkdownWithoutPTags from '../../buddylist/lib/message/parseMarkdownWithoutPTags.js';
 
-
 export default function renderTweet(tweet, tweetsWindow, options = {}) {
   let showReplyButton = true;
   let replyButton = ``;
@@ -19,8 +18,10 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
     $('.tweets-like', existingTweet).html(`Like (${tweet.like_count || 0})`);
     $('.tweets-reply', existingTweet).html(`Reply (${tweet.reply_count || 0})`);
 
+    tweet.content = parseMarkdownWithoutPTags(tweet.content);
+
     // update content in case it changed (edits)
-    $('.tweets-content', existingTweet).text(tweet.content);
+    $('.tweets-content', existingTweet).html(tweet.content);
     $('.tweets-meta', existingTweet).html(new Date(tweet.ctime).toLocaleString());
 
     // --- Handle replies differential update ---
