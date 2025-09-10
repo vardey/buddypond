@@ -1,3 +1,6 @@
+import parseMarkdownWithoutPTags from '../../buddylist/lib/message/parseMarkdownWithoutPTags.js';
+
+
 export default function renderTweet(tweet, tweetsWindow, options = {}) {
   let showReplyButton = true;
   let replyButton = ``;
@@ -83,7 +86,13 @@ export default function renderTweet(tweet, tweetsWindow, options = {}) {
 `);
 
   // safely insert user content
-  $('.tweets-content', $tweet).text(tweet.content);
+  // this will render through the markdown parser + DOMPurify code path
+  // TODO: add ability for "cards" same as chat messages
+  tweet.content = parseMarkdownWithoutPTags(tweet.content);
+
+  console.log('Rendering tweet:', tweet);
+
+  $('.tweets-content', $tweet).html(tweet.content);
   $('.tweets-meta', $tweet).text(new Date(tweet.ctime).toLocaleString());
 
   // append replies if any

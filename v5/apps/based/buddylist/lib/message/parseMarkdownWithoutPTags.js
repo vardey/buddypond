@@ -136,10 +136,10 @@ export default function parseMarkdownWithoutPTags(markdown) {
   const clean = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
       'a', 'span', 'strong', 'em', 'u', 's', 'div', 'br', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'ul', 'ol', 'li', 'code', 'pre', 'blockquote'
+      'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img'
     ],
     ALLOWED_ATTR: [
-      'href', 'target', 'rel', 'class', 'data-char-index'
+      'href', 'target', 'rel', 'class', 'data-char-index', 'src'
     ],
     FORCE_BODY: true,
     KEEP_CONTENT: true,
