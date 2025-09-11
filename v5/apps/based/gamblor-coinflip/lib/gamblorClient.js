@@ -18,7 +18,6 @@ client.apiRequest = async (uri, method = 'GET', data = null) => {
     headers["X-Me"] = buddypond.me; // ✅ Use X-Me header
   }
 
-
   if (data) {
     options.body = JSON.stringify(data);
   }

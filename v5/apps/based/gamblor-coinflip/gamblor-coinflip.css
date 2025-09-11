@@ -1,14 +1,44 @@
 /* Coinflip Casino Theme */
+.coinflip-container {
+  display: flex;
+  justify-content: center; /* center the form on the page */
+  align-items: flex-start;
+  background: radial-gradient(circle, #1a0000 0%, #000000 100%);
+  min-height: 100vh; /* full viewport height */
+}
 .coinflip-form-container {
   background: linear-gradient(135deg, #300000, #4b1a1a);
   padding: 24px;
   border-radius: 12px;
-  max-width: 400px;
-  margin: 32px auto;
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
   border: 2px solid gold;
   font-family: 'Segoe UI', sans-serif;
   color: #ffd700;
+  display: flex;           /* two-column layout */
+  gap: 24px;               /* space between columns */
+  min-width: 800px;      /* minimum width for small screens */
+}
+
+.coinflip-left,
+.coinflip-right {
+  flex: 1;                 /* equal width columns */
+  min-width: 0;            /* prevents flex overflow */
+}
+
+/* Keep your existing styles (button, inputs, etc.) unchanged */
+.page-info {
+  text-align: center;
+  margin-top: 20px;
+  color: #ffefc2 !important;
+}
+
+/* Optional: style the right column */
+.coinflip-previous-bets {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 2px solid gold;
+  padding: 16px;
+  border-radius: 10px;
+  color: #ffefc2;
 }
 
 .coinflip-form-container h2 {
@@ -17,6 +47,14 @@
   margin-bottom: 16px;
   font-weight: bold;
 }
+
+.coinflip-form-container h3 {
+  color: #ffefc2;
+  text-align: left;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
 
 .coinflip-form-title {
   text-align: center;
@@ -39,7 +77,6 @@
 
 .coinflip-input,
 .coinflip-select {
-  width: 100%;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #b8860b;
@@ -75,15 +112,15 @@
     display: none;
 }
 
-.coinflip-result p {
+.coinflip-result > p {
     margin: 8px 0;
     font-size: 1rem;
     color: #ffefc2;
 }
 
-
 .coinflip-result-data {
     color: #ffd700;
+    display: none;
 }
 
 .coinflip-loaded-bet {
@@ -95,7 +132,9 @@
   color: #ffd700;
 }
 
-.coinflip-loaded-bet p, span, h3 {
+.coinflip-loaded-bet > p,
+.coinflip-loaded-bet > span,
+.coinflip-loaded-bet > h3 {
     margin: 8px 0;
     font-size: 1rem;
     color: #ffefc2;
@@ -110,7 +149,7 @@
   margin-top: 16px;
 }
 
-.coinflip-action-buttons button {
+.coinflip-action-buttons > button {
   margin-right: 10px;
   padding: 8px 16px;
   background: crimson;
@@ -121,6 +160,79 @@
   cursor: pointer;
 }
 
-.coinflip-action-buttons button:hover {
+.coinflip-action-buttons > button:hover {
   background: darkred;
+}
+
+/* Container for heads/tails buttons */
+.coinflip-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px; /* spacing between buttons */
+  margin-top: 12px;
+}
+
+/* Round casino-style buttons */
+.coinflip-button[data-side] {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
+  color: #000;
+  border: 2px solid gold;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  transition: transform 0.2s ease-in-out, background 0.3s;
+}
+
+/* Hover effect */
+.coinflip-button[data-side]:hover {
+  transform: scale(1.1);
+  background: radial-gradient(circle, #fffacd 0%, #ff8c00 100%);
+}
+
+/* Optional: make each side visually distinct */
+.coinflip-button[data-side="heads"] {
+  background: radial-gradient(circle, #87ceeb 0%, #1e90ff 100%);
+  color: #fff;
+}
+
+.coinflip-button[data-side="heads"]:hover {
+  background: radial-gradient(circle, #b0e0e6 0%, #1e90ff 100%);
+}
+
+.coinflip-button[data-side="tails"] {
+  background: radial-gradient(circle, #ff6347 0%, #b22222 100%);
+  color: #fff;
+}
+
+.coinflip-button[data-side="tails"]:hover {
+  background: radial-gradient(circle, #ffa07a 0%, #b22222 100%);
+}
+
+.pagination-controls > button {
+  padding: 8px 12px;
+  background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
+  color: #000;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* add disabled state */
+.pagination-controls > button:disabled {
+  background: #555;
+  color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pagination-controls > button:hover {
+  transform: scale(1.05);
+  background: radial-gradient(circle, #fffacd 0%, #ff8c00 100%);
 }

@@ -1,0 +1,46 @@
+
+.gamblor-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.gamblor-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #222;
+}
+
+.gamblor-table th, .gamblor-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+    color: #ddd;
+}
+
+.gamblor-table th {
+    background: #333;
+}
+
+/* Portfolio Actions */
+.gamblor-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 30px;
+}
+
+/* Alternating row colors */
+.gamblor-table tr:nth-child(even), .all-coins tr:nth-child(even) {
+    background: #2a2a2a;
+}
+
+.gamblor-table tr:nth-child(odd), .all-coins tr:nth-child(odd) {
+    background: #1f1f1f;
+}
+
+/* Hover effects */
+.gamblor-table tr:hover, .all-coins tr:hover {
+    background: #444;
+    color: #fff;
+    cursor: pointer;
+}
