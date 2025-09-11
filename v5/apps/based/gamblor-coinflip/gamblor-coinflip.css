@@ -24,6 +24,9 @@
   flex: 1;                 /* equal width columns */
   min-width: 0;            /* prevents flex overflow */
 }
+.coinflip-right {
+  min-width: 460px;
+}
 
 /* Keep your existing styles (button, inputs, etc.) unchanged */
 .page-info {
@@ -235,4 +238,34 @@
 .pagination-controls > button:hover {
   transform: scale(1.05);
   background: radial-gradient(circle, #fffacd 0%, #ff8c00 100%);
+}
+
+.coinflip-previous-bets-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.coinflip-previous-bets-list li {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 1fr 1.8fr; /* tighter first 3, wider date */
+  padding: 6px 10px;
+  border-bottom: 1px solid #333;
+  align-items: center;
+  column-gap: 12px; /* small spacing between columns */
+}
+
+.coinflip-previous-bets-list .bet-header {
+  font-weight: bold;
+  background: #222;
+  color: #fff;
+}
+
+.coinflip-previous-bets-list .bet-row:nth-child(even) {
+  background: #111;
+}
+
+.coinflip-previous-bets-list .col-amount a {
+  color: #2196F3;
+  text-decoration: none;
 }
