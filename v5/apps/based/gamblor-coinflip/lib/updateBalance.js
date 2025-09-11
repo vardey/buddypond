@@ -25,7 +25,14 @@ export default async function updateBalance () {
       });
 
       coinBalance.text(formattedAsset + ' ' + asset.symbol);
-      
+      this.bp.emit('buddylist-websocket::reward', {
+        success: true,
+        message: {
+          newBalance: asset.amount,
+          symbol: asset.symbol
+        }
+      })
+
     }
   });
 

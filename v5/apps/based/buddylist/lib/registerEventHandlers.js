@@ -143,7 +143,6 @@ export default function registerEventHandlers() {
         desktop.app.videochat.startCall(false, data.name, function (err, re) {
             console.log('startCall callback', err, re);
         });
-
     });
 
     // buddylist should not respond to auth::logout 
@@ -422,39 +421,47 @@ function rollToNumber($el, value) {
     const formattedValue = value.toLocaleString('en-US');
     const digits = formattedValue.split('');
 
-    // TODO: fix styles on mobile for rolling odometer
     if (bp.isMobile()) {
-        // For mobile, just set the text directly
         $el.text(formattedValue);
         return;
     }
 
-    // Clear and rebuild digits
-    $el.empty();
+    const existingDigits = $el.find('.odometer-digit');
 
+    // If digit count changed (new commas or digit length), rebuild fully
+    if (existingDigits.length !== digits.filter(d => d !== ',').length) {
+        $el.empty();
+        digits.forEach(d => {
+            if (d === ',') {
+                $el.append('<span class="odometer-comma">,</span>');
+            } else {
+                const digitContainer = $('<div class="odometer-digit"></div>');
+                const inner = $('<div class="odometer-digit-inner"></div>');
+
+                for (let i = 0; i <= 9; i++) {
+                    inner.append(`<span>${i}</span>`);
+                }
+
+                digitContainer.append(inner);
+                $el.append(digitContainer);
+            }
+        });
+    }
+
+    // Animate each digit to its new position
+    let digitIndex = 0;
     digits.forEach((d, index) => {
-        // Handle comma separately
-        if (d === ',') {
-            $el.append('<span class="odometer-comma">,</span>');
-            return;
-        }
+        if (d === ',') return;
 
-        const digitContainer = $('<div class="odometer-digit"></div>');
-        const inner = $('<div class="odometer-digit-inner"></div>');
+        const digitContainer = $el.find('.odometer-digit').eq(digitIndex);
+        const inner = digitContainer.find('.odometer-digit-inner');
 
-        for (let i = 0; i <= 9; i++) {
-            inner.append(`<span>${i}</span>`);
-        }
+        // Apply transition
+        inner.css({
+            'transition': 'transform 0.5s ease-in-out',
+            'transform': `translateY(-${d * 1}em)`
+        });
 
-        digitContainer.append(inner);
-        $el.append(digitContainer);
-
-        // Delay added to force DOM layout flush, staggered for each digit
-        setTimeout(() => {
-            inner.css({
-                'transition': 'transform 0.5s ease-in-out', // Smooth transition
-                'transform': `translateY(-${d * 1}em)`
-            });
-        }, 50 + index * 100); // Base delay + staggered delay per digit
+        digitIndex++;
     });
 }
