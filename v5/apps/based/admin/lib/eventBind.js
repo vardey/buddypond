@@ -9,6 +9,7 @@ import resetPassword from './commands/resetPassword.js';
 import addAdmin from './commands/addAdmin.js';
 import listAdmins from './commands/listAdmins.js';
 import listErrorLogs from './commands/listErrorLogs.js';
+import listPonds from './commands/listPonds.js';
 
 import listRules from './commands/firewall/listRules.js';
 import addRule from './commands/firewall/addRule.js';
@@ -57,6 +58,10 @@ export default function eventBind(adminWindow) {
             case '#admin-error-logs':
                 console.log('admin-error-logs');
                 listErrorLogs.call(this);
+                break;
+            case '#admin-ponds':
+                console.log('admin-ponds');
+                listPonds.call(this);
                 break;
             default:
                 console.warn('Unknown tabId:', tabId);

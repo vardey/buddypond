@@ -9,6 +9,7 @@
         <li><a href="#admin-banlist">Ban List</a></li>
         <li><a href="#admin-add-admin">Add Admins</a></li>
         <li><a href="#admin-error-logs">Error Logs</a></li>
+        <li><a href="#admin-ponds">Ponds</a></li>
 
         <li><a href="#admin-firewall">Firewall Rules</a></li>
     </ul>
@@ -195,4 +196,34 @@
             </select>
         </div>
     </div>
+    <div id="admin-ponds" class="tab-content admin-tab-content">
+        <h2>Ponds</h2>
+        <span class="api-response"></span>
+        <table class="admin-table" id="admin-list-ponds-table">
+            <thead>
+                <tr>
+                    <th>Pond Name</th>
+                    <th>Description</th>
+                    <th>Owner</th>
+                    <th>Members</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+        <div class="pagination-controls">
+            <button class="prev-page">Previous</button>
+            <span class="page-info">Page 1 of 1</span>
+            <button class="next-page">Next</button>
+            <select class="page-size">
+                <option value="10">10 per page</option>
+                <option value="25">25 per page</option>
+                <option value="50">50 per page</option>
+                <option value="100" selected>100 per page</option>
+            </select>
+        </div>
+      </div>
 </div>
