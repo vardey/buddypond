@@ -15,10 +15,10 @@ export default class Gamblor {
         // using this.bp.load() method
 
         // injects CSS link tag into the head of document
-        await this.bp.load('/v5/apps/based/gamblor/gamblor.css');
+        await this.bp.load('/v5/apps/based/casino/casino.css');
 
         // fetches html from the fragment and returns it as a string
-        this.html = await this.bp.load('/v5/apps/based/gamblor/gamblor.html');
+        this.html = await this.bp.load('/v5/apps/based/casino/casino.html');
 
         return this;
     }

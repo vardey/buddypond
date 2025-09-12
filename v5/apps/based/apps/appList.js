@@ -535,33 +535,28 @@ export default {
     "categories": ["social", "community"],
     "enumerable": false, // do not show in the app list
   }
-  
-  /*
   ,
-  "gamblor": {
-    "icon": "desktop/assets/images/icons/icon_buddy-frog_64.png",
+  "casino": {
+    "icon": "desktop/assets/images/icons/icon_casino_64.png",
     "label": "Casino",
-    "onClick": "bp.open('gamblor')",
+    "onClick": "bp.open('casino')",
     "description": "Flip a coin and get a random result",
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
     "authorUrl": "https://github.com/BuddyPond",
     "alias": ["casino"]
-  }
-  */
+  },
 
-  /*
-  "gamblor-coinflip": {
-    "icon": "",
+  "casino-coinflip": {
+    "icon": "desktop/assets/images/icons/icon_coinflip_64.png",
     "label": "Coin Flip",
     "alias": "coinflip",
-    "onClick": "bp.open('gamblor-coinflip')",
+    "onClick": "bp.open('casino-coinflip')",
     "description": "Flip a coin and get a random result",
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
     "authorUrl": "https://github.com/BuddyPond",
     "alias": ["coinflip"],
   }
-  */
 
 }

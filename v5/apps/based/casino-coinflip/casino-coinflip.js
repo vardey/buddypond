@@ -1,10 +1,10 @@
-import gamblorClient from '../gamblor/lib/client.js';
+import gamblorClient from '../casino/lib/client.js';
 import eventBind from './lib/eventBind.js';
 import renderBettingHistory from './lib/renderBettingHistory.js';
 import renderBet from './lib/renderBet.js';
 import updateBalance from './lib/updateBalance.js';
 
-export default class GamblorCoinFlip {
+export default class CasinoCoinFlip {
   constructor(bp, options = {}) {
     this.bp = bp;
     this.options = options;
@@ -12,20 +12,18 @@ export default class GamblorCoinFlip {
   }
 
   async init() {
-    this.html = await this.bp.load('/v5/apps/based/gamblor-coinflip/gamblor-coinflip.html');
-    await this.bp.load('/v5/apps/based/gamblor-coinflip/gamblor-coinflip.css');
+    this.html = await this.bp.load('/v5/apps/based/casino-coinflip/casino-coinflip.html');
+    await this.bp.load('/v5/apps/based/casino-coinflip/casino-coinflip.css');
 
-    return 'loaded GamblorCoinFlip';
+    return 'loaded casino-coinflip';
   }
 
   async open(config = {}) {
-    console.log('Opening GamblorCoinFlip Buddy with config:', config);
+    // console.log('Opening casino coinflip Buddy with config:', config);
 
     if (!this.win) {
       this.win = await this.bp.window(this.window());
       // this should be handled globally ( if possible )
-      $('.loggedIn', this.win.content).hide();
-      $('.loggedOut', this.win.content).show();
       this.eventBind(config);
     }
 
@@ -44,13 +42,21 @@ export default class GamblorCoinFlip {
     $('.coinflip-max-participants', this.win.content).hide();
     this.updateBalance();
 
+    if (this.bp.qtokenid) {
+      $('.loggedIn', this.win.content).show();
+      $('.loggedOut', this.win.content).hide();
+    } else {
+      $('.loggedIn', this.win.content).hide();
+      $('.loggedOut', this.win.content).show();
+    }
+
     return this.win;
 
   }
 
   window() {
     return {
-      id: 'gamblor-coinflip',
+      id: 'casino-coinflip',
       title: 'Coin Flip',
       icon: 'desktop/assets/images/icons/icon_coinflip_64.png',
       position: 'center',
@@ -67,8 +73,8 @@ export default class GamblorCoinFlip {
   }
 }
 
-GamblorCoinFlip.prototype.updateBalance = updateBalance;
-GamblorCoinFlip.prototype.client = gamblorClient;
-GamblorCoinFlip.prototype.eventBind = eventBind;
-GamblorCoinFlip.prototype.renderBet = renderBet;
-GamblorCoinFlip.prototype.renderBettingHistory = renderBettingHistory;
+CasinoCoinFlip.prototype.updateBalance = updateBalance;
+CasinoCoinFlip.prototype.client = gamblorClient;
+CasinoCoinFlip.prototype.eventBind = eventBind;
+CasinoCoinFlip.prototype.renderBet = renderBet;
+CasinoCoinFlip.prototype.renderBettingHistory = renderBettingHistory;

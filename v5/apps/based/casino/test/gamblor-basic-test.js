@@ -21,9 +21,12 @@ tape('Gamblor handles coinflip bets correctly', (t) => {
 
     t.equal(result.bets.length, 3, 'Three bets processed');
     console.log(result);
-
+    let winners = result.winners;
+    console.log('Winners:', winners);
+   
     t.ok(['heads', 'tails'].includes(result.result), 'Coinflip result is either heads or tails');
-    t.ok(result.winner === 'buddy1' || result.winner === 'buddy2' || result.winner === 'buddy3', 'Winner is one of the buddies');
+    t.ok(winners.length > 0, 'There are winners');
+    t.ok(winners.every(w => ['heads', 'tails'].includes(w.bet)), 'All winners have valid bets');
     t.equal(result.amount, 300, 'Total amount is correct');
     t.end();
 });
@@ -39,8 +42,11 @@ tape('Gamblor handles highroll bets correctly', (t) => {
         type: 'highroll'
     });
 
+    let winners = result.winners;
+    console.log('Highroll winners:', winners);
     t.equal(result.bets.length, 3, 'Three bets processed');
-    t.ok(result.winner === 'buddy1' || result.winner === 'buddy2' || result.winner === 'buddy3', 'Winner is one of the buddies');
+    t.ok(winners.length > 0, 'There are winners');
+    t.ok(winners.every(w => typeof w.bet === 'number'), 'All winners have valid bets');
     t.equal(result.amount, 300, 'Total amount is correct');
     t.end();
 });

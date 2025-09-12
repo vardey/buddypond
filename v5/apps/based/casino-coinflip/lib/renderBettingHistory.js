@@ -61,7 +61,7 @@ export default async function renderingBettingHistory(page = 1) {
           <span class="col-outcome">${outcomeText}</span>
           <span class="col-result">${resultText}</span>
           <span class="col-amount">${amountText}</span>
-          <span class="col-date"><a href="${betLink}" target="#" class="open-app" data-app="gamblor-coinflip" data-context="${bet.id}">${betDate}</a></span>
+          <span class="col-date"><a href="${betLink}" target="#" class="open-app" data-app="casino-coinflip" data-context="${bet.id}">${betDate}</a></span>
         </li>
       `);
     });
