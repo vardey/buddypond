@@ -1,1 +1,1 @@
-import './gamblor.css';
+import './casino.css';

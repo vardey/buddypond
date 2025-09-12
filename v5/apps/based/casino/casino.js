@@ -31,7 +31,7 @@ export default class Gamblor {
             title: 'Casino',
             x: 50,
             y: 100,
-            width: 600,
+            width: 800,
             height: 500,
             minWidth: 200,
             minHeight: 200,

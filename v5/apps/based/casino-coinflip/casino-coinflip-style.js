@@ -1,1 +1,1 @@
-import './gamblor-coinflip.css';
+import './casino-coinflip.css';

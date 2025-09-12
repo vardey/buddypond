@@ -15,7 +15,7 @@ const ENDPOINTS = {
   apiKeys: 'https://buddypond.com/api/api-keys',
   apps: 'https://buddypond.com/api/apps',
   coin: 'https://buddypond.com/api/coin',
-  gamblor: 'https://gamblor.buddypond.com/api/v6',
+  gamblor: 'https://gamblor.buddypond.com/api/gamblor/api/v6',
   imageSearch: 'https://buddypond.com/api/image-search',
   portfolio: 'https://buddypond.com/api/portfolio',
   orderbook: 'https://buddypond.com/api/orderbook',
@@ -27,7 +27,8 @@ const ENDPOINTS = {
   // Remark: switch back to a.buddypond.com/api/buddylist ( only if non-discord mode )
   // Attempting to isolate 1006 errors from CF platform
   //buddylistWs: 'wss://buddypond.com/api/buddylist/ws/buddylist',
-  buddylistWs: 'wss://a.buddypond.com/api/buddylist/ws/buddylist',
+  // buddylistWs: 'wss://a.buddypond.com/api/buddylist/ws/buddylist',
+  buddylistWs: 'wss://bp-buddylist.cloudflare1973.workers.dev/api/buddylist/ws/buddylist',
   chessWs: 'wss://buddypond.com/api/chess/ws/chess',
   // messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
   // Attempting to isolate 1006 errors from CF platform
@@ -48,7 +49,7 @@ const DEV_ENDPOINTS = {
   buddyProxy: `${localIp}:9007/api/proxy`,
   coin: `${localIp}:9001/api/coin`,
   errors: `${localIp}:9010/api/errors`,
-  gamblor: `${localIp}:9012/api/gamblor`,
+  gamblor: `${localIp}:9012/api/gamblor/api/v6`,
   imageSearch: `${localIp}:9005/api/image-search`,
   messagesApi: `${localIp}:8788/api/messages`,
   portfolio: `${localIp}:9002/api/portfolio`,

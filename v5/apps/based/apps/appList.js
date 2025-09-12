@@ -535,6 +535,7 @@ export default {
     "categories": ["social", "community"],
     "enumerable": false, // do not show in the app list
   }
+  /*
   ,
   "casino": {
     "icon": "desktop/assets/images/icons/icon_casino_64.png",
@@ -558,5 +559,6 @@ export default {
     "authorUrl": "https://github.com/BuddyPond",
     "alias": ["coinflip"],
   }
+  */
 
 }
