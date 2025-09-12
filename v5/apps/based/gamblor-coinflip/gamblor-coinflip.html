@@ -1,30 +1,41 @@
 <div class="coinflip-container">
-<div class="coinflip-form-container">
-  <!-- Left column -->
-  <div class="coinflip-left">
-    <h2 class="coinflip-form-title">🎲 Create a Coinflip Bet</h2>
-    <form class="coinflip-form">
-      <div class="coinflip-form-group">
-        <label for="coinflip-amount" class="coinflip-label">Amount</label>
-        <input type="number" value="10" id="coinflip-amount" name="amount" class="coinflip-input"
-          placeholder="Enter amount..." required />
-      </div>
+  <div class="coinflip-form-container">
+    <!-- Left column -->
+    <div class="coinflip-left">
+      <h2 class="coinflip-form-title">🎲 Create a Coinflip Bet</h2>
+      <form class="coinflip-form">
 
-
-      <!-- balance -->
-      <div class="coinflip-form-group coin-balance">
-        Your Balance:<span class="coin-balance" id="coinflip-current-balance">0</span>
-      </div>
-
-      <div class="coinflip-form-group">
-        <label class="coinflip-label">Choose Side</label>
-        <div class="coinflip-buttons">
-          <button type="submit" class="coinflip-button" data-side="heads">Heads</button>
-          <button type="submit" class="coinflip-button" data-side="tails">Tails</button>
+        <div class="coinflip-form-group">
+          <span class="coinflip-error error"></span>
         </div>
-      </div>
 
-      <!--
+        <div class="coinflip-form-group">
+          <label for="coinflip-amount" class="coinflip-label">Amount</label>
+          <input type="number" value="10" id="coinflip-amount" name="amount" class="coinflip-input"
+            placeholder="Enter amount..." required />
+        </div>
+
+        <!-- balance -->
+        <div class="coinflip-form-group coin-balance">
+          Your Balance:<span class="coin-balance" id="coinflip-current-balance">0</span>
+        </div>
+
+        <div class="coinflip-form-group">
+          <label class="coinflip-label">Choose Side</label>
+          <div class="coinflip-buttons">
+            <button type="submit" class="coinflip-button" data-side="heads">Heads</button>
+            <button type="submit" class="coinflip-button" data-side="tails">Tails</button>
+          </div>
+        </div>
+        <div class="coinflip-form-group loggedOut">
+          <label class="coinflip-label">Please Login to Play</label>
+          <div class="coinflip-buttons">
+            <button type="button" class="open-app action-button" data-app="buddylist">Log in</button>
+          </div>
+        </div>
+
+
+        <!--
       <div class="coinflip-form-group">
         <label for="coinflip-bet" class="coinflip-label">Your Bet</label>
         <select id="coinflip-bet" name="bet" class="coinflip-select" required>
@@ -49,9 +60,9 @@
       -->
 
 
-    </form>
+      </form>
 
-    <!-- result of flip
+      <!-- result of flip
     <div class="coinflip-result">
       <h3 class="coinflip-result-title">Bet Created!</h3>
       <p class="coinflip-result-message">Your bet has been created successfully. Share it with your buddies!</p>
@@ -62,47 +73,48 @@
     </div>
      -->
 
-    <!-- loaded bet options -->
-    <div class="coinflip-loaded-bet" style="display: none;">
-      <h3 class="coinflip-loaded-title">🎯 Coinflip Bet</h3>
-      <!-- <p><strong>Status:</strong> <span class="coinflip-status"></span></p> -->
-      <p><strong>Owner:</strong> <span class="coinflip-owner"></span></p>
-      <p><strong>Amount:</strong> <span class="coinflip-amount-display"></span></p>
-      <p><strong>Your Side:</strong> <span class="coinflip-your-side"></span></p>
-      <p><strong>Winning Side:</strong> <span class="coinflip-winning-side"></span></p>
-      <!-- date -->
-      <p><strong>Created At:</strong> <span class="coinflip-created-at"></span></p>
-      <!--
+      <!-- loaded bet options -->
+      <div class="coinflip-loaded-bet" style="display: none;">
+        <h3 class="coinflip-loaded-title">🎯 Coinflip Bet</h3>
+        <!-- <p><strong>Status:</strong> <span class="coinflip-status"></span></p> -->
+        <p><strong>Owner:</strong> <span class="coinflip-owner"></span></p>
+        <p><strong>Amount:</strong> <span class="coinflip-amount-display"></span></p>
+        <p><strong>Your Side:</strong> <span class="coinflip-your-side"></span></p>
+        <p><strong>Winning Side:</strong> <span class="coinflip-winning-side"></span></p>
+        <!-- date -->
+        <p><strong>Created At:</strong> <span class="coinflip-created-at"></span></p>
+        <!--
       <p><strong>Max Participants:</strong> <span class="coinflip-max-display"></span></p>
       <p><strong>Participants:</strong></p>
       <ul class="coinflip-participants-list"></ul>
       -->
-      <!--
+        <!--
       <div class="coinflip-action-buttons">
         <button class="coinflip-join-button">Join Bet</button>
         <button class="coinflip-cancel-button">Cancel Bet</button>
       </div>
       -->
-      <div class="coinflip-action-buttons">
-        <button class="coinflip-newbet open-app" data-app="gamblor-coinflip">New Bet</button>
+        <div class="coinflip-action-buttons">
+          <button class="coinflip-prove" data-app="ramblor">Prove Fairness</button>
+          <button class="coinflip-newbet open-app" data-app="gamblor-coinflip">New Bet</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Right column -->
-  <div class="coinflip-right">
-    <div class="coinflip-previous-bets">
-      <h3 class="coinflip-previous-bets-title">🕘 Your Previous Bets</h3>
-      <ul class="coinflip-previous-bets-list">
-        <!-- Previous bets will be populated here -->
-      </ul>
-    </div>
-    <div class="pagination-controls">
-      <button class="prev-page" disabled>Previous</button>
-      <span class="page-info"></span>
-      <button class="next-page">Next</button>
-    </div>
+    <!-- Right column -->
+    <div class="coinflip-right">
+      <div class="coinflip-previous-bets">
+        <h3 class="coinflip-previous-bets-title">🕘 Your Previous Bets</h3>
+        <ul class="coinflip-previous-bets-list">
+          <!-- Previous bets will be populated here -->
+        </ul>
+      </div>
+      <div class="pagination-controls">
+        <button class="prev-page" disabled>Previous</button>
+        <span class="page-info"></span>
+        <button class="next-page">Next</button>
+      </div>
 
+    </div>
   </div>
-</div>
 </div>

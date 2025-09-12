@@ -24,6 +24,10 @@
   flex: 1;                 /* equal width columns */
   min-width: 0;            /* prevents flex overflow */
 }
+
+.coinflip-left {
+  max-width: 300px;
+}
 .coinflip-right {
   min-width: 460px;
 }
@@ -42,6 +46,7 @@
   padding: 16px;
   border-radius: 10px;
   color: #ffefc2;
+  min-height: 320px;
 }
 
 .coinflip-form-container h2 {
@@ -212,6 +217,10 @@
 
 .coinflip-button[data-side="tails"]:hover {
   background: radial-gradient(circle, #ffa07a 0%, #b22222 100%);
+}
+
+.pagination-controls {
+  padding-top: 12px;
 }
 
 .pagination-controls > button {

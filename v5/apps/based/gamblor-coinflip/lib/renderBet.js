@@ -27,6 +27,13 @@ export default function renderBet(bet) {
       console.error('Error parsing bet result JSON:', e);
     }
   }
+
+  // prove result
+  $('.coinflip-prove', this.win.content).off('click').on('click', () => {
+    //alert('Opening Ramblor to prove fairness of the bet result.');
+    this.bp.open('ramblor', { roll: betJSON.ramblorResult });
+  });
+
   console.log('betJSON', betJSON);
   if (bet.bet.status === 'complete') {
     $('.coinflip-winning-side', this.win.content).text(`${betJSON.result}`);
@@ -37,6 +44,9 @@ export default function renderBet(bet) {
         $('.coinflip-won-amount', this.win.content).text(`You won ${winner.amount_won} ${bet.bet.symbol}!`);
       }
     }
+
+
+
   } else {
     $('.coinflip-winning-side', this.win.content).text(`Winning side: N/A`);
     $('.coinflip-result-date', this.win.content).text(`Resolved at: N/A`);

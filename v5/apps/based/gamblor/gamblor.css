@@ -1,7 +1,23 @@
+.gamblor-container {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.casino-games-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  flex-direction: column;
+
+}
 
 .gamblor-table {
     width: 100%;
     overflow-x: auto;
+    display: none;
 }
 
 .gamblor-table table {

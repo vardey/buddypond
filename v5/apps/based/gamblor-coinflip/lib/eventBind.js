@@ -33,16 +33,37 @@ export default function eventBind(config) {
       alert('Please select a side to bet on.');
       return;
     }
+    let bet;
 
-    let bet = await this.client.apiRequest('/bet', 'POST', {
-      type: 'coinflip',
-      owner: this.bp.me,
-      bet: betSide,
-      symbol: betCurrency,
-      amount: betAmount,
-      max_participants: max_participants,
-      seed: 'seed-sally-123'
-    });
+    $('.coinflip-error', this.win.content).hide().text('');
+
+    if (!this.bp.qtokenid) {
+      $('.coinflip-error', this.win.content).text('You must be logged in to place a bet.').show();
+      return;
+    }
+
+    try {
+
+      bet = await this.client.apiRequest('/bet', 'POST', {
+        type: 'coinflip',
+        owner: this.bp.me,
+        bet: betSide,
+        symbol: betCurrency,
+        amount: betAmount,
+        max_participants: max_participants,
+        seed: `seed-${this.bp.me}-1234` // TODO: allow for custom seed input
+      });
+      if (bet.error) {
+        console.log('Error creating bet:', bet.error);
+        $('.coinflip-error', this.win.content).text(bet.error || 'An error occurred while creating the bet.').show();
+      }
+
+    } catch (error) {
+      console.log('Error creating bet:', error);
+      $('.coinflip-error', this.win.content).text(error.message || 'An error occurred while creating the bet.').show();
+      return;
+
+    }
 
     console.log('created bet', bet);
 

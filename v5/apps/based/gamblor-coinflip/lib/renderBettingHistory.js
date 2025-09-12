@@ -22,7 +22,7 @@ export default async function renderingBettingHistory(page = 1) {
   */
 
   if (previousBets.length === 0) {
-    previousBetsList.append('<li><span class="no-bets">No previous bets found.</span></li>');
+    previousBetsList.append('<span class="no-bets">No previous bets found.</span>');
   } else {
     previousBets.forEach(bet => {
       const betLink = `https://${window.location.host}/app/coinflip?context=${bet.id}`;

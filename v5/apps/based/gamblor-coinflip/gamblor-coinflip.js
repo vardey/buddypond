@@ -52,11 +52,11 @@ export default class GamblorCoinFlip {
     return {
       id: 'gamblor-coinflip',
       title: 'Coin Flip',
-      icon: 'desktop/assets/images/icons/icon_buddy-frog_64.png',
+      icon: 'desktop/assets/images/icons/icon_coinflip_64.png',
       position: 'center',
       parent: $('#desktop')[0],
       width: 850,
-      height: 600,
+      height: 520,
       content: this.html,
       resizable: true,
       closable: true,
