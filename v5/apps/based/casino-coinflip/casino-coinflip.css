@@ -278,3 +278,142 @@
   color: #2196F3;
   text-decoration: none;
 }
+
+
+/* Mobile / small-touch styles */
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+  /* Stack columns vertically and reduce padding/gaps for small screens */
+  .coinflip-form-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    min-width: 0;
+    width: calc(100% - 32px);
+    margin: 16px auto;
+    border-radius: 10px;
+  }
+
+  .coinflip-left,
+  .coinflip-right {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .coinflip-left {
+    max-width: none;
+  }
+  .coinflip-right {
+    min-width: 0;
+  }
+
+  /* Slightly smaller headings to fit mobile */
+  .coinflip-form-title {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .coinflip-form-container h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .coinflip-form-group {
+    margin-bottom: 12px;
+  }
+
+  /* Inputs take full width and have slightly larger tap targets */
+  .coinflip-input,
+  .coinflip-select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  /* Heads/Tails button row — tighter spacing and centered */
+  .coinflip-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  /* Smaller round buttons for mobile but still large enough for touch */
+  .coinflip-button[data-side] {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    font-size: 1rem;
+    line-height: 1;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.45);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Keep hover styles harmless on touch devices — still allow active feedback */
+  .coinflip-button[data-side]:active {
+    transform: scale(0.98);
+  }
+
+  /* Action buttons (join / cancel) stack and stretch full width for easier tapping */
+  .coinflip-action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .coinflip-action-buttons > button {
+    width: 100%;
+    margin: 0;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  /* Previous bets list: simplify layout to single column rows */
+  .coinflip-previous-bets {
+    min-height: auto;
+    padding: 12px;
+  }
+  .coinflip-previous-bets-list li {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 10px;
+    border-bottom: 1px solid #222;
+    row-gap: 6px;
+    align-items: start;
+  }
+  .coinflip-previous-bets-list .bet-header {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  /* Pagination controls: wrap and use larger tap targets */
+  .pagination-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 10px;
+  }
+  .pagination-controls > button {
+    flex: 1 1 48%;
+    min-width: 120px;
+    padding: 10px;
+  }
+
+  /* Tighten result and loaded bet spacing */
+  .coinflip-result,
+  .coinflip-loaded-bet {
+    margin-top: 12px;
+    padding: 12px;
+  }
+
+  /* Ensure primary rectangular buttons remain usable on mobile */
+  .coinflip-button:not([data-side]) {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
