@@ -17,7 +17,7 @@ export default async function renderTweet(tweet, tweetsWindow, options = {}) {
     $('.tweets-like', existingTweet).html(`Like (${tweet.like_count || 0})`);
     $('.tweets-reply', existingTweet).html(`Reply (${tweet.reply_count || 0})`);
 
-    console.log('Updating existing tweet:', tweet);
+    // console.log('Updating existing tweet:', tweet);
 
     // Normalize text and run link detection (keep same parsing pipeline as new render)
     tweet.text = tweet.content || '';
@@ -115,10 +115,10 @@ export default async function renderTweet(tweet, tweetsWindow, options = {}) {
 
   let container = null;
   if (tweet.card && this.bp && this.bp.apps && this.bp.apps.card) {
-    console.log('tweet has card', tweet.card);
+    // console.log('tweet has card', tweet.card);
     try {
       container = await renderCardForTweet(tweet, $tweet, this.bp);
-      console.log('Rendering card into container', container);
+      // console.log('Rendering card into container', container);
     } catch (err) {
       console.error('Error while rendering card for new tweet', tweet && tweet.id, err);
       container = null;
@@ -150,7 +150,6 @@ export default async function renderTweet(tweet, tweetsWindow, options = {}) {
   return $tweet;
 }
 
-
 async function renderCardForTweet(tweet, $tweet, bp) {
   // Returns a DOM element (container) for the card, or null on no-card / error.
   if (!tweet || !tweet.card || !bp || !bp.apps || !bp.apps.card) {
@@ -165,7 +164,6 @@ async function renderCardForTweet(tweet, $tweet, bp) {
   try {
     // Give the card context the tweet message
     cardData.message = tweet;
-    console.log('cccccc cardData', cardData);
     const cardManager = bp.apps.card.cardManager;
     // provide current $tweet HTML as the context (mirrors original behavior)
     const _card = await cardManager.loadCard(cardData.type, cardData, $tweet.html());

@@ -69,7 +69,7 @@ export default class Client {
 
     sendWsMessage(chatId, message) {
         let chatConnection = this.messagesWsClients.get(chatId);
-        if (!chatConnection || !chatConnection.wsClient) {
+        if (!chatConnection || !chatConnection.wsClient || chatConnection.wsClient.readyState !== WebSocket.OPEN) {
             console.log('buddypond.messagesWs not connected, will queue message and send on connect...', chatId, message);
             // open the chat window, will send queued messags on connect
             // TODO: buddylist should accept chatId

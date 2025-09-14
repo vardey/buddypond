@@ -73,20 +73,20 @@ export default class Tweets {
 
       this.wsClient = new wsClient({ bp: this.bp });
       this.bp.on('tweets::connected', 'fetch-tweets-feed', (data) => {
-        console.log('Tweets WebSocket connected event received in Tweets app', data);
+        // console.log('Tweets WebSocket connected event received in Tweets app', data);
         console.log('Tweets WebSocket connected');
         this.wsClient.fetchTweets(this.tweetsWindow.context);
       });
 
       this.bp.on('tweets::feed', 'render-tweets-feed', (tweets) => {
-        console.log('Tweets feed event received in Tweets app', tweets);
+        // console.log('Tweets feed event received in Tweets app', tweets);
         if (this.tweetsWindow) {
           this.render(tweets, this.tweetsWindow.context, 'author', this.tweetsWindow);
         }
       });
 
       this.bp.on('tweets::removed', 'remove-tweet', (tweetId) => {
-        console.log('Tweet removed event received in Tweets app', tweetId);
+        // console.log('Tweet removed event received in Tweets app', tweetId);
         if (this.tweetsWindow) {
           // find the tweet by tweetId and remove
           $(`[data-tweet="${tweetId}"]`, this.tweetsWindow.content).remove();

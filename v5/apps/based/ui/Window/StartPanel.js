@@ -139,7 +139,7 @@ export default class StartPanel {
     createAppTile(appData, icon) {
         // console.log('Creating app tile for:', appData);
         let name = appData.id || appData.appName || appData.name || appData.label || 'Unknown App';
-        icon = appData.icon || icon;
+        icon = appData.icon || icon || '';
         const tile = document.createElement('div');
         tile.className = 'start-panel-app';
         tile.dataset.name = name;
