@@ -26,14 +26,12 @@ export default class NyanCatWallpaper {
 
 		this.started = false;
 
-		// Initialize drops
 	}
 
 	resize() {
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
 		this.columns = this.canvas.width / this.fontSize;
-		this.initializeDrops();
 	}
 
 	changeColor(color) {
