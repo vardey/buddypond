@@ -1,7 +1,11 @@
 // Buddy Pond - Play.js - Marak Squires 2024
+
+import AudioPlayer from './audioPlayer.js';
+
 export default class Play {
     // Map to track playing files and avoid concurrent plays
     static playing = new Map();
+    currentVolume = 1.0;
 
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -35,6 +39,9 @@ export default class Play {
         Play.playing.set(mediaPath, true);
     
         const media = new Audio(mediaPath);
+        const audioPlayer = new AudioPlayer(media, currentVolume);
+        audioPlayer.printGraph();    
+
         let stopTimeout;
         let forceStop = false;
     
