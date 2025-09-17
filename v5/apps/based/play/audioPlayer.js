@@ -1,4 +1,4 @@
-class AudioPlayer {
+export default class AudioPlayer {
   constructor(audioElement, defaultVolume = 0.0) {
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.audioElement = audioElement;
