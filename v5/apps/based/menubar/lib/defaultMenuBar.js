@@ -1,4 +1,3 @@
-let sliderActive = false;
 export default function defaultMenuBar(bp) {
 
   // Ported from Legacy bp v4
