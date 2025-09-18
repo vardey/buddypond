@@ -1,3 +1,5 @@
+const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
 export default function renderGeoFlag(message) {
     if (message.location === 'outer space' || !message.location) {
       // Set Antarctica to the default flag when the location is 'outer space'
@@ -12,6 +14,7 @@ export default function renderGeoFlag(message) {
     let img = document.createElement('img');
     img.className = 'geoFlag';
     img.src = `desktop/assets/geo-flags/flags/4x3/${message.location.toLowerCase()}.svg`;
+    img.title = regionNames.of(message.location) || message.location;
     return img;
   }
   
