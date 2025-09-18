@@ -13,7 +13,7 @@ export default function createWebSocketClient(reconnect = false) {
   console.log(`Creating WebSocket client for buddylist`);
   return new Promise((resolve, reject) => {
     const wsClient = new WebSocket(
-      `${buddypond.buddylistWsEndpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`
+      `${buddypond.buddyServerWsEndpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`
     );
 
     // Handle open event
@@ -25,29 +25,24 @@ export default function createWebSocketClient(reconnect = false) {
 
       wsClient.send(
         JSON.stringify({
-          action: 'getProfile',
+          action: 'getBuddyList',
           buddyname: buddypond.me,
           qtokenid: buddypond.qtokenid,
         })
       );
 
-
-      // Removed 9/17/2025, no longer needed with use of ServerDO
-      /*
-      // getProfile is now serverClient.getBuddyList()
-      // Remark: We may add this back for use in getting user profile settings, not buddylist
-
-      // setStatus is now serverClient.setStatus()
-      if (reconnect) {
+      /* Remark: Removed as online status per connection should be set on the server side
+      // if (reconnect) {
         wsClient.send(JSON.stringify({
           action: "setStatus",
           buddyname: buddypond.me,
           status: 'online',
         }));
 
-      }
+      // }
       */
 
+      // alert('set initial status to offline');
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
 
@@ -76,7 +71,7 @@ export default function createWebSocketClient(reconnect = false) {
         // console.log('Got back from server:', parseData);
         switch (parseData.action) {
           case 'buddy_added':
-            // console.log('buddy_added WebSocket message received:', parseData);
+            console.log('buddy_added WebSocket message received:', parseData);
             bp.emit('profile::buddy::in', {
               name: parseData.buddyname,
               profile: parseData.profile || { ctime: new Date().getTime(), dtime: 0 },
@@ -92,6 +87,17 @@ export default function createWebSocketClient(reconnect = false) {
             }
 
             break;
+
+          case 'getBuddyList':
+            console.log('getBuddyList message received:', parseData.buddies);
+
+            if (parseData && parseData.buddies) {
+              bp.emit('profile::fullBuddyList', { buddylist: parseData.buddies });
+            } else {
+              console.error('getProfile message received but no buddylist:', parseData);
+            }
+
+            break
           case 'getProfile':
             // console.log('getProfile message received:', parseData);
 
@@ -100,9 +106,17 @@ export default function createWebSocketClient(reconnect = false) {
             } else {
               console.error('getProfile message received but no buddylist:', parseData);
             }
+            // TODO: after getting profile, create a new call that wil fetch all buddies DO's to get
+            // most updated state ( a reverse of setStatus() call )
+            // this will ensure we always get the most recent updates for all buddies in case our DO
+            // wasn't updated or missed an update or setStatus() truncation limit for users not recently active
+            // send a message now to getRemoteProfiles
             console.log('Requesting remote profile backfill for all buddies');
-            // Removed 9/17/2025, no longer needed with use of ServerDO
-            /*
+            // After getting the initial profile ( single DO state, quick load ),
+            // we can request remote profiles for all buddies
+            // This will fetch all buddies DO's and get their most recent state
+            // This is useful for getting the most recent updates for all buddies in case our DO
+            // wasn't updated or missed an update or setStatus() truncation limit for users not recently active
             wsClient.send(
               JSON.stringify({
                 action: 'getRemoteProfiles',
@@ -110,7 +124,6 @@ export default function createWebSocketClient(reconnect = false) {
                 qtokenid: buddypond.qtokenid,
               })
             );
-            */
             break;
           case 'pong':
             // console.log('buddylist pong message received:', parseData);
@@ -134,14 +147,6 @@ export default function createWebSocketClient(reconnect = false) {
                 success: false,
                 message: parseData.message,
               });
-            }
-            break;
-          case 'getCoinBalance':
-            // console.log('getCoinBalance message received:', parseData);
-            if (parseData.success) {
-              bp.emit('buddylist-websocket::coinBalance', parseData);
-            } else {
-              bp.emit('buddylist-websocket::coinBalance', parseData);
             }
             break;
           default:
@@ -175,7 +180,7 @@ export default function createWebSocketClient(reconnect = false) {
           this.reconnectAttempts++;
           bp.emit('buddylist-websocket::reconnecting', { attempt: this.reconnectAttempts });
           try {
-            this.wsClient = await this.createWebSocketClient(true); // Attempt to reconnect
+            this.wsClient = await this.createWebSocketServerClient(true); // Attempt to reconnect
             // Update event listeners to the new WebSocket instance
           } catch (error) {
             console.error('Reconnect failed:', error);

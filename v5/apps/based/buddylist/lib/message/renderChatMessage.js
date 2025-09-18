@@ -65,11 +65,23 @@ export default async function renderChatMessage(message, _chatWindow) {
         }
     }
 
-    if (message.type === 'pond') {
+    if (message.type === 'pond' || (message.chatId && message.chatId.startsWith('pond/'))) {
         context = message.to;
         // windowId = `pond_message_-${message.to}`;
         windowId = 'pond-chat';
     }
+
+    if (message.chatId.startsWith('buddy')) {
+        let parts = message.chatId.split('/');
+        let buddyname = parts[1];
+        if (buddyname === this.bp.me) {
+            buddyname = parts[2];
+        }
+        context = buddyname;
+        windowId = `messages/${buddyname}`;
+
+    }
+
     // console.log('windowIdwindowId', windowId)
     // TODO: scope on processedMessages needs to be keyed by type in addition to context
     this.data.processedMessages[context] = this.data.processedMessages[context] || [];
@@ -135,7 +147,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
         if (!editedMessageEl.length > 0) {
             console.error('No original message found');
-            return chatWindow;
+            return;
         }
 
         // get the aim-message-content and set the text to the new message
@@ -147,6 +159,82 @@ export default async function renderChatMessage(message, _chatWindow) {
         return chatWindow;
     }
 
+    let scrollToBottom = false;
+    if (message.reacted) {
+        console.log("ATTEMPTING TO REACT TO MESSAGE", message);
+        let reactedMessageEl = $(`.aim-chat-message[data-uuid="${message.reacted}"]`); // could be document as well?
+        if (!reactedMessageEl.length > 0) {
+            console.error('No original message found for reaction', message);
+            // return chatWindow;
+        }
+
+
+        /*
+         // Message reactions
+    if (message.reactions) {
+      const reactionsContainer = document.createElement('div');
+      reactionsContainer.className = 'aim-message-reactions';
+      console.log('message.reactions', message.reactions);
+      message.reactions = JSON.parse(message.reactions);
+      for (let reaction in message.reactions) {
+        console.log('reaction', reaction, 'count', message.reactions[reaction]);
+        const count = message.reactions[reaction].count;
+        console.log('Rendering reaction:', reaction, count);
+        const reactionElement = document.createElement('span');
+        reactionElement.className = 'aim-message-reaction';
+        reactionElement.setAttribute('data-emoji', reaction);
+        reactionElement.innerHTML = `
+          <span class="aim-reaction-emoji">${reaction}</span>
+          <span class="aim-reaction-count">${count}</span>
+        `;
+        reactionsContainer.appendChild(reactionElement);
+      }
+    
+      messageContent.appendChild(reactionsContainer);
+      }*/
+        // find the .aim-message-reactions container inside the reactedMessageEl
+        let reactionsContainer = reactedMessageEl.find('.aim-message-reactions');
+        if (reactionsContainer.length === 0) {
+            // create the reactions container
+            reactionsContainer = $('<div class="aim-message-reactions"></div>');
+            // append it to the .aim-message-content
+            reactedMessageEl.find('.aim-message-content').append(reactionsContainer);
+        }
+        // clear the reactions container
+        reactionsContainer.html('');
+        // add each reaction to the reactions container
+        for (let reaction in message.reactions) {
+            // console.log('reaction', reaction, 'count', message.reactions[reaction]);
+            const count = message.reactions[reaction].count;
+            // console.log('Rendering reaction:', reaction, count);
+            const reactionElement = $(`
+        <span class="aim-message-reaction" data-emoji="${reaction}">
+          <span class="aim-reaction-emoji">${reaction}</span>
+          <span class="aim-reaction-count">${count}</span>
+        </span>
+      `);
+
+            // add title property to reactionElement with .buddies who reacted
+            const buddies = message.reactions[reaction].buddies || [];
+            if (buddies.length > 0) {
+                $(reactionsContainer).attr('title', `Reacted by: ${buddies.join(', ')}`);
+            }
+
+            reactionsContainer.append(reactionElement);
+
+            // check if this is the last message in the chat window, if so scroll to bottom
+            if (reactedMessageEl.is(':last-child')) {
+                // scroll to bottom of chat window
+                console.log('last message reaction, scrolling to bottom');
+                scrollToBottom = true;
+                //let messagesContainer = $('.aim-messages-container', chatWindow.content);
+                //messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
+            }
+
+        }
+        // return chatWindow;
+    }
+
     // console.log('current windows', this.bp.windows);
     // console.log('renderChatMessage windowId', windowId, message);
     let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
@@ -156,10 +244,16 @@ export default async function renderChatMessage(message, _chatWindow) {
     }
 
     if (!chatWindow || !chatWindow.content) {
-        //console.log('chat window not ready, trying again soon', windowId, message);
+        console.log('chat window not ready, trying again soon', windowId, message);
         console.log(message);
         return;
     }
+
+    if (scrollToBottom) {
+        // scroll to bottom of chat window
+        this.scrollToBottom(chatWindow.content);
+    }
+
 
     // Check if message already exists in the DOM
     if (document.querySelector(`.chatMessage[data-uuid="${message.uuid}"]`)) {

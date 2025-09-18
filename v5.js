@@ -29,6 +29,7 @@ const ENDPOINTS = {
   //buddylistWs: 'wss://buddypond.com/api/buddylist/ws/buddylist',
   // buddylistWs: 'wss://a.buddypond.com/api/buddylist/ws/buddylist',
   buddylistWs: 'wss://bp-buddylist.cloudflare1973.workers.dev/api/buddylist/ws/buddylist',
+  buddyServerWs: 'wss://buddypond.com/api/buddyserver/ws/server',
   chessWs: 'wss://buddypond.com/api/chess/ws/chess',
   // messagesWs: 'wss://buddypond.com/api/messages/ws/messages',
   // Attempting to isolate 1006 errors from CF platform
@@ -58,6 +59,8 @@ const DEV_ENDPOINTS = {
   uploads: `${localIp}:9004/api/uploads`,
   videoChat: 'wss://192.168.200.59:8001/videochat/ws',
   buddylistWs: `${localIp.replace('http://', 'ws://')}:8787/api/buddylist/ws/buddylist`,
+  buddyServerApi: `${localIp}:8786/api/buddyserver`,
+  buddyServerWs: `${localIp.replace('http://', 'ws://')}:8786/api/buddyserver/ws/server`,
   chessWs: `${localIp.replace('http://', 'ws://')}:5556/api/chess/ws/chess`,
   messagesWs: `${localIp.replace('http://', 'ws://')}:8788/api/messages/ws/messages`,
   ponds: `${localIp}:8788/api/messages/ponds`, 
@@ -105,7 +108,9 @@ function configureDiscordMode(endpoints) {
       uploads: `${host}/.proxy/api/uploads`,
       pondsWs: `${host.replace('https://', 'wss://')}/.proxy/api/messages/ws/ponds`,
       messagesWs: `${host.replace('https://', 'wss://')}/.proxy/api/messages/ws/messages`,
-      buddylistWs: `${host.replace('https://', 'wss://')}/.proxy/api/buddylist/ws/buddylist`
+      buddylistWs: `${host.replace('https://', 'wss://')}/.proxy/api/buddylist/ws/buddylist`,
+      buddyServerWs: `${host.replace('https://', 'wss://')}/.proxy/api/buddyserver/ws/server`,
+      buddyServerApi: `${host}/.proxy/api/buddyserver`,
     };
   }
   return endpoints;
@@ -121,6 +126,8 @@ function assignBuddyPondEndpoints(endpoints) {
   buddypond.tweetsWsEndpoint = endpoints.tweetsWs;
   buddypond.messagesApiEndpoint = endpoints.messagesApi;
   buddypond.buddylistWsEndpoint = endpoints.buddylistWs;
+  buddypond.buddyServerWsEndpoint = endpoints.buddyServerWs;
+  buddypond.buddyServerApiEndpoint = endpoints.buddyServerApi;
   buddypond.adminEndpoint = endpoints.admin;
   buddypond.errorsEndpoint = endpoints.errors;
   buddypond.uploadsEndpoint = endpoints.uploads;

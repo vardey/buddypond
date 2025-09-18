@@ -163,12 +163,7 @@ export default function defaultChatWindowButtons(bp) {
             onclick: async (ev) => {
 
                 let $target = $(ev.target);
-
-                // ensure that we don't already have an emoji-picker-popup in document
-                if ($('.emoji-picker-popup').length > 0) {
-                    $('.emoji-picker-popup').remove();
-                }
-
+                console.log('emoji button clicked');
                 $target.emojiPicker({
                     onSelect: (emoji) => {
                         console.log("Selected:", emoji);
@@ -178,11 +173,11 @@ export default function defaultChatWindowButtons(bp) {
                 });
 
                 // Immediately show the picker (bypasses internal click)
-                $target.data('emojiPicker_show')?.();
+                //$target.data('emojiPicker_show')?.();
 
                 // focus on .emoji-search input
                 if ($('.emoji-picker-popup').length > 0) {
-                    $('.emoji-search').focus();
+                    //$('.emoji-search').focus();
                 }
                 return;
 

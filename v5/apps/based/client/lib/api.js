@@ -323,6 +323,19 @@ buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
 
 }
 
+buddypond.reactInstantMessage = async function reactInstantMessage({ chatId, uuid, reaction, from }) {
+  console.log('sending request to reactInstantMessage', chatId, uuid, reaction);
+  bp.apps.client.sendWsMessage(chatId, {
+    action: 'reactInstantMessage',
+    from: from,
+    chatId: chatId,
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid,
+    uuid: uuid,
+    reaction: reaction
+  });
+}
+
 buddypond.editInstantMessage = async function editInstantMessage({ chatId, uuid, text, from }) {
 
   console.log('sending request to editInstantMessage', chatId, uuid, text);

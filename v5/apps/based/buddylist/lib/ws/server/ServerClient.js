@@ -1,6 +1,6 @@
-import createWebSocketClient from './createWebSocketClient.js';
+import createWebSocketServerClient from './createWebSocketServerClient.js';
 
-export default class Client {
+export default class ServerClient {
   constructor(bp, options = {}) {
     this.bp = bp;
     this.config = {
@@ -19,27 +19,27 @@ export default class Client {
   }
 }
 
-Client.prototype.connect = async function connectBuddyListWs() {
-  console.log("Connecting to BuddyList WebSocket...");
-  this.wsClient = await this.createWebSocketClient();
-  console.log("Connected to BuddyList WebSocket!");
+ServerClient.prototype.connect = async function connectBuddyServerWs() {
+  console.log("Connecting to BuddyServer WebSocket...");
+  this.wsServerClient = await this.createWebSocketServerClient();
+  console.log("Connected to BuddyServer WebSocket!");
   // TODO: needs to return / await the connection event
   // TODO: should emit buddylist::connected event ( not auth::qtokenid event )
-  this.bp.emit('buddylist::connected', this.wsClient);
+  this.bp.emit('buddylist::connected', this.wsServerClient);
 }
 
-Client.prototype.disconnect = async function disconnectBuddyListWs() {
-  console.log("Attempting disconnecting from BuddyList WebSocket...");
-  if (this.wsClient) {
-    this.wsClient.closeConnection();
-    this.wsClient = null;
-    console.log("Disconnected from BuddyList WebSocket");
+ServerClient.prototype.disconnect = async function disconnectBuddyServerWs() {
+  console.log("Attempting disconnecting from BuddyServer WebSocket...");
+  if (this.wsServerClient) {
+    this.wsServerClient.closeConnection();
+    this.wsServerClient = null;
+    console.log("Disconnected from BuddyServer WebSocket");
   } else {
     console.log("No active WebSocket connection to disconnect");
   }
 }
 
-Client.prototype.addBuddy = async function addBuddy(buddyname, cb) {
+ServerClient.prototype.addBuddy = async function addBuddy(buddyname, cb) {
   console.log("NEW Calling addBuddy", this, buddyname);
 
   apiRequest('/buddylist/' + this.bp.me + '/add-buddy', 'POST', {
@@ -49,19 +49,19 @@ Client.prototype.addBuddy = async function addBuddy(buddyname, cb) {
   })
 }
 
-Client.prototype.receivedInstantMessage = async function receivedInstantMessage(buddyName, cb) {
-  this.wsClient.send(JSON.stringify({
+ServerClient.prototype.receivedInstantMessage = async function receivedInstantMessage(buddyName, cb) {
+  console.log('ServerClient receivedInstantMessage', buddyName);
+  this.wsServerClient.send(JSON.stringify({
     action: "receivedInstantMessage",
     buddyname: buddyName,
   }));
   cb(null);
 }
 
-Client.prototype.setStatus = async function setStatus(buddyName, update, cb = function noop () {}) {
-  alert('deprecated: Client.setStatus');
-  // use wsClient to send the status update
+ServerClient.prototype.setStatus = async function setStatus(buddyName, update, cb = function noop () {}) {
+  // use wsServerClient to send the status update
   // console.log('calling setStatus', buddyName, update);
-  this.wsClient.send(JSON.stringify({
+  this.wsServerClient.send(JSON.stringify({
     action: "setStatus",
     buddyname: buddyName,
     status: update.status,
@@ -70,14 +70,14 @@ Client.prototype.setStatus = async function setStatus(buddyName, update, cb = fu
   cb(null);
 };
 
-Client.prototype.createWebSocketClient = createWebSocketClient;
+ServerClient.prototype.createWebSocketServerClient = createWebSocketServerClient;
 
 function apiRequest(uri, method, data, cb) {
   let url;
 
-  url = buddypond.endpoint + uri;
+  url = buddypond.buddyServerApiEndpoint + uri;
 
-  // console.log("making apiRequest", url, method, data);
+  console.log("making apiRequest", url, method, data);
 
   let headers = {
     "Accept": "application/json",
@@ -143,3 +143,5 @@ function apiRequest(uri, method, data, cb) {
       cb(new Error(msg), error.data || null);
     });
 }
+
+ServerClient.prototype.createWebSocketServerClient = createWebSocketServerClient;

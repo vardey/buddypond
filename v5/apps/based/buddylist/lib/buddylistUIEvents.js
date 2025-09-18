@@ -146,7 +146,7 @@ export default function buddylistUIEvents() {
     // $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>');
     this.bp.log('buddypond.addBuddy ->', buddyName);
 
-    this.client.addBuddy(buddyName, (err, data) => {
+    this.buddyServerClient.addBuddy(buddyName, (err, data) => {
       console.log('buddypond.addBuddy <-', err, data);
       if (data.error) {
         $('.you_have_no_buddies').html(data.error);

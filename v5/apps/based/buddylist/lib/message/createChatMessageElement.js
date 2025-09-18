@@ -12,13 +12,16 @@ const config = {
 // TODO: update bindMessageContextMenu() method to bind to the icons instead of buttons
 function createHoverMenu(message) {
   const hoverMenu = document.createElement('div');
-  hoverMenu.className = 
-  'aim-hover-menu';
+  hoverMenu.className =
+    'aim-hover-menu';
 
   const menuItems = [];
 
+  menuItems.push({ text: 'React', action: 'react-message', svg: 'desktop/assets/images/icons/svg/1f600.svg' });
+
+
   if (message.from === this.bp.me || this.bp.me === 'Marak') { // TODO: admin rbac
-    menuItems.push({ text: 'Edit Message', action: 'edit-message',  icon: 'fa-duotone fa-regular fa-pencil' });
+    menuItems.push({ text: 'Edit Message', action: 'edit-message', icon: 'fa-duotone fa-regular fa-pencil' });
   }
 
   menuItems.push({ text: 'Reply Message', action: 'reply-message', icon: 'fa-duotone fa-regular fa-reply' });
@@ -35,6 +38,15 @@ function createHoverMenu(message) {
       icon.className = item.icon;
       button.appendChild(icon);
       button.appendChild(document.createTextNode(' ')); // Add space between icon and text
+    } else if (item.svg) {
+      // create svg element
+      const svg = document.createElement('img');
+      svg.src = item.svg;
+      svg.alt = item.text;
+      svg.className = 'aim-hover-menu-svg-icon';
+      button.appendChild(svg);
+      // button.appendChild(document.createTextNode(' ')); // Add space between icon and text
+
     } else {
       button.appendChild(document.createTextNode(item.text));
     }
@@ -46,7 +58,7 @@ function createHoverMenu(message) {
   return hoverMenu;
 }
 
-export default function createChatMessageElement(message, messageTime, chatWindow, container) {
+export default function createChatMessageElement(message, messageTime, chatWindow, cardContainer) {
   // Create main message container
   const chatMessage = document.createElement('div');
   chatMessage.className = 'aim-chat-message';
@@ -68,7 +80,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
     if (
       this.bp.apps.buddylist.data.profileState &&
       this.bp.apps.buddylist.data.profileState.buddylist &&
-      this.bp.apps.buddylist.data.profileState.buddylist[message.from] && 
+      this.bp.apps.buddylist.data.profileState.buddylist[message.from] &&
       this.bp.apps.buddylist.data.profileState.buddylist[message.from].profile_picture) {
       message.profilePicture = this.bp.apps.buddylist.data.profileState.buddylist[message.from].profile_picture;
     }
@@ -79,7 +91,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
     // use url as profile picture src
     const img = document.createElement('img');
     if (window.discordMode) {
-       message.profilePicture =  message.profilePicture.replace('https://files.buddypond.com', bp.config.cdn);
+      message.profilePicture = message.profilePicture.replace('https://files.buddypond.com', bp.config.cdn);
     }
     img.src = message.profilePicture;
     img.alt = `${message.from}'s avatar`;
@@ -167,6 +179,34 @@ export default function createChatMessageElement(message, messageTime, chatWindo
     messageContent.textContent = processedText;
   }
 
+  // Message reactions
+  const reactionsContainer = document.createElement('div');
+  reactionsContainer.className = 'aim-message-reactions';
+
+  if (message.reactions) {
+    // console.log('message.reactions', message.reactions);
+    message.reactions = JSON.parse(message.reactions);
+    for (let reaction in message.reactions) {
+      // console.log('reaction', reaction, 'count', message.reactions[reaction]);
+      const count = message.reactions[reaction].count;
+      // console.log('Rendering reaction:', reaction, count);
+      const reactionElement = document.createElement('span');
+      reactionElement.className = 'aim-message-reaction';
+      reactionElement.setAttribute('data-emoji', reaction);
+      reactionElement.innerHTML = `
+        <span class="aim-reaction-emoji">${reaction}</span>
+        <span class="aim-reaction-count">${count}</span>
+      `;
+      // add title property to reactionElement with .buddies who reacted
+      const buddies = message.reactions[reaction].buddies || [];
+      if (buddies.length > 0) {
+        reactionElement.setAttribute('title', `Reacted by: ${buddies.join(', ')}`);
+      }
+      reactionsContainer.appendChild(reactionElement);
+    }
+
+  }
+
   // Hover menu
   const hoverMenu = createHoverMenu.call(this, message)
 
@@ -178,12 +218,15 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   contentWrapper.appendChild(messageContent);
   contentWrapper.appendChild(hoverMenu);
 
+  if (cardContainer) {
+    contentWrapper.appendChild(cardContainer);
+  }
+
+  contentWrapper.appendChild(reactionsContainer);
+
+
   chatMessage.appendChild(profilePicture);
   chatMessage.appendChild(contentWrapper);
-
-  if (container) { // card container?
-    contentWrapper.appendChild(container);
-  }
 
   // Image load handler
   chatMessage.querySelectorAll('img').forEach(img => {

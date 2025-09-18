@@ -1,8 +1,9 @@
 
-
+// Remark: Removed 9/17/2025, this appears to be legacy for V3 API ( before CF edge workers )
 export default async function processProfile(profileState) {
   // console.log('processBuddylist', profileState);
-
+  // not used anymore
+  return;
   // if the client hasn't seen the buddylist yet, we start from empty state
   if (!this.data.buddylist) {
     this.data.buddylist = {};

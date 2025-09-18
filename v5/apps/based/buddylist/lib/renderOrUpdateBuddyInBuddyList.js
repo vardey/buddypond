@@ -16,7 +16,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
   let buddyListItems = document.querySelectorAll('.buddylist li');
   let existingBuddy = Array.from(buddyListItems).find(el => el.dataset.buddy === buddyname);
   let wasConnected = existingBuddy ? existingBuddy.querySelector('.buddy-status').textContent.includes('🟢') : false;
-
+  console.log('rendering buddydata', buddydata);
   // Handle status update only if status field is present
   if (buddydata.hasOwnProperty('status')) {
     if (buddydata.status === 'online') {
@@ -45,8 +45,15 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     // If buddy hasn't been online for a while, set them to offline
     if (buddydata.isConnected && diff > buddyTimeoutsInterval) {
       // console.log('Setting offline due to timeout', buddyname, buddydata.utime, diff);
-      // TODO: add this back in?
-      buddydata.isConnected = false;
+
+      // if buddydata.status is online and this is ourself, always keep as online
+      // Remark: Potential issue with utime not being updated on login for self?
+      if (buddyname === this.bp.me) {
+        buddydata.isConnected = true;
+      } else {
+        buddydata.isConnected = false;
+      }
+
     }
 
     /*

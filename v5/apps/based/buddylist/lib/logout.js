@@ -3,8 +3,7 @@ export default function logout() {
     $('.loginButton').prop('disabled', false);
     $('.loginButton').removeClass('disabled');
     $('#menu-bar-coin-balance').text('0');
-
-    this.client.setStatus(this.bp.me, {
+    this.buddyServerClient.setStatus(this.bp.me, {
         status: 'offline'
     }, (err, re) => {
         console.log('buddypond.setStatus', err, re);
@@ -29,8 +28,10 @@ export default function logout() {
         // TODO can we now remove bp.apps.client.logout()?
         this.bp.apps.client.logout();
         this.client.disconnect();
+        this.buddyServerClient.disconnect();
         this.bp.connected = false;
         this.client = null;
+        this.buddyServerClient = null;
         // clear out the local .data scope
         // TODO: only declare this once ( code is repeated in constructor )
         this.data = {

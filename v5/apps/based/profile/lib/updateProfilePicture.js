@@ -122,7 +122,7 @@ export default function updateProfilePicture(event, profilePictureImg) {
             console.log('File uploaded to:', url);
 
             // update the profile picture for buddylist API
-            await this.bp.apps.buddylist.client.setStatus(this.bp.me, {
+            await this.bp.apps.buddylist.buddyServerClient.setStatus(this.bp.me, {
               profilePicture : url
             });
 

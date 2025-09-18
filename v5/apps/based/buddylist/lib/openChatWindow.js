@@ -344,7 +344,8 @@ function clearBuddyNewMessages(contextName) {
         this.data.profileState?.buddylist?.[contextName]?.newMessages
     ) {
         this.data.profileState.buddylist[contextName].newMessages = false;
-        this.client.receivedInstantMessage(contextName, (err, re) => {
+        // console.log("SETTING newMessages to false for", contextName);
+        this.buddyServerClient.receivedInstantMessage(contextName, (err, re) => {
             // console.log("receivedInstantMessage", err, re);
         });
     }

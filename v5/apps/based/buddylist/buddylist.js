@@ -1,7 +1,8 @@
 // TODO: decouple Buddylist class from Message Class
 // TODO: formalize Message class
 
-import processBuddylist from "./lib/processProfile.js";
+// Removed: 9/17/2025, this appears to be legacy for V3 API ( before CF edge workers )
+// import processBuddylist from "./lib/processProfile.js";
 import renderOrUpdateBuddyInBuddyList from "./lib/renderOrUpdateBuddyInBuddyList.js";
 import createChatMessageElement from "./lib/message/createChatMessageElement.js";
 import renderChatMessage from "./lib/message/renderChatMessage.js";
@@ -32,6 +33,7 @@ import defaultAvatarSvg from "./lib/buddy/defaultAvatarSvg.js";
 
 // new ws api
 import Client from './lib/ws/Client.js';
+import BuddyServerClient from './lib/ws/server/ServerClient.js';
 
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
@@ -99,10 +101,9 @@ export default class BuddyList {
 
     async init() {
         // Add event when user closes browser window or navigates away
-        /*
         window.addEventListener('beforeunload', (event) => {
-            if (this.client) {
-                this.client.setStatus(this.bp.me, {
+            if (this.buddyServerClient) {
+                this.buddyServerClient.setStatus(this.bp.me, {
                     status: 'offline'
                 }, function (err, re) {
                     console.log('buddypond.setStatus', err, re);
@@ -110,7 +111,6 @@ export default class BuddyList {
 
             }
         });
-        */
 
         await Promise.all([
             this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false),
@@ -237,6 +237,7 @@ export default class BuddyList {
         this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: data });
     }
 
+    // Not used?
     buddyReadNewMessages(data) {
         this.bp.log("BuddyReadNewMessages", data);
         const buddyName = data.name;
@@ -249,10 +250,15 @@ export default class BuddyList {
             try {
                 // check to see if we have newMessages in local profile for message.from
                 // if so, send buddypond.receiveInstantMessage(message.from)
+                // console.log('handleChatMessages message', message);
+                // console.log('this.data.profileState', this.data.profileState);
                 if (message.from && this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
-                    // console.log("SENDING READ NEWMESSAGES ALERT");
+                    console.log("receivedInstantMessage receivedInstantMessage receivedInstantMessage");
+                    // is this now replaced by clearBuddyNewMessages()?
+                    // may be redundant if clearBuddyNewMessages() is called on openChatWindow
+                    // although we may need to also acknowledge here in case message is received in existing window
                     this.data.profileState.buddylist[message.from].newMessages = false;
-                    this.client.receivedInstantMessage(message.from, function (err, re) {
+                    this.buddyServerClient.receivedInstantMessage(message.from, function (err, re) {
                         console.log('receivedInstantMessage', err, re);
                     });
                 }
@@ -374,15 +380,25 @@ export default class BuddyList {
         // plays welcome message
 
         if (!this.client) {
-
-            this.bp.play('desktop/assets/audio/WELCOME.mp3', { tryHard: Infinity });
-
             // this will eventually trigger the buddylist::connected event
             try {
                 this.client = new this.Client(bp);
                 let connected = await this.client.connect();
             } catch (err) {
                 console.error('Error connecting to BuddyList client:', err);
+            }
+        }
+
+        if (!this.buddyServerClient) {
+            this.bp.play('desktop/assets/audio/WELCOME.mp3', { tryHard: Infinity });
+            console.log('connecting to buddyserver client');
+            try {
+                this.buddyServerClient = new BuddyServerClient(bp);
+                let connected = await this.buddyServerClient.connect();
+                console.log('connected to buddyserver client', connected);
+            }
+            catch (err) {
+                console.error('Error connecting to BuddyServer client:', err);
             }
         }
 
@@ -425,7 +441,7 @@ BuddyList.prototype.renderOrUpdateBuddyInBuddyList = renderOrUpdateBuddyInBuddyL
 BuddyList.prototype.createChatMessageElement = createChatMessageElement;
 BuddyList.prototype.renderChatMessage = renderChatMessage;
 BuddyList.prototype.renderBuddyRequests = renderBuddyRequests;
-BuddyList.prototype.processBuddylist = processBuddylist;
+// BuddyList.prototype.processBuddylist = processBuddylist;
 BuddyList.prototype.buddylistUIEvents = buddylistUIEvents;
 BuddyList.prototype.openChatWindow = openChatWindow;
 BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;

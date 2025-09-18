@@ -7,15 +7,14 @@
 
 export default function bindMessageContextMenu() {
 
-
-
   bindProfilePictureClick.call(this);
 
   // Single event delegation for context menu, hover menu, and edit hint actions
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     const target = event.target;
     let action = target.getAttribute('data-action');
-
+    
+    console.log('clicked on target', target, action);
     // Handle context menu item click
     if (target.classList.contains('aim-context-menu-item') && action) {
       handleContextMenuItemClick.call(this, action, target);
@@ -24,10 +23,48 @@ export default function bindMessageContextMenu() {
 
     // Handle hover menu item click
 
+    // check if the target or any of its parents has class 'aim-message-reaction'
+    if ($(target).hasClass('aim-message-reaction') || $(target).parents().hasClass('aim-message-reaction')) {
+      // action = target.getAttribute('data-action') || target.parentNode.getAttribute('data-action');
+
+
+      const messageUUID = target.closest('.aim-chat-message')?.getAttribute('data-uuid');
+      const originalMessage = document.querySelector(`.aim-chat-message[data-uuid="${messageUUID}"]`);
+      if (!originalMessage) {
+        console.error('No original message found');
+        return;
+      }
+      const messageData = {
+        uuid: messageUUID,
+        chatId: originalMessage.getAttribute('data-chat-id'),
+        from: originalMessage.getAttribute('data-from'),
+      };
+      if (!messageData.uuid || !messageData.chatId) {
+        console.error('No message data found');
+        return;
+      }
+      console.log('React message clicked', messageData);
+
+      let emoji = target.closest('.aim-message-reaction')?.getAttribute('data-emoji');
+
+      await buddypond.reactInstantMessage({
+        from: messageData.from,
+        chatId: messageData.chatId,
+        uuid: messageData.uuid,
+        reaction: emoji,
+      });
+
+
+
+      return;
+    }
+
     // TODO: there must be a better way to do this
     // Remark: The issue is that we wish to cover the click action for the parent item and all its potential children
     let isHoverMenuAction = $(target).hasClass('aim-hover-menu-item') || $(target).parents().hasClass('aim-hover-menu-item');
     action = target.getAttribute('data-action') || target.parentNode.getAttribute('data-action');
+
+    // alert(`isHoverMenuAction: ${isHoverMenuAction}, action: ${action}`)
 
     if (isHoverMenuAction && action) {
       handleContextMenuItemClick.call(this, action, target);
@@ -109,6 +146,7 @@ function closeMenus() {
 
 // Perform the specified action
 function performAction(action, target) {
+  console.log(`Performing action: ${action}`, target);
   const closestTarget = target.closest('.aim-context-menu') || target.closest('.aim-chat-message');
   if (!closestTarget) {
     console.error('No closest target found');
@@ -138,8 +176,35 @@ function performAction(action, target) {
   }
 
   switch (action) {
-    case 'add-reaction':
+    case 'react-message':
       console.log('Add reaction clicked');
+      // alert('react-message clicked');
+      let $target = $(target).closest('.aim-hover-menu-item');
+      console.log('$target', $target);
+      console.log('.emoji-picker-popup', $('.emoji-picker-popup').length);
+      $target.emojiPicker({
+        onSelect: async (emoji) => {
+          console.log("Selected:", emoji);
+          // send reaction event to server
+
+
+          console.log('Reacted message', emoji, messageData);
+
+          await buddypond.reactInstantMessage({
+            from: messageData.from,
+            chatId: messageData.chatId,
+            uuid: messageData.uuid,
+            reaction: emoji,
+          });
+
+
+          // let messageControls = $target.closest('.aim-message-controls');
+          // $('.aim-input', messageControls).val((i, val) => val + emoji).trigger('input').focus();
+        }
+      });
+
+
+
       break;
     case 'edit-message':
       editMessage.call(this, messageData);
@@ -174,7 +239,7 @@ function performAction(action, target) {
       deleteMessage.call(this, messageData);
       break;
     case 'cast-spell':
-      this.bp.open('spellbook', { context: messageData.from, output: 'buddy'});
+      this.bp.open('spellbook', { context: messageData.from, output: 'buddy' });
       break;
     default:
       console.error(`Unknown action: ${action}`);

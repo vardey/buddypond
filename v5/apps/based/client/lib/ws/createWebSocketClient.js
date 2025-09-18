@@ -87,13 +87,14 @@ export default function createWebSocketClient(chatId) {
       this.pingInterval = setInterval(() => {
         if (wsClient && wsClient.readyState === WebSocket.OPEN) {
           // console.log('Sending ping to buddylist WebSocket');
+
+          // auto-response level ping yield consistent `1006` websocket client errors across all browsers
           // wsClient.send('ping'); // Matches server's setWebSocketAutoResponse("ping", "pong")
-          // application level ping
+
+          // application level pings removes the 1006 errors, connections stay alive
           wsClient.send(JSON.stringify({ action: 'ping' }) );
         }
       }, 25000);
-
-
 
   }
 
@@ -184,6 +185,10 @@ export default function createWebSocketClient(chatId) {
 
         case 'editInstantMessage':
           console.log('editInstantMessage message received:', parseData);
+          bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+          break;
+        case 'reactInstantMessage':
+          console.log('reactInstantMessage message received:', parseData);
           bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
           break;
 

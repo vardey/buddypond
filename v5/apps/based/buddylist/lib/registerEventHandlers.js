@@ -40,7 +40,8 @@ export default function registerEventHandlers() {
     // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
     //this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
 
-    this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
+    // Removed: 9/17/2025, this appears to be legacy for V3 API ( before CF edge workers )
+    // this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
 
     this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
     this.bp.on('profile::buddy::out', 'remove-buddy-from-buddylist', data => {
@@ -53,7 +54,17 @@ export default function registerEventHandlers() {
 
     this.bp.on('profile::fullBuddyList', 'render-or-update-buddy-in-buddylist', data => {
         let buddylist = data.buddylist || {};
-        console.log('profile::buddy::full_profile', data);
+
+        // Legacy API support
+        // check if buddylist is an array, if so convert to object
+        if (Array.isArray(buddylist)) {
+            buddylist = buddylist.reduce((acc, buddy) => {
+                acc[buddy.buddy_id] = buddy;
+                return acc;
+            }, {});
+        }
+
+        console.log('profile::buddy::full_profile', buddylist);
         for (let b in buddylist) {
             let buddy = {
                 name: b,
@@ -63,7 +74,7 @@ export default function registerEventHandlers() {
             this.data.profileState.buddylist = this.data.profileState.buddylist || {};
 
             this.data.profileState.buddylist[b] = buddy.profile;
-            // console.log('renderOrUpdateBuddyInBuddyList', buddy);
+            console.log('renderOrUpdateBuddyInBuddyList', buddy);
             this.renderOrUpdateBuddyInBuddyList(buddy);
         }
 
@@ -135,6 +146,7 @@ export default function registerEventHandlers() {
         }
     });
 
+    // Remark: Not used? Should be added?
     this.bp.on('profile::buddy::newmessage', 'mark-messages-as-read', data => this.buddyReadNewMessages(data));
 
     this.bp.on('profile::buddy::calling', 'start-call', data => {
@@ -149,14 +161,15 @@ export default function registerEventHandlers() {
     // this.bp.on('auth::logout', 'logout', () => this.logout());
 
     this.bp.on('profile::status', 'update-profile-status', status => {
-        if (status === 'signout') {
-            this.logout()
-        }
-        this.client.setStatus(this.bp.me, { status }, function (err, re) {
+        this.buddyServerClient.setStatus(this.bp.me, { status }, (err, re) => {
             if (err) {
                 console.error('error setting status', err);
             }
             // console.log('setStatus', err, re);
+
+            if (status === 'signout') {
+              this.logout()
+            }
         });
         /*
         buddypond.setStatus(this.bp.me, { status }, function(err, re){

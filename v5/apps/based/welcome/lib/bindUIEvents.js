@@ -69,11 +69,13 @@ export default function welcomeUIEvents() {
     return false;
   });
 
+  /*
   $('.onlineStatusSelect').change((e) => {
     let status = $(e.target).val();
     // console.log('status', status);
     bp.emit('profile::status', status);
   });
+  */
 
   $('.forgot-password').on('click', (ev) => {
     ev.preventDefault();
