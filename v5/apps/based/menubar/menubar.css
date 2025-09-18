@@ -380,30 +380,70 @@
   
 }
 
-#toggleVolumeSlider {
-  min-width: 100px;
+/* Container styling */
+.volume {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
 }
 
-.volumeSliderContainer{
-  height: 30px;
-  width: 180px;
-  background-color: aliceblue;
+/* Slider container appears below the icon */
+.volumeSliderContainer {
   display: none;
   position: absolute;
-  padding: 14px;
+  top: 120%;
+  /* below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 20, 0.95);
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  z-index: 999;
 }
 
+/* Slider width */
+#toggleVolumeSlider {
+  width: 100px;
+  margin: 0 auto;
+}
+
+#toggleVolumeSlider.ui-slider {
+  height: 6px;
+  /* thinner track */
+}
+
+/* Progress (white) */
+.ui-slider-horizontal .ui-slider-range {
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* Tooltip BELOW the slider */
 .slider-value {
-    position: absolute;
-    /* top: -30px; above the handle */
-    bottom: -30px; /* below the handle */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: #fff;
-    padding: 2px 6px;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    transition: left 0.1s ease; /* smooth movement */
-  }
+  position: absolute;
+  top: 22px;
+  /* place below track */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.ui-slider-handle:hover,
+.ui-slider-handle:focus {
+  transform: scale(1.2);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Handle (white knob with shadow) */
+.ui-slider-handle {
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
