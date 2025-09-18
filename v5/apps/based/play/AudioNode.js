@@ -1,4 +1,4 @@
-export default class AudioPlayer {
+export default class AudioNode {
   constructor(audioElement, defaultVolume = 0.0) {
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.audioElement = audioElement;
@@ -20,6 +20,7 @@ export default class AudioPlayer {
   _connectGraph() {
 
     // Disconnect first to avoid duplicate connections
+    // Remark: Probably should add this back?
     // this.source.disconnect();
 
     // Connect chain: source -> ...nodes -> destination
@@ -58,6 +59,12 @@ export default class AudioPlayer {
 
   pause() {
     this.audioElement.pause();
+  }
+
+  disconnect() {
+    this.source.disconnect();
+    this.nodes.forEach(node => node.disconnect());
+    this.audioCtx.close();
   }
 
   printGraph() {

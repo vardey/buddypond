@@ -1,11 +1,9 @@
 // Buddy Pond - Play.js - Marak Squires 2024
-
-import AudioPlayer from './audioPlayer.js';
+import AudioNode from './AudioNode.js';
 
 export default class Play {
     // Map to track playing files and avoid concurrent plays
     static playing = new Map();
-    currentVolume = 1.0;
 
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -39,8 +37,19 @@ export default class Play {
         Play.playing.set(mediaPath, true);
     
         const media = new Audio(mediaPath);
-        const audioPlayer = new AudioPlayer(media, currentVolume);
-        audioPlayer.printGraph();    
+        let currentVolume = this.bp.get('audio_volume');
+        // ensure that currentVolume is a number, if not default to 1
+        if (typeof currentVolume !== 'number' || isNaN(currentVolume)) {
+            currentVolume = 1.0;
+        }
+
+        // TODO: Would probably be better to have a single AudioNode for the play.js app, instead of one per play() call
+        const audioNode = new AudioNode(media, currentVolume);
+
+        this.bp.on('settings::audio_volume', 'update-playing-volume', function(volume){
+            console.log('Updating playing volume to', volume);
+            audioNode.setVolume(volume);
+        });
 
         let stopTimeout;
         let forceStop = false;
@@ -52,6 +61,9 @@ export default class Play {
             media.loop = false;
             forceStop = true;
             Play.playing.delete(mediaPath);
+            // remove the event listener
+            this.bp.off('settings::audio_volume', 'update-playing-volume');
+            audioNode.disconnect();
         };
     
         const stopAtDuration = () => {
