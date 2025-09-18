@@ -55,7 +55,7 @@ export default class ChessApp {
         return {
             id: 'chess',
             title: 'BuddyPond Chess',
-            icon: 'desktop/assets/images/icons/icon_chess_64.png',
+            icon: 'desktop/assets/images/icons/icon_chess_64.webp',
             x: 120,
             y: 80,
             parent: $('#desktop')[0],

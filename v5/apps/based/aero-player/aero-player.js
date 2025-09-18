@@ -22,7 +22,7 @@ export default class AeroPlayer {
         return {
             id: 'aero-player',
             title: 'Aero Music Player',
-            icon: 'desktop/assets/images/icons/icon_aero-player_64.png',
+            icon: 'desktop/assets/images/icons/icon_aero-player_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

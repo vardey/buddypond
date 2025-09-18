@@ -60,6 +60,8 @@ export default class StartPanel {
 
         const recentApps = (window.bp?.apps?.ui?.recentApps || []).slice(0, 10);
         recentApps.forEach(appData => {
+            // replace legacy app icons with webp
+            appData.icon = appData.icon ? appData.icon.replace('.png', '.webp') : '';
             const app = this.createAppTile(appData);
             recentGrid.appendChild(app);
         });

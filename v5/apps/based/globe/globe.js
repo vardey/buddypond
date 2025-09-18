@@ -24,7 +24,7 @@ export default class FluidSimulation {
                 minHeight: 200,
                 parent: $('#desktop')[0],
                 iframeContent: '/v5/apps/based/globe/vendor/index.html',
-                icon: '/desktop/assets/images/icons/icon_globe_64.png',
+                icon: '/desktop/assets/images/icons/icon_globe_64.webp',
                 resizable: true,
                 minimizable: true,
                 maximizable: true,

@@ -18,7 +18,7 @@ export default class Patatap {
          /*
          let chatButton = {
             text: 'Patatap',
-            image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+            image: 'desktop/assets/images/icons/icon_chalkboard_64.webp',
             onclick: async (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
@@ -42,7 +42,7 @@ export default class Patatap {
         return {
             id: 'patatap',
             title: 'Patatap',
-            icon: 'desktop/assets/images/icons/icon_patatap_64.png',
+            icon: 'desktop/assets/images/icons/icon_patatap_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

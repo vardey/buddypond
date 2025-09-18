@@ -46,7 +46,7 @@ export default function eventBind (helpWindow){
 
 
         if (!iconSrc) {
-            iconSrc = `desktop/assets/images/icons/icon_${appId}_64.png`;
+            iconSrc = `desktop/assets/images/icons/icon_${appId}_64.webp`;
         }
 
         if (iconSrc) {

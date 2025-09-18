@@ -23,7 +23,7 @@ export default class FluidSimulation {
                 parent: options.parent || $('#desktop')[0],
                 panel: options.panel || false,
                 iframeContent: '/v5/apps/based/fluid-simulation/vendor/index.html',
-                icon: '/desktop/assets/images/icons/icon_fluidsimulation_64.png',
+                icon: '/desktop/assets/images/icons/icon_fluidsimulation_64.webp',
                 resizable: true,
                 minimizable: true,
                 maximizable: true,

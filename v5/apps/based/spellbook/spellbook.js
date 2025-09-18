@@ -167,7 +167,7 @@ export default class Spellbook {
       this.spellbookWindow = this.bp.apps.ui.windowManager.createWindow({
         id: 'spellbook',
         title: 'Spellbook',
-        icon: 'desktop/assets/images/icons/icon_spellbook_64.png',
+        icon: 'desktop/assets/images/icons/icon_spellbook_64.webp',
         x: 250,
         y: 75,
         width: 360,

@@ -8,7 +8,7 @@ import renderTweet from './lib/renderTweet.js';
 export default class Tweets {
   constructor(bp, options = {}) {
     this.bp = bp;
-    this.icon = 'desktop/assets/images/icons/icon_tweets_64.png';
+    this.icon = 'desktop/assets/images/icons/icon_tweets_64.webp';
     return this;
   }
 

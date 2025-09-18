@@ -24,7 +24,7 @@ export default class DoodleJumpExtra {
         return {
             id: 'plays-doodle-jump-extra',
             title: 'Doodle Jump Extra',
-            icon: 'desktop/assets/images/icons/icon_doodle-jump-extra_64.png',
+            icon: 'desktop/assets/images/icons/icon_doodle-jump-extra_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

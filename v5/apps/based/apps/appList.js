@@ -1,27 +1,27 @@
 export default {
   "admin": {
     name: 'admin',
-    icon: `desktop/assets/images/icons/icon_admin_64.png`,
+    icon: `desktop/assets/images/icons/icon_admin_64.webp`,
     label: 'Admin',
     "onClick": "bp.open('admin')",
     adminOnly: true,
   },
   "profile": {
-    "icon": "desktop/assets/images/icons/icon_myprofile_64.png",
+    "icon": "desktop/assets/images/icons/icon_myprofile_64.webp",
     "label": "My Profile",
     "description": "Manage your profile and settings",
     "onClick": "bp.open('profile')",
     "categories": ["social", "productivity"]
   },
   "buddylist": {
-    "icon": "desktop/assets/images/icons/icon_profile_64.png",
+    "icon": "desktop/assets/images/icons/icon_profile_64.webp",
     "label": "BuddyList",
     "description": "View and manage your contacts",
     "onClick": "bp.open('buddylist')",
     "categories": ["social", "community"]
   },
   "pad": {
-    "icon": "desktop/assets/images/icons/icon_pad_64.png",
+    "icon": "desktop/assets/images/icons/icon_pad_64.webp",
     "label": "Buddy Apps",
     "description": "Create hosted Apps for Buddy Pond",
     "onClick": "bp.open('pad')",
@@ -29,21 +29,21 @@ export default {
     "alias": ["buddy-apps", "apps"]
   },
   "pond": {
-    "icon": "desktop/assets/images/icons/icon_pond_64.png",
+    "icon": "desktop/assets/images/icons/icon_pond_64.webp",
     "label": "Ponds",
     "description": "Explore shared content or communities",
     "onClick": "bp.open('pond')",
     "categories": ["community", "social"]
   },
   "tweets": {
-    "icon": "desktop/assets/images/icons/icon_tweets_64.png",
+    "icon": "desktop/assets/images/icons/icon_tweets_64.webp",
     "label": "Tweets",
     "description": "View and post tweets",
     "categories": ["social", "community"],
     "author": "BuddyPond",
   },
   "file-explorer": {
-    "icon": "desktop/assets/images/icons/icon_file-explorer_64.png",
+    "icon": "desktop/assets/images/icons/icon_file-explorer_64.webp",
     "label": "Buddy Files",
     "description": "Browse and manage your files",
     "onClick": "bp.open('file-explorer')",
@@ -52,7 +52,7 @@ export default {
     "alias": ["buddy-files", "files"]
   },
   "plays-doodle-jump-extra": {
-    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
+    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.webp",
     "label": "Doodle Jump",
     "description": "Play Doodle Jump Extra game",
     "onClick": "bp.open('doodle-jump-extra')",
@@ -61,7 +61,7 @@ export default {
     "alias": ["doodle-jump"],
   },
   "plays-malpek": {
-    "icon": "desktop/assets/images/icons/icon_plays-malpek_64.png",
+    "icon": "desktop/assets/images/icons/icon_plays-malpek_64.webp",
     "label": "Malpek",
     "description": "Play Malpek game",
     "onClick": "bp.open('plays-malpek')",
@@ -70,7 +70,7 @@ export default {
     "alias": ["malpek"],
   },
   "frvr-kittenforce": {
-    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
+    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.webp",
     "label": "Kitten Force",
     "description": "Play Kitten Force FRVR game",
     "onClick": "bp.open('frvr-kittenforce')",
@@ -79,7 +79,7 @@ export default {
     "alias": ["kittenforce"]
   },
   "marbleblast": {
-    "icon": "desktop/assets/images/icons/icon_marbleblast_64.png",
+    "icon": "desktop/assets/images/icons/icon_marbleblast_64.webp",
     "label": "Marble Blast",
     "description": "Play the Marble Blast game",
     "onClick": "bp.open('marbleblast')",
@@ -88,7 +88,7 @@ export default {
     "alias": ["marble-blast"]
   },
   "frvr-greed": {
-    "icon": "desktop/assets/images/icons/icon_frvr-greed_64.png",
+    "icon": "desktop/assets/images/icons/icon_frvr-greed_64.webp",
     "label": "Greed",
     "description": "Play Greedy FRVR game",
     "onClick": "bp.open('frvr-greed')",
@@ -97,7 +97,7 @@ export default {
     "alias": ["greed"]
   },
   'jutsu-caster': {
-    "icon": "desktop/assets/images/icons/icon_jutsu_64.png",
+    "icon": "desktop/assets/images/icons/icon_jutsu_64.webp",
     "label": "Jutsu Caster",
     "description": "Cast Jutsu spells using hand gestures",
     "onClick": "bp.open('jutsu-caster')",
@@ -106,7 +106,7 @@ export default {
     "alias": ["jutsu"]
   },
   "editor-monaco": {
-    "icon": "desktop/assets/images/icons/icon_vscode_64.png",
+    "icon": "desktop/assets/images/icons/icon_vscode_64.webp",
     "label": "Monaco Editor",
     "description": "A powerful code editor",
     "onClick": "bp.open('editor-monaco')",
@@ -114,7 +114,7 @@ export default {
     "alias": ["monaco", "editor"]
   },
   "minipaint": {
-    "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
+    "icon": "desktop/assets/images/icons/icon_minipaint_64.webp",
     "label": "miniPaint",
     "author": "ViliusL",
     "description": "Advanced image editor to create and edit images",
@@ -123,7 +123,7 @@ export default {
   },
 
   "patatap": {
-    "icon": "desktop/assets/images/icons/icon_patatap_64.png",
+    "icon": "desktop/assets/images/icons/icon_patatap_64.webp",
     "label": "Patatap",
     "description": "Create music and animations with touch and keyboard input",
     "onClick": "bp.open('patatap')",
@@ -132,7 +132,7 @@ export default {
   },
   /*,
   "sequencer": {
-    "icon": "desktop/assets/images/icons/icon_sequencer_64.png",
+    "icon": "desktop/assets/images/icons/icon_sequencer_64.webp",
     "label": "Sequencer",
     "description": "Create and edit music sequences",
     "onClick": "bp.open('sequencer')",
@@ -143,7 +143,7 @@ export default {
 
   /*
   "sandspiel": {
-    "icon": "desktop/assets/images/icons/icon_sandspiel_64.png",
+    "icon": "desktop/assets/images/icons/icon_sandspiel_64.webp",
     "label": "Sandspiel",
     "description": "A creative sandbox game with sand and physics",
     "onClick": "bp.open('sandspiel')",
@@ -151,7 +151,7 @@ export default {
   },
   */
   "vision-harp": {
-    "icon": "desktop/assets/images/icons/icon_vision-harp_64.png",
+    "icon": "desktop/assets/images/icons/icon_vision-harp_64.webp",
     "label": "Vision Harp",
     "description": "Play music using hand gestures",
     "onClick": "bp.open('vision-harp')",
@@ -161,7 +161,7 @@ export default {
   },
   /*
   "fingerpaint": {
-    "icon": "desktop/assets/images/icons/icon_finger-paint_64.png",
+    "icon": "desktop/assets/images/icons/icon_finger-paint_64.webp",
     "label": "Finger Paint",
     "description": "Create art using hand gestures",
     "onClick": "bp.open('fingerpaint')",
@@ -171,7 +171,7 @@ export default {
   },
   */
   "soundrecorder": {
-    "icon": "desktop/assets/images/icons/icon_soundrecorder_64.png",
+    "icon": "desktop/assets/images/icons/icon_soundrecorder_64.webp",
     "label": "Sound Recorder",
     "author": "Isaiah Odhner",
     "description": "Record and save audio clips",
@@ -181,7 +181,7 @@ export default {
     "alias": ["recorder"]
   },
   "youtube": {
-    "icon": "desktop/assets/images/icons/icon_interdimensionalcable_64.png",
+    "icon": "desktop/assets/images/icons/icon_interdimensionalcable_64.webp",
     "label": "IDC Cable",
     "description": "Watch and browse YouTube videos",
     "onClick": "bp.open('youtube')",
@@ -189,23 +189,21 @@ export default {
     "alias": ["idc"]
   },
   "camera": {
-    "icon": "desktop/assets/images/icons/icon_camera_64.png",
+    "icon": "desktop/assets/images/icons/icon_camera_64.webp",
     "label": "Camera",
     "description": "Capture photos or videos",
     "onClick": "bp.open('camera')",
     "categories": ["media", "creative"]
   },
-
   "coin": {
-    "icon": "desktop/assets/images/icons/icon_coin_64.png",
+    "icon": "desktop/assets/images/icons/icon_coin_64.webp",
     "label": "Buddy Coins",
     "description": "Manage your virtual currency",
     "onClick": "bp.open('coin')",
     "categories": ["finance"]
   },
-
   "fluid-simulation": {
-    "icon": "desktop/assets/images/icons/icon_fluidsimulation_64.png",
+    "icon": "desktop/assets/images/icons/icon_fluidsimulation_64.webp",
     "author": "Pavel Dobryakov",
     "label": "Fluid Simulation",
     "description": "Interact with a fluid dynamics simulation",
@@ -214,14 +212,14 @@ export default {
     "alias": ["fluids"]
   },
   "sampler": {
-    "icon": "desktop/assets/images/icons/icon_midifighter_64.png",
+    "icon": "desktop/assets/images/icons/icon_midifighter_64.webp",
     "label": "Sampler",
     "description": "Create and mix audio samples",
     "onClick": "bp.open('sampler')",
     "categories": ["audio", "music", "creative"]
   },
   "audio-visual": {
-    "icon": "desktop/assets/images/icons/icon_visuals_64.png",
+    "icon": "desktop/assets/images/icons/icon_visuals_64.webp",
     "author": "lachlanmaclean",
     "label": "Audio Visuals",
     "description": "Experience audio-responsive visuals",
@@ -230,7 +228,7 @@ export default {
     "alias": ["av"]
   },
   "chalkboard": {
-    "icon": "desktop/assets/images/icons/icon_chalkboard_64.png",
+    "icon": "desktop/assets/images/icons/icon_chalkboard_64.webp",
     "label": "Chalkboard",
     "description": "Draw and write on a virtual chalkboard",
     "onClick": "bp.open('chalkboard')",
@@ -238,7 +236,7 @@ export default {
     "chatWindowButton": ['buddy', 'pond'], // adds this app as a button in the chat window, array is types of windows to add it to
     "chatButton": {
       text: 'Chalkboard',
-      image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+      image: 'desktop/assets/images/icons/icon_chalkboard_64.webp',
       onclick: async (ev) => {
         let context = ev.target.dataset.context;
         let type = ev.target.dataset.type;
@@ -252,7 +250,7 @@ export default {
     }
   },
   "piano": {
-    "icon": "desktop/assets/images/icons/icon_piano_64.png",
+    "icon": "desktop/assets/images/icons/icon_piano_64.webp",
     "label": "Piano",
     "description": "Play a virtual piano keyboard",
     "onClick": "bp.open('piano')",
@@ -260,7 +258,7 @@ export default {
     "categories": ["music", "creative"]
   },
   "bubblepop": {
-    "icon": "desktop/assets/images/icons/icon_bubblepop_64.png",
+    "icon": "desktop/assets/images/icons/icon_bubblepop_64.webp",
     "label": "Bubble Pop",
     "description": "Pop bubbles and enjoy the visuals",
     "onClick": "bp.open('bubblepop')",
@@ -270,14 +268,14 @@ export default {
   },
 
   "portfolio": {
-    "icon": "desktop/assets/images/icons/icon_portfolio_64.png",
+    "icon": "desktop/assets/images/icons/icon_portfolio_64.webp",
     "label": "Portfolio",
     "description": "Track your investments and assets",
     "onClick": "bp.open('portfolio')",
     "categories": ["finance"]
   },
   "audio-player": {
-    "icon": "desktop/assets/images/icons/icon_audio-player_64.png",
+    "icon": "desktop/assets/images/icons/icon_audio-player_64.webp",
     "label": "Audio Player",
     "description": "Play and manage audio files",
     "onClick": "bp.open('audio-player')",
@@ -285,7 +283,7 @@ export default {
   },
   /*
   "gifstudio": {
-    "icon": "desktop/assets/images/icons/icon_gifstudio_64.png",
+    "icon": "desktop/assets/images/icons/icon_gifstudio_64.webp",
     "label": "Gif Studio",
     "description": "Create and edit GIFs",
     "onClick": "bp.open('gifstudio')",
@@ -293,7 +291,7 @@ export default {
   },
   */
   "paint": {
-    "icon": "desktop/assets/images/icons/icon_paint_64.png",
+    "icon": "desktop/assets/images/icons/icon_paint_64.webp",
     "label": "Paint",
     "author": "Isaiah Odhner",
     "description": "A Classic Retro Style Image Editor",
@@ -302,7 +300,7 @@ export default {
     "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
   },
   "painterro": {
-    "icon": "desktop/assets/images/icons/icon_painterro_64.png",
+    "icon": "desktop/assets/images/icons/icon_painterro_64.webp",
     "label": "Painterro",
     "author": "Ivan Borshchov",
     "description": "Easy to use image editing tool",
@@ -311,7 +309,7 @@ export default {
   },
   /* FRVR Games */
   "frvr-basketball": {
-    "icon": "desktop/assets/images/icons/icon_basketball-frvr_64.png",
+    "icon": "desktop/assets/images/icons/icon_basketball-frvr_64.webp",
     "label": "BasketBall",
     "description": "Play Basketball game",
     "onClick": "bp.open('frvr-basketball')",
@@ -320,7 +318,7 @@ export default {
     "alias": ["basketball"]
   },
   "frvr-bowlingo": {
-    "icon": "desktop/assets/images/icons/icon_frvr-bowlingo_64.png",
+    "icon": "desktop/assets/images/icons/icon_frvr-bowlingo_64.webp",
     "label": "Bowlingo",
     "description": "Play Bowlingo game",
     "onClick": "bp.open('frvr-bowlingo')",
@@ -329,19 +327,19 @@ export default {
     "alias": ["bowling"]
   },
   "mantra": {
-    "icon": "desktop/assets/images/icons/icon_mantra_64.png",
+    "icon": "desktop/assets/images/icons/icon_mantra_64.webp",
     "label": "Mantra",
     "description": "Play the Mantra game",
     "categories": ["games"]
   },
   "minesweeper": {
-    "icon": "desktop/assets/images/icons/icon_minesweeper_64.png",
+    "icon": "desktop/assets/images/icons/icon_minesweeper_64.webp",
     "label": "Minesweeper",
     "description": "Classic Minesweeper puzzle game",
     "categories": ["games"]
   },
   "emulator-nes": {
-    "icon": "desktop/assets/images/icons/icon_nes_64.png",
+    "icon": "desktop/assets/images/icons/icon_nes_64.webp",
     "app": "emulator",
     "context": 'nes',
     "label": "NES",
@@ -351,7 +349,7 @@ export default {
     "author": "LarryD"
   },
   "emulator-sega": {
-    "icon": "desktop/assets/images/icons/icon_sega_64.png",
+    "icon": "desktop/assets/images/icons/icon_sega_64.webp",
     "app": "emulator",
     "context": 'sega',
     "label": "Sega",
@@ -361,7 +359,7 @@ export default {
     "author": "LarryD"
   },
   "emulator-snes": {
-    "icon": "desktop/assets/images/icons/icon_snes_64.png",
+    "icon": "desktop/assets/images/icons/icon_snes_64.webp",
     "app": "emulator",
     "context": 'snes',
     "label": "SNES",
@@ -371,7 +369,7 @@ export default {
     "author": "LarryD"
   },
   "emulator-atari2600": {
-    "icon": "desktop/assets/images/icons/icon_atari2600_64.png",
+    "icon": "desktop/assets/images/icons/icon_atari2600_64.webp",
     "app": "emulator",
     "context": 'atari2600',
     "label": "Atari 2600",
@@ -381,7 +379,7 @@ export default {
     "author": "LarryD"
   },
   "emulator-n64": {
-    "icon": "desktop/assets/images/icons/icon_n64_64.png",
+    "icon": "desktop/assets/images/icons/icon_n64_64.webp",
     "app": "emulator",
     "context": 'n64',
     "label": "n64",
@@ -392,13 +390,13 @@ export default {
     "author": "LarryD"
   },
   "solitaire": {
-    "icon": "desktop/assets/images/icons/icon_solitaire_64.png",
+    "icon": "desktop/assets/images/icons/icon_solitaire_64.webp",
     "label": "Solitaire",
     "description": "Classic Solitaire card game",
     "categories": ["games"]
   },
   "stickman": {
-    "icon": "desktop/assets/images/icons/icon_stickman_64.png",
+    "icon": "desktop/assets/images/icons/icon_stickman_64.webp",
     "label": "Stickman",
     "description": "Control a stickman using body poses",
     "onClick": "bp.open('stickman')",
@@ -408,46 +406,46 @@ export default {
   },
 
   "spellbook": {
-    "icon": "desktop/assets/images/icons/icon_spellbook_64.png",
+    "icon": "desktop/assets/images/icons/icon_spellbook_64.webp",
     "label": "Spellbook",
     "description": "Manage scripts or commands",
     "categories": ["tools", "productivity"]
   },
 
   "globe": {
-    "icon": "desktop/assets/images/icons/icon_globe_64.png",
+    "icon": "desktop/assets/images/icons/icon_globe_64.webp",
     "label": "Globe",
     "description": "Visualize global network data",
     "categories": ["tools"]
   },
   "file-viewer": {
-    "icon": "desktop/assets/images/icons/icon_file-viewer_64.png",
+    "icon": "desktop/assets/images/icons/icon_file-viewer_64.webp",
     "label": "File Viewer",
     "description": "View files in various formats",
     "onClick": "bp.open('file-viewer')",
     "categories": ["files", "productivity"]
   },
   "hacker-typer": {
-    "icon": "desktop/assets/images/icons/icon_hacker-typer_64.png",
+    "icon": "desktop/assets/images/icons/icon_hacker-typer_64.webp",
     "label": "Hack Typer",
     "description": "Simulate hacking with a typing game",
     "categories": ["tools", "games"]
   },
   "hex-editor": {
-    "icon": "desktop/assets/images/icons/icon_hex-editor_64.png",
+    "icon": "desktop/assets/images/icons/icon_hex-editor_64.webp",
     "label": "Hex Editor",
     "description": "Edit files in hexadecimal format",
     "categories": ["tools", "productivity"]
   },
   "maps": {
-    "icon": "desktop/assets/images/icons/icon_maps_64.png",
+    "icon": "desktop/assets/images/icons/icon_maps_64.webp",
     "label": "Maps",
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
   },
  
   "screen-recorder": {
-    "icon": "desktop/assets/images/icons/icon_screen-recorder_64.png",
+    "icon": "desktop/assets/images/icons/icon_screen-recorder_64.webp",
     "label": "Screen Recorder",
     "description": "Record your screen activity",
     "onClick": "bp.open('screen-recorder')",
@@ -459,7 +457,7 @@ export default {
   /*
   */
   "chess": {
-    "icon": "desktop/assets/images/icons/icon_chess_64.png",
+    "icon": "desktop/assets/images/icons/icon_chess_64.webp",
     "label": "Chess",
     "description": "Play chess online with friends",
     "onClick": "bp.open('chess')",
@@ -469,7 +467,7 @@ export default {
     // adds this app as a button in the chat window, array is types of windows to add it to
     "chatButton": {
       text: 'Chalkboard',
-      image: 'desktop/assets/images/icons/icon_chess_64.png',
+      image: 'desktop/assets/images/icons/icon_chess_64.webp',
       onclick: async (ev) => {
         let context = ev.target.dataset.context;
         let type = ev.target.dataset.type;
@@ -486,7 +484,7 @@ export default {
   },
   /*
   "virtual-machines": {
-    "icon": "desktop/assets/images/icons/icon_virtual-machines_64.png",
+    "icon": "desktop/assets/images/icons/icon_virtual-machines_64.webp",
     "label": "Virtual Machines",
     "description": "Run virtual machines in the cloud",
     "onClick": "bp.open('virtual-machines')",
@@ -497,7 +495,7 @@ export default {
   */
  /*
   "webllm": {
-    "icon": "desktop/assets/images/icons/icon_web_llm_64.png",
+    "icon": "desktop/assets/images/icons/icon_web_llm_64.webp",
     "label": "Web LLM",
     "description": "Interact with large language models",
     "onClick": "bp.open('webllm')",
@@ -508,7 +506,7 @@ export default {
   */
 
   "aero-player": {
-    "icon": "desktop/assets/images/icons/icon_aero-player_64.png",
+    "icon": "desktop/assets/images/icons/icon_aero-player_64.webp",
     "label": "Aero Player",
     "description": "Play music with Aero Player",
     "onClick": "bp.open('aero-player')",
@@ -519,7 +517,7 @@ export default {
   },
   
   "motd": {
-    "icon": "desktop/assets/images/icons/icon_console_64.png",
+    "icon": "desktop/assets/images/icons/icon_console_64.webp",
     "label": "MOTD",
     "description": "Message of the Day",
     "onClick": "bp.open('motd')",
@@ -528,7 +526,7 @@ export default {
   },
 
   "welcome": {
-    "icon": "desktop/assets/images/icons/icon_buddy-frog_64.png",
+    "icon": "desktop/assets/images/icons/icon_buddy-frog_64.webp",
     "label": "Welcome",
     "description": "Welcome to BuddyPond",
     "onClick": "bp.open('welcome')",
@@ -538,7 +536,7 @@ export default {
   /*
   ,
   "casino": {
-    "icon": "desktop/assets/images/icons/icon_casino_64.png",
+    "icon": "desktop/assets/images/icons/icon_casino_64.webp",
     "label": "Casino",
     "onClick": "bp.open('casino')",
     "description": "Flip a coin and get a random result",
@@ -549,7 +547,7 @@ export default {
   },
 
   "casino-coinflip": {
-    "icon": "desktop/assets/images/icons/icon_coinflip_64.png",
+    "icon": "desktop/assets/images/icons/icon_coinflip_64.webp",
     "label": "Coin Flip",
     "alias": "coinflip",
     "onClick": "bp.open('casino-coinflip')",

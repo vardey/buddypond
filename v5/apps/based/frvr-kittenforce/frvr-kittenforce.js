@@ -27,7 +27,7 @@ export default class KittenForceFRVR {
         return {
             id: 'frvr-kittenforce',
             title: 'Kitten Force FRVR',
-            icon: 'desktop/assets/images/icons/icon_kittenforce-frvr_64.png',
+            icon: 'desktop/assets/images/icons/icon_kittenforce-frvr_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

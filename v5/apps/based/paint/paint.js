@@ -4,7 +4,7 @@ export default class Paint {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.output = null;
-        this.icon = '/desktop/assets/images/icons/icon_paint_64.png';
+        this.icon = '/desktop/assets/images/icons/icon_paint_64.webp';
         return this;
     }
 

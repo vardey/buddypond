@@ -30,7 +30,7 @@ export default class MarbleBlast {
         return {
             id: 'marble-blast',
             title: 'Marble Blast',
-            icon: 'desktop/assets/images/icons/icon_marbleblast_64.png',
+            icon: 'desktop/assets/images/icons/icon_marbleblast_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

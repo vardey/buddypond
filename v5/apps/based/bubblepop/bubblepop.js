@@ -73,7 +73,7 @@ export default class BubblePop {
         return {
             id: 'bubblepop',
             title: 'BubblePop',
-            icon: 'desktop/assets/images/icons/icon_bubblepop_64.png',
+            icon: 'desktop/assets/images/icons/icon_bubblepop_64.webp',
             x: 300,
             y: 100,
             width: 700,

@@ -281,10 +281,10 @@ export default function buddylistUIEvents() {
   // TODO: move these events to chatWindowUIEvents.js
   // editor configuration: update icon paths if you prefer different icons
   const _remixEditors = [
-    { key: 'paint', title: 'Paint', icon: 'desktop/assets/images/icons/icon_paint_64.png' },
-    { key: 'minipaint', title: 'miniPaint', icon: 'desktop/assets/images/icons/icon_minipaint_64.png' },
-    { key: 'painterro', title: 'Painterro', icon: 'desktop/assets/images/icons/icon_painterro_64.png' },
-    { key: 'chalkboard', title: 'Chalkboard', icon: 'desktop/assets/images/icons/icon_chalkboard_64.png' }
+    { key: 'paint', title: 'Paint', icon: 'desktop/assets/images/icons/icon_paint_64.webp' },
+    { key: 'minipaint', title: 'miniPaint', icon: 'desktop/assets/images/icons/icon_minipaint_64.webp' },
+    { key: 'painterro', title: 'Painterro', icon: 'desktop/assets/images/icons/icon_painterro_64.webp' },
+    { key: 'chalkboard', title: 'Chalkboard', icon: 'desktop/assets/images/icons/icon_chalkboard_64.webp' }
   ];
 
   // Open / toggle the left→right menu when clicking the paint icon

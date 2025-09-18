@@ -114,7 +114,7 @@ export default class Pond {
     }
 
     open(options = {}) {
-        const iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
+        const iconImagePath = 'desktop/assets/images/icons/icon_pond_64.webp';
 
         if (!this.pondWindow) {
             this.pondWindow = this.bp.apps.ui.windowManager.createWindow({

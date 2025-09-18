@@ -127,7 +127,7 @@ async open(options = {}) {
     return {
       id: 'minipaint',
       title: 'miniPaint',
-      icon: 'desktop/assets/images/icons/icon_minipaint_64.png',
+      icon: 'desktop/assets/images/icons/icon_minipaint_64.webp',
       x: 250,
       y: 75,
       width: 800,

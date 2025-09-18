@@ -371,7 +371,7 @@ export default class JutsuCaster {
         return {
             id: 'jutsu-caster',
             title: 'Jutsu Caster',
-            icon: 'desktop/assets/images/icons/icon_jutsu_64.png',
+            icon: 'desktop/assets/images/icons/icon_jutsu_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

@@ -32,7 +32,7 @@ export default class Malpek {
         return {
             id: 'plays-malpek',
             title: 'Malpek',
-            icon: 'desktop/assets/images/icons/icon_plays-malpek_64.png',
+            icon: 'desktop/assets/images/icons/icon_plays-malpek_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

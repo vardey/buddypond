@@ -71,6 +71,8 @@ export default function defaultDesktopShortcuts() {
         let _app = {
             ...app
         }
+        // replace legacy app icons with webp
+        _app.icon = _app.icon ? _app.icon.replace('.png', '.webp') : '';
         if (_app) {
             // console.log(`Adding default taskbar app: ${appName}`, _app);
             this.bp.apps.taskbar.taskBar.saveItem(_app);
@@ -118,6 +120,8 @@ export default function defaultDesktopShortcuts() {
     if (Object.keys(installedApps).length > 0) {
         Object.keys(installedApps).forEach(appName => {
             let app = installedApps[appName];
+            // replace legacy app icons with webp
+            app.icon = app.icon ? app.icon.replace('.png', '.webp') : '';
             if (app) {
                 // console.log(`Adding shortcut for installed app: ${appName}`, app);
                 bp.apps.desktop.addShortCut({

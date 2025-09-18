@@ -1,7 +1,7 @@
 export default class Example {
     constructor(bp, options = {}) {
         this.bp = bp;
-        this.icon = '/desktop/assets/images/icons/icon_piano_64.png';
+        this.icon = '/desktop/assets/images/icons/icon_piano_64.webp';
         return this;
     }
 

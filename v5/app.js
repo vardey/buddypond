@@ -34,7 +34,7 @@ async function go() {
 
     bp.apps.desktop.addShortCut({
         name: 'pond',
-        icon: 'http://192.168.200.59/desktop/assets/images/icons/icon_pond_64.png',
+        icon: 'http://192.168.200.59/desktop/assets/images/icons/icon_pond_64.webp',
         label: 'Pond',
     }, {
         onClick: () => {

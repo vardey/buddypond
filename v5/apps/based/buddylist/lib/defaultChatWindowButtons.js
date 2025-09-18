@@ -3,7 +3,7 @@ export default function defaultChatWindowButtons(bp) {
     return [
         {
             text: 'Upload File',
-            image: 'desktop/assets/images/icons/icon_upload_64.png',
+            image: 'desktop/assets/images/icons/icon_upload_64.webp',
             //icon: '<i title="Upload File" class="button-bar-button-icon button-bar-button fa-duotone fa-regular fa-upload"></i>',
             onclick: async (ev) => {
                 let context = ev.target.dataset.context;
@@ -66,7 +66,7 @@ export default function defaultChatWindowButtons(bp) {
         },
         {
             text: 'Image Search',
-            image: 'desktop/assets/images/icons/icon_image-search_64.png',
+            image: 'desktop/assets/images/icons/icon_image-search_64.webp',
             onclick: async (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
@@ -82,7 +82,7 @@ export default function defaultChatWindowButtons(bp) {
 
         {
             text: 'BuddySound',
-            image: 'desktop/assets/images/icons/icon_soundrecorder_64.png',
+            image: 'desktop/assets/images/icons/icon_soundrecorder_64.webp',
             onclick: (ev) => {
                 console.log('BuddySound button clicked', ev);
                 let context = ev.target.dataset.context;
@@ -94,7 +94,7 @@ export default function defaultChatWindowButtons(bp) {
         /* TOOD: add gifstudio back ( with better UX and features )
         {
             text: 'BuddyGif',
-            image: 'desktop/assets/images/icons/icon_gifstudio_64.png',
+            image: 'desktop/assets/images/icons/icon_gifstudio_64.webp',
             onclick: (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
@@ -104,11 +104,11 @@ export default function defaultChatWindowButtons(bp) {
         */
         {
             text: 'BuddyPaint',
-            image: 'desktop/assets/images/icons/icon_drawing_64.png',
+            image: 'desktop/assets/images/icons/icon_drawing_64.webp',
             children: [
                {
                   text: 'Chalkboard',
-                  image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+                  image: 'desktop/assets/images/icons/icon_chalkboard_64.webp',
                   onclick: (ev) => {
                       let context = ev.target.dataset.context;
                       let type = ev.target.dataset.type;
@@ -117,7 +117,7 @@ export default function defaultChatWindowButtons(bp) {
               },
                {
                   text: 'miniPaint',
-                  image: 'desktop/assets/images/icons/icon_minipaint_64.png',
+                  image: 'desktop/assets/images/icons/icon_minipaint_64.webp',
                   onclick: (ev) => {
                       let context = ev.target.dataset.context;
                       let type = ev.target.dataset.type;
@@ -126,7 +126,7 @@ export default function defaultChatWindowButtons(bp) {
               },
               {
                   text: 'Paint',
-                  image: 'desktop/assets/images/icons/icon_paint_64.png',
+                  image: 'desktop/assets/images/icons/icon_paint_64.webp',
                   onclick: (ev) => {
                       let context = ev.target.dataset.context;
                       let type = ev.target.dataset.type;
@@ -135,7 +135,7 @@ export default function defaultChatWindowButtons(bp) {
               },
               {
                   text: 'Painterro',
-                  image: 'desktop/assets/images/icons/icon_painterro_64.png',
+                  image: 'desktop/assets/images/icons/icon_painterro_64.webp',
                   onclick: (ev) => {
                       let context = ev.target.dataset.context;
                       let type = ev.target.dataset.type;
@@ -223,7 +223,7 @@ export default function defaultChatWindowButtons(bp) {
         {
             text: 'BuddyCall',
             type: 'buddy-only',
-            image: 'desktop/assets/images/icons/icon_phone_64.png',
+            image: 'desktop/assets/images/icons/icon_phone_64.webp',
             onclick: (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
@@ -258,7 +258,7 @@ export default function defaultChatWindowButtons(bp) {
         // spellbook
         {
             text: 'Spellbook',
-            image: 'desktop/assets/images/icons/icon_spellbook_64.png',
+            image: 'desktop/assets/images/icons/icon_spellbook_64.webp',
             onclick: (ev) => {
                 ev.preventDefault();
                 ev.stopPropagation();
@@ -272,7 +272,7 @@ export default function defaultChatWindowButtons(bp) {
         // buddycoins
         {
             text: 'BuddyCoins',
-            image: 'desktop/assets/images/icons/icon_coin_64.png',
+            image: 'desktop/assets/images/icons/icon_coin_64.webp',
             onclick: (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
@@ -284,7 +284,7 @@ export default function defaultChatWindowButtons(bp) {
         {
             text: 'Dictate',
             env: 'desktop-only',
-            image: 'desktop/assets/images/icons/icon_dictate_64.png',
+            image: 'desktop/assets/images/icons/icon_dictate_64.webp',
             onclick: async (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
@@ -294,7 +294,7 @@ export default function defaultChatWindowButtons(bp) {
         },
         {
             text: 'BuddyHelp',
-            image: 'desktop/assets/images/icons/icon_help_64.png',
+            image: 'desktop/assets/images/icons/icon_help_64.webp',
             align: 'right',
             onclick: (ev) => {
                 let context = ev.target.dataset.context;

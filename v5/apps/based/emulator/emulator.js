@@ -8,11 +8,11 @@ export default class Emulator {
         this.emulatorWindows = {}; // Track open windows per context
 
         this.emulatorIcons = {
-            nes: '/desktop/assets/images/icons/icon_nes_64.png',
-            sega: '/desktop/assets/images/icons/icon_sega_64.png',
-            snes: '/desktop/assets/images/icons/icon_snes_64.png',
-            atari2600: '/desktop/assets/images/icons/icon_atari2600_64.png',
-            n64: '/desktop/assets/images/icons/icon_n64_64.png',
+            nes: '/desktop/assets/images/icons/icon_nes_64.webp',
+            sega: '/desktop/assets/images/icons/icon_sega_64.webp',
+            snes: '/desktop/assets/images/icons/icon_snes_64.webp',
+            atari2600: '/desktop/assets/images/icons/icon_atari2600_64.webp',
+            n64: '/desktop/assets/images/icons/icon_n64_64.webp',
         };
 
         return this;

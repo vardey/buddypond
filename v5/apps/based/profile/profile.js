@@ -61,7 +61,7 @@ export default class Profile {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                icon: '/desktop/assets/images/icons/icon_myprofile_64.png',
+                icon: '/desktop/assets/images/icons/icon_myprofile_64.webp',
                 context: buddyname || 'default',
                 content: profileContent,
                 resizable: true,
@@ -156,7 +156,7 @@ function renderProfileApp(appName, container) {
     let str = `
       <tr class="open-app" data-app="${appName}">
         <td>
-          <img class="appStoreIcon float-left" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.png" />
+          <img class="appStoreIcon float-left" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.webp" />
         </td>
         <td>
          ${app.description || app.label || appName}

@@ -5,7 +5,7 @@ import eventBind from './lib/eventBind.js';
 export default class Help {
     constructor(bp, options = {}) {
         this.bp = bp;
-        this.icon = 'desktop/assets/images/icons/icon_help_64.png';
+        this.icon = 'desktop/assets/images/icons/icon_help_64.webp';
         return this;
     }
 

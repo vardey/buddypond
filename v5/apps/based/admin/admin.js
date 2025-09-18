@@ -6,7 +6,7 @@ import client from './lib/client.js';
 export default class Admin {
     constructor(bp, options = {}) {
         this.bp = bp;
-        this.icon = 'desktop/assets/images/icons/icon_admin_64.png';
+        this.icon = 'desktop/assets/images/icons/icon_admin_64.webp';
         return this;
     }
 

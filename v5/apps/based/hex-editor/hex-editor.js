@@ -22,7 +22,7 @@ export default class HexEditor {
             height: 500,
             minWidth: 200,
             minHeight: 200,
-            icon: '/desktop/assets/images/icons/icon_hex-editor_64.png',
+            icon: '/desktop/assets/images/icons/icon_hex-editor_64.webp',
             parent: $('#desktop')[0],
             iframeContent: 'https://hexed.it/',
             resizable: true,

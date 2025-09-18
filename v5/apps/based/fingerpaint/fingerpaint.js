@@ -32,7 +32,7 @@ export default class FingerPaint {
         return {
             id: 'fingerpaint',
             title: 'FingerPaint',
-            icon: 'desktop/assets/images/icons/icon_paint_64.png',
+            icon: 'desktop/assets/images/icons/icon_paint_64.webp',
             x: 300,
             y: 100,
             width: 700,

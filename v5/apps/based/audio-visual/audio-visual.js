@@ -29,7 +29,7 @@ export default class AudioVisual {
             minHeight: 200,
             parent: $('#desktop')[0],
             iframeContent: '/v5/apps/based/audio-visual/vendor/index.html',
-            icon: '/desktop/assets/images/icons/icon_visuals_64.png',
+            icon: '/desktop/assets/images/icons/icon_visuals_64.webp',
             resizable: true,
             minimizable: true,
             maximizable: true,

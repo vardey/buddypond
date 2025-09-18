@@ -49,7 +49,7 @@ export default class StickMan {
         return {
             id: 'stickman',
             title: 'StickMan',
-            icon: 'desktop/assets/images/icons/icon_stickman_64.png',
+            icon: 'desktop/assets/images/icons/icon_stickman_64.webp',
             x: 300,
             y: 100,
             width: 700,

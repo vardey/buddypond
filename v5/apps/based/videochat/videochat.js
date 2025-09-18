@@ -112,7 +112,7 @@ export default class VideoChat {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                icon: '/desktop/assets/images/icons/icon_interdimensionalcable_64.png',
+                icon: '/desktop/assets/images/icons/icon_interdimensionalcable_64.webp',
                 content: this.html,
                 resizable: true,
                 minimizable: true,

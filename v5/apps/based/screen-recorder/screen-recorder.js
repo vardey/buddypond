@@ -21,7 +21,7 @@ export default class ScreenRecorder {
         this.win = this.bp.apps.ui.windowManager.createWindow({
             id: 'screen-recorder',
             title: 'Screen Recorder',
-            icon: 'desktop/assets/images/icons/icon_console_64.png',
+            icon: 'desktop/assets/images/icons/icon_console_64.webp',
             x: 100,
             y: 75,
             width: 600,

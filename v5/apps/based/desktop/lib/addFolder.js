@@ -16,7 +16,7 @@ export default function addFolder(metadata) {
         }
 
         if (!item.icon) {
-            item.icon = `/desktop/assets/images/icons/icon_${item.id}_64.png`;
+            item.icon = `/desktop/assets/images/icons/icon_${item.id}_64.webp`;
         }
 
         item.options = item.options || {};

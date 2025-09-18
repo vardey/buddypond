@@ -34,7 +34,7 @@ export default class ImageSearch {
             this.imageSearchWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'image-search',
                 title: 'Search Images',
-                icon: 'desktop/assets/images/icons/icon_image-search_64.png',
+                icon: 'desktop/assets/images/icons/icon_image-search_64.webp',
                 x: 250,
                 y: 75,
                 width: 460,

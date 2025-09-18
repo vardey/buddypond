@@ -58,7 +58,7 @@ export default class CasinoCoinFlip {
     return {
       id: 'casino-coinflip',
       title: 'Coin Flip',
-      icon: 'desktop/assets/images/icons/icon_coinflip_64.png',
+      icon: 'desktop/assets/images/icons/icon_coinflip_64.webp',
       position: 'center',
       parent: $('#desktop')[0],
       width: 850,

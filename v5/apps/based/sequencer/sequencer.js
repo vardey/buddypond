@@ -32,7 +32,7 @@ export default class Sequencer {
         return {
             id: 'sequencer',
             title: 'Sequencer',
-            icon: 'desktop/assets/images/icons/icon_sequencer_64.png',
+            icon: 'desktop/assets/images/icons/icon_sequencer_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

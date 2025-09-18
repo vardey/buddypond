@@ -279,7 +279,7 @@ function createNewChatWindow({ windowType, contextName, windowTitle, windowId, c
 
 function buildWindowConfig(windowType, contextName, windowTitle, windowId, data) {
     const isBuddy = windowType === "buddy";
-    let iconImagePath = isBuddy ? "" : "desktop/assets/images/icons/icon_pond_64.png";
+    let iconImagePath = isBuddy ? "" : "desktop/assets/images/icons/icon_pond_64.webp";
 
     if (isBuddy && this.bp.apps.buddylist.data.profileState?.buddylist?.[contextName]?.profile_picture) {
         iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;

@@ -77,7 +77,7 @@ export default class Camera {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                icon: '/desktop/assets/images/icons/icon_camera_64.png',
+                icon: '/desktop/assets/images/icons/icon_camera_64.webp',
                 content: this.html,
                 resizable: true,
                 minimizable: true,

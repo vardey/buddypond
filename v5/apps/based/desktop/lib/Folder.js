@@ -24,7 +24,7 @@ export default class Folder {
         const image = document.createElement('img');
         image.className = 'bp-desktop-icon';
         image.loading = 'lazy';
-        image.src = 'desktop/assets/images/icons/icon_folder_64.png';
+        image.src = 'desktop/assets/images/icons/icon_folder_64.webp';
 
         const title = document.createElement('span');
         title.className = 'title';

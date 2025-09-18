@@ -103,7 +103,7 @@ export default class Chalkboard {
     return {
       id: 'chalkboard',
       title: 'Chalkboard',
-      icon: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+      icon: 'desktop/assets/images/icons/icon_chalkboard_64.webp',
       x: 250,
       y: 75,
       width: 600, // Increased width for two-column layout

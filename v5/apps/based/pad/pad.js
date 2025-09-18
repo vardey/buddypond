@@ -8,7 +8,7 @@ import renderAppList from './lib/renderAppList.js';
 export default class Pad {
     constructor(bp, options = {}) {
         this.bp = bp;
-        this.icon = '/desktop/assets/images/icons/icon_pad_64.png';
+        this.icon = '/desktop/assets/images/icons/icon_pad_64.webp';
         this.data = {};
         return this;
     }

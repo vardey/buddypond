@@ -16,7 +16,7 @@ export default class Motd {
         let motdWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'motd',
             title: 'Updates: ' + today,
-            icon: 'desktop/assets/images/icons/icon_console_64.png',
+            icon: 'desktop/assets/images/icons/icon_console_64.webp',
             x: 50,
             y: 25,
             width: 600, // Increased width for two-column layout

@@ -27,7 +27,7 @@ export default class GreedyFRVR {
         return {
             id: 'frvr-greed',
             title: 'Greed FRVR',
-            icon: 'desktop/assets/images/icons/icon_frvr-greed_64.png',
+            icon: 'desktop/assets/images/icons/icon_frvr-greed_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

@@ -27,7 +27,7 @@ export default class BasketBall_FRVR {
         return {
             id: 'frvr-basketball',
             title: 'BasketBall FRVR',
-            icon: 'desktop/assets/images/icons/icon_basketball-frvr_64.png',
+            icon: 'desktop/assets/images/icons/icon_basketball-frvr_64.webp',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

@@ -490,7 +490,7 @@ export default class FileExplorer {
                 id: 'file-explorer',
                 title: 'Buddy Files',
                 app: 'file-explorer',
-                icon: 'desktop/assets/images/icons/icon_file-explorer_64.png',
+                icon: 'desktop/assets/images/icons/icon_file-explorer_64.webp',
                 x: 100,
                 y: 30,
                 width: 1000,

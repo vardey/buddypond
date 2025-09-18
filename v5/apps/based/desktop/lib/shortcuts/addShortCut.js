@@ -191,7 +191,7 @@ export default function addShortCut(app, options = {}, parent) {
         /*
         let chatButton = {
             text: app.label || app.name,
-            image: app.icon || 'desktop/assets/images/icons/icon_console_64.png',
+            image: app.icon || 'desktop/assets/images/icons/icon_console_64.webp',
             onclick: async (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;

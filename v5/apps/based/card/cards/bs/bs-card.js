@@ -23,7 +23,7 @@ export default function applyData(el, data, cardClass, parent) {
         // if no icon, use the default icon
         icon = 'buddyscript';
     }
-    let iconPath = `/desktop/assets/images/icons/icon_${icon}_64.png`
+    let iconPath = `/desktop/assets/images/icons/icon_${icon}_64.webp`
     
     const commands = this.bp.apps.buddyscript.commands;
 

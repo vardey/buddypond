@@ -35,7 +35,7 @@ export default class Gamblor {
             height: 500,
             minWidth: 200,
             minHeight: 200,
-            icon: 'desktop/assets/images/icons/icon_casino_64.png',
+            icon: 'desktop/assets/images/icons/icon_casino_64.webp',
             parent: $('#desktop')[0],
             content: this.html,
             resizable: true,

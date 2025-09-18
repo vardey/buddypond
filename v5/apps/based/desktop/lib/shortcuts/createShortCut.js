@@ -68,7 +68,7 @@ export default function createShortcut() {
         this.createShortCutWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'create-shortcut',
             title: 'Create Shortcut',
-            icon: 'desktop/assets/images/icons/icon_console_64.png',
+            icon: 'desktop/assets/images/icons/icon_console_64.webp',
             x: 250,
             y: 75,
             width: 600,
@@ -161,7 +161,7 @@ export default function createShortcut() {
                 console.log('appNameappName', appName)
                 if (!icon) {
                     // attempt default app icon
-                    icon = this.bp.apps.list[appName]?.icon || 'desktop/assets/images/icons/icon_default_64.png';    
+                    icon = this.bp.apps.list[appName]?.icon || 'desktop/assets/images/icons/icon_default_64.webp';    
                 }
                 onClick = () => {
                     bp.open(appName, { context: context });
@@ -223,7 +223,7 @@ export default function createShortcut() {
                 name: name,
                 label: name,
                 shortcutType: shortcutType,
-                icon: icon || 'desktop/assets/images/icons/icon_default_64.png', // Default icon if none provided
+                icon: icon || 'desktop/assets/images/icons/icon_default_64.webp', // Default icon if none provided
                 description: description || '',
                 target: shortcutType === 'app' ? this.bp.apps.list[appName]?.onClick || `bp.open('${appName}')` : command,
                 onClick: onClick,

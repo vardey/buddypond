@@ -43,7 +43,7 @@ export default class TaskBar {
                 id: "home",
                 label: "Home",
                 onClick: openStartPanel,
-                icon: "desktop/assets/images/icons/icon_mantra_64.png",
+                icon: "desktop/assets/images/icons/icon_mantra_64.webp",
                 isShortcut: true,
                 anchor: "right"
             });
@@ -68,7 +68,7 @@ export default class TaskBar {
                             .animate({ left: "0%" }, 300);
                     }
                 },
-                icon: "desktop/assets/images/icons/icon_settings_64.png",
+                icon: "desktop/assets/images/icons/icon_settings_64.webp",
                 isShortcut: true,
                 anchor: "left"
             });

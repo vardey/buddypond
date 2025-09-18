@@ -82,7 +82,7 @@ export default class VisionInstrument {
         return {
             id: 'vision-harp',
             title: 'Vision Harp',
-            icon: 'desktop/assets/images/icons/icon_vision-harp_64.png',
+            icon: 'desktop/assets/images/icons/icon_vision-harp_64.webp',
             x: 300,
             y: 100,
             width: 700,

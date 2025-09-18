@@ -84,7 +84,7 @@ export default class Portfolio {
             this.portfolioWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'portfolio',
                 title: 'Portfolio',
-                icon: 'desktop/assets/images/icons/icon_portfolio_64.png',
+                icon: 'desktop/assets/images/icons/icon_portfolio_64.webp',
                 x: 250,
                 y: 75,
                 width: 800,

@@ -165,7 +165,7 @@ export default class SigilCaster {
         return {
             id: 'sigil-caster',
             title: 'Sigil Caster',
-            icon: 'desktop/assets/images/icons/icon_sigil-caster_64.png',
+            icon: 'desktop/assets/images/icons/icon_sigil-caster_64.webp',
             x: 250,
             y: 75,
             width: 600,

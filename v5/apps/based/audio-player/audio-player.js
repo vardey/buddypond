@@ -85,7 +85,7 @@ export default class AudioPlayer {
     let audioPlayerWindow = this.bp.apps.ui.windowManager.createWindow({
       id: playerId,
       title: 'Audio Player',
-      icon: `desktop/assets/images/icons/icon_audio-player_64.png`,
+      icon: `desktop/assets/images/icons/icon_audio-player_64.webp`,
       x: 250,
       y: 75,
       width: 980,

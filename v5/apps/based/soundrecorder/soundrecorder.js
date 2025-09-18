@@ -89,7 +89,7 @@ export default class SoundRecorder {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                icon: '/desktop/assets/images/icons/icon_soundrecorder_64.png',
+                icon: '/desktop/assets/images/icons/icon_soundrecorder_64.webp',
                 iframeContent: src,
                 resizable: true,
                 minimizable: true,

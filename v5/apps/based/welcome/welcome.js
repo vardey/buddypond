@@ -36,7 +36,7 @@ export default class Welcome {
         return {
             id: 'welcome',
             title: 'Welcome Buddy',
-            icon: 'desktop/assets/images/icons/icon_buddy-frog_64.png',
+            icon: 'desktop/assets/images/icons/icon_buddy-frog_64.webp',
             position: 'center',
             parent: $('#desktop')[0],
             width: 850,
