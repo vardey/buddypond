@@ -187,10 +187,9 @@ export default class MenuBar {
             if (!$(e.target).closest('.dropdown-wrapper').length) {
                 $('.dropdown-menu').slideUp(200);
             }
-            if(!$(e.target).closest('#toggleVolumeSlider').length){
+            if (!$(e.target).closest('#toggleVolumeSlider').length) {
                 console.log('Hiding volume slider');
-               $('.volumeSliderContainer').hide();
-                // $('#toggleVolumeSlider').hide();
+                $('.volumeSliderContainer').hide();
             }
         });
 
