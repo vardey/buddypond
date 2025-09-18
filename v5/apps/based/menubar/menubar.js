@@ -183,8 +183,14 @@ export default class MenuBar {
 
         // Close dropdown when clicking outside
         $(document).on('click', function (e) {
+            console.log("clicked",e.target)
             if (!$(e.target).closest('.dropdown-wrapper').length) {
                 $('.dropdown-menu').slideUp(200);
+            }
+            if(!$(e.target).closest('#toggleVolumeSlider').length){
+                console.log('Hiding volume slider');
+               $('.volumeSliderContainer').hide();
+                // $('#toggleVolumeSlider').hide();
             }
         });
 

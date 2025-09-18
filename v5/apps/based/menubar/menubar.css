@@ -379,3 +379,31 @@
   }
   
 }
+
+#toggleVolumeSlider {
+  min-width: 100px;
+}
+
+.volumeSliderContainer{
+  height: 30px;
+  width: 180px;
+  background-color: aliceblue;
+  display: none;
+  position: absolute;
+  padding: 14px;
+}
+
+.slider-value {
+    position: absolute;
+    /* top: -30px; above the handle */
+    bottom: -30px; /* below the handle */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: left 0.1s ease; /* smooth movement */
+  }
