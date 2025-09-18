@@ -1,3 +1,4 @@
+let sliderActive = false;
 export default function defaultMenuBar(bp) {
 
   // Ported from Legacy bp v4
@@ -88,8 +89,10 @@ export default function defaultMenuBar(bp) {
     <div class="volume">
     <span class="volumeIcon volumeToggle volumeFull">🔊</span>
     <span class="volumeIcon volumeToggle volumeMuted">🔇</span>
+    <div class="volumeSliderContainer">
+    <div id="toggleVolumeSlider" class="volumeSlider"></div>
+    </div>
     
-    <!-- <input type="range" min="0" max="100" value="100" class="volumeSlider"> -->
     </div>
     `;
 
@@ -259,12 +262,47 @@ export default function defaultMenuBar(bp) {
       label: volumeStr,
       click: () => {
         console.log('Volume toggle clicked');
-        bp.apps.desktop.toggleMute();
+        // bp.apps.desktop.toggleMute();
+        toggleVolumeSlider();
       }
 
     },
     { label: clockStr }
   ];
+
+  const toggleVolumeSlider = () => {
+    
+    $('.volumeSliderContainer').show();
+    console.log('Toggling volume slider', sliderActive);
+    let currentVolume = bp.get('audio_volume') * 100;
+    if(isNaN(currentVolume)) currentVolume = 100;
+        // Initialize jQuery UI slider
+     $("#toggleVolumeSlider").slider({
+          min: 0,
+          max: 100,
+          value: currentVolume,
+          create: function() {
+            // console.log('Current volume is: ', currentVolume, $(this).slider("value"));
+            let handle = $(this).find('.ui-slider-handle');
+            handle.append('<span class="slider-value">' + currentVolume + '</span>');
+          },
+          slide: function (event, ui) {
+            console.log('Volume set to', ui.value);
+            bp.set('audio_volume', ui.value / 100);
+            $(this).find('.slider-value').text(ui.value);
+          }
+        }).show();
+      // if(sliderActive){
+      //   // $('#toggleVolumeSlider').slider('destroy')
+      //   sliderActive = false;
+      // }else{
+       
+      //   sliderActive = true;
+      // }
+
+    
+  }
+
 
 
   return menuTemplate;
