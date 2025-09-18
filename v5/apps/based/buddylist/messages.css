@@ -663,12 +663,11 @@
 }
 
 .aim-message-reactions {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* wrap */
+  */
   gap: 0.25rem;
-  
 }
 
 .aim-message-reaction {

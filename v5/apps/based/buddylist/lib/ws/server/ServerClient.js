@@ -61,6 +61,10 @@ ServerClient.prototype.receivedInstantMessage = async function receivedInstantMe
 ServerClient.prototype.setStatus = async function setStatus(buddyName, update, cb = function noop () {}) {
   // use wsServerClient to send the status update
   // console.log('calling setStatus', buddyName, update);
+  if (!this.wsServerClient) {
+    console.log('No WebSocket connection available for setStatus');
+    return cb(new Error('No WebSocket connection available'));
+  }
   this.wsServerClient.send(JSON.stringify({
     action: "setStatus",
     buddyname: buddyName,
