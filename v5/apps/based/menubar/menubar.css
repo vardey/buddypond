@@ -414,13 +414,13 @@
 }
 
 /* Progress (white) */
-.ui-slider-horizontal .ui-slider-range {
+.volumeSliderContainer .ui-slider-horizontal .ui-slider-range {
   background: #fff;
   border-radius: 2px;
 }
 
 /* Tooltip BELOW the slider */
-.slider-value {
+.volumeSliderContainer .slider-value {
   position: absolute;
   top: 22px;
   /* place below track */
@@ -435,15 +435,16 @@
   pointer-events: none;
 }
 
-.ui-slider-handle:hover,
-.ui-slider-handle:focus {
+.volumeSliderContainer .ui-slider-handle:hover,
+.volumeSliderContainer .ui-slider-handle:focus {
   transform: scale(1.2);
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
 /* Handle (white knob with shadow) */
-.ui-slider-handle {
+.volumeSliderContainer .ui-slider-handle {
   outline: none;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 50%;
 }
