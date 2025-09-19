@@ -532,7 +532,19 @@ export default {
     "onClick": "bp.open('welcome')",
     "categories": ["social", "community"],
     "enumerable": false, // do not show in the app list
+  },
+
+  "fishing": {
+    "icon": 'desktop/assets/images/icons/icon_buddy-frog_64.webp',
+    "author": "BuddyPond",
+    "label": "Fishing",
+    "description": "Catch fish in a virtual pond",
+    "onClick": "bp.open('fishing')",
+    "categories": ["creative", "entertainment"],
+    "alias": ["fish"],
+    "enumerable": false, // do not show in the app list
   }
+
   /*
   ,
   "casino": {

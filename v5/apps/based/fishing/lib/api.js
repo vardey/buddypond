@@ -6,6 +6,9 @@ const ITEM_DROP_CHANCE = 0.05; // 5% chance to get a random modifier instead of 
 const droppableitems = Object.keys(items); // drop any modifier defined in items.js
 
 let fishing = {};
+fishing.Fish = fishList;
+fishing.Mutations = mutationList;
+fishing.Items = items;
 
 // --- SEEDABLE RANDOM SETUP ---
 let rng = Math.random;
