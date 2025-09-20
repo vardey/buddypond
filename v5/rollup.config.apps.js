@@ -406,6 +406,93 @@ export default [
   }
 ,
   {
+    input: 'apps/based/casino/casino.js',
+    output: {
+      file: 'dist/apps/based/casino.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/casino/casino-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/casino.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/casino-coinflip/casino-coinflip.js',
+    output: {
+      file: 'dist/apps/based/casino-coinflip.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/casino-coinflip/casino-coinflip-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/casino-coinflip.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/casino-lottery/casino-lottery.js',
+    output: {
+      file: 'dist/apps/based/casino-lottery.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/casino-lottery/casino-lottery-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/casino-lottery.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
     input: 'apps/based/chalkboard/chalkboard.js',
     output: {
       file: 'dist/apps/based/chalkboard.js',
@@ -836,6 +923,35 @@ export default [
   }
 ,
   {
+    input: 'apps/based/fishing/fishing.js',
+    output: {
+      file: 'dist/apps/based/fishing.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/fishing/fishing-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/fishing.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
     input: 'apps/based/fluid-simulation/fluid-simulation.js',
     output: {
       file: 'dist/apps/based/fluid-simulation.js',
@@ -920,49 +1036,6 @@ export default [
   }
 ,
   {
-    input: 'apps/based/gamblor/gamblor.js',
-    output: {
-      file: 'dist/apps/based/gamblor.js',
-      format: 'es',
-      sourcemap: true,
-    },
-    plugins: [
-      resolve(),
-      commonjs(),
-      terser(),
-    ]
-  }
-,
-  {
-    input: 'apps/based/gamblor-coinflip/gamblor-coinflip.js',
-    output: {
-      file: 'dist/apps/based/gamblor-coinflip.js',
-      format: 'es',
-      sourcemap: true,
-    },
-    plugins: [
-      resolve(),
-      commonjs(),
-      terser(),
-    ]
-  }
-,
-  {
-    input: 'apps/based/gamblor-coinflip/gamblor-coinflip-style.js',
-    output: {
-      file: 'dist/dummy-css.js',
-      format: 'es',
-    },
-    plugins: [
-      postcss({
-        extract: path.resolve('dist/apps/based/gamblor-coinflip.css'),
-        minimize: true,
-        sourceMap: true
-      })
-    ]
-  }
-,
-  {
     input: 'apps/based/game/game.js',
     output: {
       file: 'dist/apps/based/game.js',
@@ -973,6 +1046,35 @@ export default [
       resolve(),
       commonjs(),
       terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/gifstudio/gifstudio.js',
+    output: {
+      file: 'dist/apps/based/gifstudio.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/gifstudio/gifstudio-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/gifstudio.css'),
+        minimize: true,
+        sourceMap: true
+      })
     ]
   }
 ,
@@ -1001,6 +1103,35 @@ export default [
       resolve(),
       commonjs(),
       terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/hello-world/hello-world.js',
+    output: {
+      file: 'dist/apps/based/hello-world.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/hello-world/hello-world-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/hello-world.css'),
+        minimize: true,
+        sourceMap: true
+      })
     ]
   }
 ,

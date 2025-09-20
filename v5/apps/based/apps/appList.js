@@ -543,10 +543,8 @@ export default {
     "categories": ["creative", "entertainment"],
     "alias": ["fish"],
     "enumerable": false, // do not show in the app list
-  }
+  },
 
-  /*
-  ,
   "casino": {
     "icon": "desktop/assets/images/icons/icon_casino_64.webp",
     "label": "Casino",
@@ -555,7 +553,9 @@ export default {
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
     "authorUrl": "https://github.com/BuddyPond",
-    "alias": ["casino"]
+    "alias": ["casino"],
+    "enumerable": false, // do not show in the app list
+
   },
 
   "casino-coinflip": {
@@ -568,7 +568,8 @@ export default {
     "author": "BuddyPond",
     "authorUrl": "https://github.com/BuddyPond",
     "alias": ["coinflip"],
+    "enumerable": false, // do not show in the app list
+
   }
-  */
 
 }
