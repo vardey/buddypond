@@ -11,7 +11,7 @@ export default function defaultMenuBar(bp) {
     `;
 
 
-      let selectMusicPlaylist = `
+  let selectMusicPlaylist = `
 <div class="dropdown-wrapper float_right select-playlist-dropdown-menu">
   <span class="icon trigger" title="Select Music Playlist">
     <i class="fa-duotone fa-regular fa-music"></i> Select Music Playlist
@@ -61,7 +61,7 @@ export default function defaultMenuBar(bp) {
     `;
 
 
- let sourceCodeStr = `
+  let sourceCodeStr = `
  <div class="dropdown-wrapper desktop-settings-dropdown-menu">
    <span class="icon trigger" title="Developers">
     <i class="fa-duotone fa-regular fa-code"></i> Developers
@@ -72,8 +72,8 @@ export default function defaultMenuBar(bp) {
    </ul>
  </div>
    `;
- 
-  
+
+
   // use fonr-awesome sun and moon icons
   let selectLightMode = '<span class="selectLightMode float_right"><i class="fa-duotone fa-regular fa-sun" data-mode="Light" title="Light Mode"></i><i class="fa-duotone fa-regular fa-moon" data-mode="Dark" title="Dark Mode"></i></span>';
 
@@ -89,14 +89,19 @@ export default function defaultMenuBar(bp) {
     <span class="volumeIcon volumeToggle volumeFull">🔊</span>
     <span class="volumeIcon volumeToggle volumeMuted">🔇</span>
     <div class="volumeSliderContainer">
-    <div id="toggleVolumeSlider" class="volumeSlider"></div>
+      <div id="toggleVolumeSlider" class="volumeSlider"></div>
+      <div class="volume-enabled-checkbox">
+        <input type="checkbox" id="enableVolume" name="enableVolume">
+        <label for="enableVolume" title="Enable sound effects">Mute</label>
+      </div>
+
     </div>
     
     </div>
     `;
 
   let clockStr = `
-    <span class="" id="clock"></span>
+    <span id="clock"></span>
     `;
 
   let menuTemplate = [
@@ -108,7 +113,7 @@ export default function defaultMenuBar(bp) {
           className: 'desktop-only'
           // click: () => api.ui.toggleDeviceSettings() 
         },
-              {
+        {
           label: 'Buddy Apps',
           closeMenu: true,
           click: () => bp.open('pad')
@@ -177,7 +182,7 @@ export default function defaultMenuBar(bp) {
       ]
     },
     {
-      label: '<span style="display:flex;">$GBP Coin Balance: <span id="menu-bar-coin-balance" class="odometer">0</span></span>',
+      label: '<span style="display:flex;">$GBP&nbsp; <span id="menu-bar-coin-balance" class="odometer">0</span></span>',
       submenu: [
         {
           label: 'View Coin Balance',
@@ -200,7 +205,7 @@ export default function defaultMenuBar(bp) {
     {
       className: 'loggedIn',
       label: `
-              <span>Reward in: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
+              <span>Reward: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
               <!-- <span class="loggedOut">Login to get Coin Rewards</span> -->
             `,
     },
@@ -211,7 +216,7 @@ export default function defaultMenuBar(bp) {
     },
     */
 
-    { label: '', flex: 1, className: "desktop-only" }, // empty space
+    { label: '', flex: 1 }, // empty space
 
 
     { label: selectMusicPlaylist, className: "desktop-only" },
@@ -234,20 +239,20 @@ export default function defaultMenuBar(bp) {
       click: async (ev) => {
         // alert('click')
         let target = ev.target;
-            let url = $(target).data('link');
-            if (!url) {
-                // check if tag has href attribute
-                url = $(target).attr('href');
-            }
+        let url = $(target).data('link');
+        if (!url) {
+          // check if tag has href attribute
+          url = $(target).attr('href');
+        }
 
-            if (window.discordMode) {
-                await window.discordSdk.commands.openExternalLink({
-                    url: url
-                });
-                return;
-            } else {
-                window.open(url, '_blank');
-            }
+        if (window.discordMode) {
+          await window.discordSdk.commands.openExternalLink({
+            url: url
+          });
+          return;
+        } else {
+          window.open(url, '_blank');
+        }
 
 
         // open a new window to https://github.com/buddypond/buddypond
@@ -255,28 +260,37 @@ export default function defaultMenuBar(bp) {
         // window.open(url, '_blank');
       }
     },
-    { label: selectLightMode },
-
     {
       label: volumeStr,
-      click: () => {
+      click: (e) => {
         console.log('Volume toggle clicked');
-        toggleVolumeSlider();
+        toggleVolumeSlider(e);
       }
 
     },
+
+
+    { label: selectLightMode },
+
+
     { label: clockStr }
   ];
 
-  const toggleVolumeSlider = () => {
+  const toggleVolumeSlider = (e) => {
     const $container = $('.volumeSliderContainer');
 
     if ($container.is(':visible')) {
-      $container.hide();
-      return;
+      if ($(e.target).closest('.volume-enabled-checkbox').length) {
+        return;
+      }
+      // only slide up if e.target is not volumeSliderContainer or child of volumeSliderContainer
+      if (!$(e.target).closest('.volumeSliderContainer').length) {
+        $container.slideUp(111);
+        return;
+      }
     }
 
-    $container.show();
+    $container.slideDown(111);
 
     let currentVolume = bp.get('audio_volume') * 100;
     if (isNaN(currentVolume)) currentVolume = 100;
@@ -291,7 +305,47 @@ export default function defaultMenuBar(bp) {
       },
       slide: function (event, ui) {
         bp.set('audio_volume', ui.value / 100);
-        $(this).find('.slider-value').text(ui.value);
+        // show the slider-value
+        if (ui.value === 0) {
+          $('.volumeFull').hide();
+          $('.volumeMuted').show();
+          // uncheck the enableVolume checkbox
+          $('#enableVolume').prop('checked', true);
+          bp.set('audio_enabled', false);
+
+        }
+        if (ui.value > 0) {
+          $('.volumeFull').show();
+          $('.volumeMuted').hide();
+          // check the enableVolume checkbox
+          $('#enableVolume').prop('checked', false);
+          bp.set('audio_enabled', true);
+
+          console.log("ENABLED AUDIO");
+          // trigger change event
+        }
+        $(this).find('.slider-value').show().text(ui.value);
+      },
+      stop: (event, ui) => {
+
+        if (ui.value > 0) {
+          bp.set('audio_enabled', true);
+
+          $('.volumeFull').show();
+          $('.volumeMuted').hide();
+          // check the enableVolume checkbox
+          $('#enableVolume').prop('checked', false);
+          console.log("ENABLED AUDIO");
+          // trigger change event
+        }
+
+        console.log('play sound at volume', bp.get('audio_volume'));
+        console.log('audio_enabled', bp.get('audio_enabled'));
+        bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
+        setTimeout(() => {
+          $('.slider-value').hide();
+
+        }, 444);
       }
     });
   };

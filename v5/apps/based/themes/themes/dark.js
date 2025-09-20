@@ -41,6 +41,13 @@ export default {
             'cursor': 'pointer'
         },
 
+          'desktop_menu_bar': {
+            'background': '#1a1a1e',
+            'color': '#E3E3E3',
+            'border-bottom': '1px solid #333333'
+        },
+
+
         'desktop_text': {
             'color': '#ececed'
         },

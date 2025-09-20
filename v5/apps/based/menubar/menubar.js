@@ -180,15 +180,47 @@ export default class MenuBar {
 
         });
 
+        $('#enableVolume').on('change', function () {
+
+            if ($(this).is(':checked')) {
+                $('.volumeFull').hide();
+                $('.volumeMuted').show();
+                bp.set('audio_enabled', false);
+            } else {
+                $('.volumeFull').show();
+                $('.volumeMuted').hide();
+                bp.set('audio_enabled', true);
+                bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
+            }
+        });
+
+
+        let hideVolumeTimeout;
+
+          $('.volumeSliderContainer').on('mouseleave', (ev) => {
+            hideVolumeTimeout = setTimeout(() => {
+              $('.volumeSliderContainer').slideUp(111);
+            }, 666);
+          });
+
+          $('.volumeSliderContainer').on('mouseenter', () => {
+            clearTimeout(hideVolumeTimeout);
+          });
+
 
         // Close dropdown when clicking outside
         $(document).on('click', function (e) {
+          console.log('Document click', e.target);
+            // check if target is .volume-enabled-checkbox
             if (!$(e.target).closest('.dropdown-wrapper').length) {
                 $('.dropdown-menu').slideUp(200);
             }
             if (!$(e.target).closest('#toggleVolumeSlider').length) {
-                console.log('Hiding volume slider');
-                $('.volumeSliderContainer').hide();
+              // if element is volumeSliderContainer or child of volumeSliderContainer, do nothing
+              if (!$(e.target).closest('.volumeSliderContainer').length) {
+                  console.log('Hiding volume slider');
+                  $('.volumeSliderContainer').hide();
+              }
             }
         });
 

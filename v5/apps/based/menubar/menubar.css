@@ -52,10 +52,12 @@
   font-size: 14px;
 }
 
+/*
 .menu-item:hover {
   transform: scale(1.05);
 
 }
+*/
 
 
 .menu-bar a {
@@ -212,6 +214,15 @@
   padding: 10px 0;
 }
 
+@media (pointer: coarse) and (hover: none) {
+
+ .desktop-only {
+    display: none;
+  }
+
+}
+
+
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
 
   /* Set base font size for consistency (optional, only if not already set) */
@@ -224,6 +235,9 @@
     display: none;
     /* Unchanged, good for hiding by default */
   }
+
+ 
+
 
   .menu-bar.responsive-ready.mobile-active {
     display: flex;
@@ -367,17 +381,19 @@
   .mobile-menu-toggle {
     display: none !important;
   }
+
 }
 
 
 /* Discord or low-height media query */
 @media (max-height: 480px) {
+
   .menu-bar {
     padding-left: 90px;
     background: rgba(60, 60, 60, 0.9);
 
   }
-  
+
 }
 
 /* Container styling */
@@ -391,21 +407,33 @@
 .volumeSliderContainer {
   display: none;
   position: absolute;
-  top: 120%;
+  left: 0px;
+  top: 24px;
+  height: 80px;
+  width: 190px;
   /* below the icon */
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 20, 20, 0.95);
+  background-color: var(--desktop_menu_bar-color);
   padding: 8px 12px;
   border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   z-index: 999;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Slider width */
 #toggleVolumeSlider {
-  width: 100px;
+  width: 170px;
   margin: 0 auto;
+  top: 20px;
+}
+
+.volume-enabled-checkbox {
+  position: absolute;
+  top: 50px;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
 }
 
 #toggleVolumeSlider.ui-slider {
@@ -421,6 +449,7 @@
 
 /* Tooltip BELOW the slider */
 .volumeSliderContainer .slider-value {
+  display: none;
   position: absolute;
   top: 22px;
   /* place below track */
@@ -435,11 +464,13 @@
   pointer-events: none;
 }
 
+/*
 .volumeSliderContainer .ui-slider-handle:hover,
 .volumeSliderContainer .ui-slider-handle:focus {
   transform: scale(1.2);
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 8px rgba(0, 0, 0, 0.6);
 }
+*/
 
 /* Handle (white knob with shadow) */
 .volumeSliderContainer .ui-slider-handle {
