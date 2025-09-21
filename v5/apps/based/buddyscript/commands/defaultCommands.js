@@ -596,6 +596,13 @@ let legacyCommands = {
     description: 'Greed Game',
     icon: 'frvr-greed'
   },
+  emojipop: {
+    command: function (params) {
+      bp.open('emojipop');
+    },
+    description: 'Emoji Pop Game',
+    icon: 'emojipop'
+  },
   harp: {
     command: function (params) {
       bp.open('vision-harp');

@@ -69,6 +69,15 @@ export default {
     "author": "Plays.org",
     "alias": ["malpek"],
   },
+  "emojipop": {
+    "icon": "desktop/assets/images/icons/icon_emojipop_64.webp",
+    "label": "Emoji Pop",
+    "description": "Play Emoji Pop game",
+    "onClick": "bp.open('emojipop')",
+    "categories": ["games", "entertainment"],
+    "author": "GameBoss",
+    "alias": ["emojipop", "emoji-pop"]
+  },
   "frvr-kittenforce": {
     "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.webp",
     "label": "Kitten Force",
