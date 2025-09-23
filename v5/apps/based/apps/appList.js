@@ -578,7 +578,29 @@ export default {
     "authorUrl": "https://github.com/BuddyPond",
     "alias": ["coinflip"],
     "enumerable": false, // do not show in the app list
+  },
+  /*
+  'imagegen': {
+    "icon": "desktop/assets/images/icons/icon_imagegen_64.webp",
+    "label": "ImageGen",
+    "description": "Generate images using AI",
+    "onClick": "bp.open('imagegen')",
+    "categories": ["art", "creative", "ai"],
+    "author": "BuddyPond",
+    "alias": ["imggen", "image-gen"],
+    "enumerable": false, // do not show in the app list
+  },
+  */
+  'game-doom': {
+    "icon": "desktop/assets/images/icons/icon_game-doom_64.webp",
+    "label": "Doom",
+    "description": "Play the classic Doom game",
+    "onClick": "bp.open('game-doom')",
+    "categories": ["games", "entertainment"],
+    "author": "id Software",
+    "alias": ["doom"]
 
-  }
+  },
+
 
 }
