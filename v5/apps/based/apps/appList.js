@@ -599,8 +599,5 @@ export default {
     "categories": ["games", "entertainment"],
     "author": "id Software",
     "alias": ["doom"]
-
-  },
-
-
+  }
 }
