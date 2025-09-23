@@ -323,6 +323,13 @@ let legacyCommands = {
     description: 'Stay Entertained with Buddy Pond Games',
     icon: 'folder'
   },
+  doom: {
+    command: function (params) {
+      bp.open('game-doom');
+    },
+    description: 'Play the classic DOOM game',
+    icon: 'game-doom'
+  },
   pond: {
     command: function (params) {
       console.log('ponds command', params);
