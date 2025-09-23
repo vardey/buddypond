@@ -1,7 +1,7 @@
 const localIp = window.location.origin;
 const currentPath = window.location.pathname;
 const localToken = localStorage.getItem('qtokenid');
-
+let devmode = false;
 
 // Endpoint Constants
 const ENDPOINTS = {
@@ -70,12 +70,11 @@ const DEV_ENDPOINTS = {
 
 // Initialize application configuration based on environment
 function configureEnvironment() {
-  devmode = window.location.hostname !== 'buddypond.com';
+  // devmode = window.location.hostname !== 'buddypond.com';
   // devmode = false;
   if (devmode) {
     return DEV_ENDPOINTS
   }
-
   return ENDPOINTS;
 }
 
@@ -160,7 +159,11 @@ window.bp_init = async function () {
   let endpoints = configureEnvironment();
   endpoints = configureDiscordMode(endpoints);
 
-  // endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
+  // if not running from buddypond.com, use DEV_ENDPOINTS
+  if(window.location.hostname !== 'buddypond.com') {
+    endpoints.host = DEV_ENDPOINTS.host; // manaul override for development
+  }
+
   // console.log(endpoints);
   assignBuddyPondEndpoints(endpoints);
 
