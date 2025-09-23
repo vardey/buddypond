@@ -1,0 +1,122 @@
+ .inventory-admin-container {
+    background: #1a1a1a url('https://i.imgur.com/wt0g7dL.png') repeat;
+    font-family: 'Trebuchet MS', sans-serif;
+    color: #f5f5dc;
+    margin: 0;
+    padding: 0;
+  }
+
+  .admin-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  header h1 {
+    color: #ffd700;
+    text-shadow: 0 0 5px black;
+  }
+
+  #search {
+    padding: 8px;
+    border: 2px solid #444;
+    border-radius: 4px;
+    background: #2b2b2b;
+    color: #fff;
+    width: 300px;
+  }
+
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 80px);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .item {
+    width: 80px;
+    height: 80px;
+    background: #333;
+    border: 2px solid #666;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s ease;
+  }
+
+  .item:hover {
+    border-color: #ffd700;
+    transform: scale(1.05);
+  }
+
+  .item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .item.selected {
+    border-color: #00ff99;
+    box-shadow: 0 0 10px #00ff99;
+  }
+
+  .mint-panel {
+    margin-top: 30px;
+    padding: 20px;
+    background: #2b2b2b;
+    border: 2px solid #555;
+    border-radius: 8px;
+  }
+
+  .mint-panel h2 {
+    margin-top: 0;
+    color: #00ff99;
+  }
+
+  .selected-item {
+    margin: 10px 0;
+    padding: 10px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #playerName {
+    padding: 8px;
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #222;
+    color: #fff;
+  }
+
+  #mintBtn {
+    width: 100%;
+    padding: 10px;
+    background: #444;
+    border: none;
+    border-radius: 4px;
+    color: #ffd700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #mintBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  #mintBtn:hover:enabled {
+    background: #666;
+  }

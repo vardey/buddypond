@@ -599,5 +599,26 @@ export default {
     "categories": ["games", "entertainment"],
     "author": "id Software",
     "alias": ["doom"]
+  },
+  'inventory': {
+    "icon": "desktop/assets/images/icons/icon_inventory_64.webp",
+    "label": "Inventory",
+    "description": "Manage your items and gear",
+    "onClick": "bp.open('inventory')",
+    "categories": ["tools", "productivity"],
+    "author": "BuddyPond",
+    "alias": ["items", "gear"],
+    "enumerable": false, // do not show in the app list
+  },
+  'inventory-admin': {
+    "icon": "desktop/assets/images/icons/icon_inventory-admin_64.webp",
+    "label": "Inventory Admin",
+    "description": "Administer inventory items and definitions",
+    "onClick": "bp.open('inventory-admin')",
+    "categories": ["admin", "tools", "productivity"],
+    "adminOnly": true,
+    "author": "BuddyPond",
+    "alias": ["items-admin", "gear-admin"],
+    "enumerable": false, // do not show in the app list
   }
 }

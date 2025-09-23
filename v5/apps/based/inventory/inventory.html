@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Hero Inventory — Demo</title>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0f1221;
+    --panel:#1b1f2e;
+    --accent:#d4b66a;
+    --muted:#9aa0b3;
+    --slot-size:72px;
+    --gutter:12px;
+    --inventory-columns:5;
+    --wood: linear-gradient(180deg,#2c2418 0%, #1f170e 100%);
+  }
+
+  html,body{height:100%;margin:0;background:radial-gradient(circle at 10% 10%, rgba(212,182,106,0.06), transparent), var(--bg); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#e6eef8;}
+  .wrap {max-width:1200px;margin:28px auto;padding:20px;display:grid;grid-template-columns: 320px 1fr 320px;gap:20px;}
+  .panel {background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12)); border:2px solid rgba(212,182,106,0.12); border-radius:12px; padding:14px; box-shadow: 0 6px 30px rgba(0,0,0,0.6);}
+
+  /* Equipment column */
+  .char-panel {display:flex;flex-direction:column;align-items:center;gap:12px;min-height:420px;position:relative;background:var(--wood);padding:18px;border-radius:10px;border:1px solid rgba(0,0,0,0.3)}
+  .char-silhouette {width:160px;height:200px;background:linear-gradient(180deg,#0b1220,#132033);border-radius:8px;box-shadow: inset 0 -20px 40px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.06);font-size:80px}
+  .equip-grid {display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;margin-top:6px;}
+  .equip-slot {height:56px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.14));display:flex;align-items:center;padding:8px;gap:8px;border:2px solid rgba(255,255,255,0.03);cursor:pointer;position:relative;user-select:none;}
+  .equip-slot .slot-name {font-size:12px;color:var(--muted);flex:1;text-transform:uppercase;letter-spacing:0.08em}
+  .equip-slot .slot-item {min-width:44px;height:44px;border-radius:6px;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;font-size:20px}
+  .equip-slot.empty {opacity:0.6}
+  .equip-slot.highlight {box-shadow:0 0 18px rgba(212,182,106,0.25);transform:translateY(-2px)}
+
+  /* Inventory center */
+  .inventory-panel {display:flex;flex-direction:column;gap:12px;}
+  .inventory-header {display:flex;align-items:center;justify-content:space-between;}
+  .inventory-title {font-size:18px;color:var(--accent);font-weight:700;letter-spacing:0.06em}
+  .inventory-grid {display:grid;grid-template-columns: repeat(var(--inventory-columns), minmax(0,1fr)); gap:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.12)); padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);min-height:400px;}
+  .inv-slot {height:var(--slot-size);border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.18));display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.02);position:relative;overflow:hidden;user-select:none;}
+  .inv-slot.empty::after{content:"";position:absolute;inset:0;border-radius:8px;background:repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 8px);opacity:0.06}
+  .item {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:grab; width:100%;height:100%;padding:6px;box-sizing:border-box;border-radius:6px; text-align:center}
+  .item .icon {font-size:26px;line-height:1}
+  .item .name {font-size:12px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+  .item .qty {position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:8px;font-size:12px;color:#fff}
+
+  .item.rare{box-shadow: 0 6px 18px rgba(132, 94, 64, 0.12);border:1px solid rgba(212,182,106,0.18)}
+  .item.epic{box-shadow: 0 8px 26px rgba(107, 44, 132, 0.12);border:1px solid rgba(130,80,190,0.18)}
+  .inv-slot.highlight, .equip-slot.drop-target {outline:3px solid rgba(212,182,106,0.18);transform:translateY(-2px)}
+
+  /* Details/Actions */
+  .details {display:flex;flex-direction:column;gap:10px;min-height:420px;}
+  .card {background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.08));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  .item-preview {display:flex;gap:12px;align-items:center;}
+  .item-preview .big {font-size:48px;width:72px;height:72px;border-radius:8px;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center}
+  .item-stats {font-size:13px;color:#dfe9ff}
+  .actions {display:flex;gap:8px;margin-top:12px;}
+  button.btn {padding:8px 12px;border-radius:8px;border:0;background:linear-gradient(180deg,#2a7a4b,#1b4f33);color:white;cursor:pointer;font-weight:600}
+  button.btn.ghost {background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+  button.btn.warn {background:linear-gradient(180deg,#b55b2b,#8a3516)}
+  .log {font-size:13px;color:var(--muted);min-height:80px;overflow:auto;padding:6px;border-radius:6px;background:rgba(255,255,255,0.01)}
+
+  /* modal */
+  .modal {position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60}
+  .modal .box {width:420px;background:var(--panel);padding:18px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+  .form-row{display:flex;gap:8px;margin-top:8px}
+  input[type="text"], input[type="number"]{flex:1;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+
+  /* small */
+  .muted{color:var(--muted);font-size:13px}
+  @media (max-width:960px){
+    .wrap{grid-template-columns:1fr; padding:12px}
+    .char-panel, .details{order:2}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- LEFT: Equipment -->
+  <div class="panel char-panel">
+    <div class="char-silhouette">⚔️</div>
+    <div class="equip-grid">
+      <!-- equipment slots (use data-slot) -->
+      <div class="equip-slot empty" data-slot="head" title="Head"><div class="slot-name">Head</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="neck" title="Neck"><div class="slot-name">Neck</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="shoulder" title="Shoulder"><div class="slot-name">Shoulder</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="chest" title="Chest"><div class="slot-name">Chest</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="legs" title="Legs"><div class="slot-name">Legs</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="feet" title="Feet"><div class="slot-name">Feet</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="mainhand" title="Main Hand"><div class="slot-name">Main</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="offhand" title="Off Hand"><div class="slot-name">Off</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="ring1" title="Ring 1"><div class="slot-name">Ring 1</div><div class="slot-item"></div></div>
+      <div class="equip-slot empty" data-slot="ring2" title="Ring 2"><div class="slot-name">Ring 2</div><div class="slot-item"></div></div>
+    </div>
+
+    <div style="width:100%;margin-top:12px;">
+      <div class="card muted">Equip items by double-clicking, dragging onto a slot, or selecting an item and pressing <strong>E</strong>.</div>
+    </div>
+  </div>
+
+  <!-- CENTER: Inventory -->
+  <div class="panel inventory-panel">
+    <div class="inventory-header">
+      <div class="inventory-title">Backpack</div>
+      <div class="muted" id="inv-count">0 / 0</div>
+    </div>
+
+    <div class="inventory-grid" id="inventoryGrid"></div>
+
+    <div class="card muted" style="display:flex;justify-content:space-between;align-items:center;">
+      <div>Drag items onto equipment slots to equip. Right panel shows details & actions.</div>
+      <div><button class="btn ghost" id="clearStorage">Reset</button></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Details & actions -->
+  <div class="panel details">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-weight:700">Item Details</div>
+        <div class="muted" id="selected-type">—</div>
+      </div>
+      <div style="height:12px"></div>
+      <div class="item-preview">
+        <div class="big" id="preview-icon">🎒</div>
+        <div>
+          <div style="font-weight:800" id="preview-name">No item selected</div>
+          <div class="muted" id="preview-desc">Select an item from your inventory.</div>
+          <div style="height:8px"></div>
+          <div class="item-stats" id="preview-stats"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="btn-equip" disabled>Equip</button>
+        <button class="btn warn" id="btn-consume" disabled>Consume</button>
+        <button class="btn ghost" id="btn-trade" disabled>Trade</button>
+      </div>
+    </div>
+
+    <div class="card" style="flex:1;display:flex;flex-direction:column;">
+      <div style="font-weight:700;margin-bottom:6px">Activity Log</div>
+      <div class="log" id="logArea">Welcome, hero! Loadout saved in localStorage for demo.</div>
+      <div style="height:8px"></div>
+      <div class="muted">Tip: Double-click an item to auto-equip or consume.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Trade modal -->
+<div class="modal" id="tradeModal">
+  <div class="box">
+    <div style="font-weight:700">Trade Item</div>
+    <div class="muted" id="tradeItemTitle">—</div>
+    <div class="form-row">
+      <input type="text" id="tradeTarget" placeholder="Player name or ID" />
+      <input type="number" id="tradeQty" min="1" placeholder="Qty" />
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+      <button class="btn ghost" id="tradeCancel">Cancel</button>
+      <button class="btn" id="tradeConfirm">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+  Inventory UI demo
+  - Replace simulateApi() with real AJAX to your backend.
+  - Items have fields: id, name, type (weapon/armor/consumable/misc), slot (if equipable), qty, rarity, icon, description, stats
+*/
+
+const MAX_SLOTS = 20;
+const STORAGE_KEY = 'demo_inventory_v1';
+
+const sampleItems = [
+  { id:'sword_bronze', name:'Bronze Sword', type:'weapon', slot:'mainhand', qty:1, rarity:'rare', icon:'🗡️', description:'A trusty bronze blade.', stats:{atk:6} },
+  { id:'shield_wood', name:'Wooden Shield', type:'armor', slot:'offhand', qty:1, rarity:'common', icon:'🛡️', description:'Light shield provides small protection.', stats:{def:3} },
+  { id:'helm_iron', name:'Iron Helm', type:'armor', slot:'head', qty:1, rarity:'rare', icon:'🥽', description:'Sturdy iron helmet.', stats:{def:4} },
+  { id:'hp_potion', name:'Health Potion', type:'consumable', qty:3, rarity:'common', icon:'🧪', description:'Heals 50 HP when consumed.'},
+  { id:'apple', name:'Ration (Apple)', type:'consumable', qty:5, rarity:'common', icon:'🍎', description:'Small food item. Restores a little stamina.'},
+  { id:'gold_coin', name:'Gold Coin', type:'currency', qty:128, rarity:'common', icon:'🪙', description:'Currency; trade for goods.'},
+  { id:'ring_of_power', name:'Ring of Might', type:'ring', slot:'ring1', qty:1, rarity:'epic', icon:'💍', description:'A small ring imbued with strength.', stats:{atk:3, str:+2} },
+  { id:'mystic_scroll', name:'Scroll of Recall', type:'misc', qty:1, rarity:'rare', icon:'📜', description:'Return to town when read.'},
+];
+
+let state = {
+  inventory: [], // array of slot objects: {slotIndex:0.., itemId or null}
+  itemsById: {}, // map id => item object (contains qty that is kept in this object)
+  equipment: {}  // map slotName => itemId
+};
+
+let selected = null; // { itemId, slotIndex } or { itemId, equipSlot, type:'equip' }
+
+function log(msg){
+  const $log = $('#logArea');
+  $log.prepend(`<div style="margin-bottom:6px">${new Date().toLocaleTimeString()} — ${msg}</div>`);
+}
+
+function saveState(){
+  const s = { inventory: state.inventory, itemsById: state.itemsById, equipment: state.equipment };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
+
+function loadState(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{
+      const s = JSON.parse(raw);
+      state.inventory = s.inventory;
+      state.itemsById = s.itemsById;
+      state.equipment = s.equipment;
+      return;
+    }catch(e){ console.warn('bad storage, resetting'); }
+  }
+  // create initial state
+  state.inventory = Array.from({length:MAX_SLOTS}, (_,i)=>({slotIndex:i, itemId:null}));
+  state.itemsById = {};
+  state.equipment = {};
+  // add sample items into inventory sequentially
+  let idx = 0;
+  sampleItems.forEach(it => {
+    state.itemsById[it.id] = Object.assign({}, it); // clone
+    // find a free slot
+    while(it.qty && idx < MAX_SLOTS){
+      state.inventory[idx].itemId = it.id;
+      idx++;
+      // For stackable items (qty>1) we'll place only one stack; real backend should manage stacks
+      // For demo: only one slot per item; items with qty remain in the single itemId entry
+    }
+  });
+  saveState();
+}
+
+// UI renderers
+function renderInventory(){
+  const $grid = $('#inventoryGrid');
+  $grid.empty();
+  state.inventory.forEach(slot => {
+    const $s = $('<div class="inv-slot"></div>');
+    $s.attr('data-slot-index', slot.slotIndex);
+    if(slot.itemId){
+      const it = state.itemsById[slot.itemId];
+      const $item = $(`<div class="item ${it.rarity||''}" draggable="true" data-item-id="${it.id}" title="${it.name}"></div>`);
+      $item.append(`<div class="icon">${it.icon||'❔'}</div>`);
+      $item.append(`<div class="name">${it.name}</div>`);
+      if(it.qty && it.qty > 1) $item.append(`<div class="qty">${it.qty}</div>`);
+      $s.append($item);
+
+      // dragstart
+      $item.on('dragstart', function(e){
+        const dt = e.originalEvent.dataTransfer;
+        dt.setData('text/plain', it.id);
+        dt.effectAllowed = 'move';
+      });
+
+      // click / double click
+      $item.on('click', function(e){
+        e.stopPropagation();
+        selectInventoryItem(slot.slotIndex, it.id);
+      });
+      $item.on('dblclick', function(e){
+        e.stopPropagation();
+        if(isEquipable(it)){
+          equipFromInventory(slot.slotIndex, it.id);
+        } else if(isConsumable(it)){
+          consumeFromInventory(slot.slotIndex, it.id, 1);
+        } else {
+          log(`No default action for ${it.name}.`);
+        }
+      });
+    } else {
+      $s.addClass('empty');
+    }
+
+    // allow dropping to rearrange items inside inventory
+    $s.on('dragover', function(e){ e.preventDefault(); $(this).addClass('highlight'); });
+    $s.on('dragleave', function(e){ $(this).removeClass('highlight'); });
+    $s.on('drop', function(e){
+      e.preventDefault(); $(this).removeClass('highlight');
+      const draggedItemId = e.originalEvent.dataTransfer.getData('text/plain');
+      const destIndex = Number($(this).attr('data-slot-index'));
+      handleDropToInventory(draggedItemId, destIndex);
+    });
+
+    $grid.append($s);
+  });
+
+  $('#inv-count').text(`${occupiedInventorySlots()} / ${MAX_SLOTS}`);
+}
+
+function renderEquipment(){
+  $('.equip-slot').each(function(){
+    const slotName = $(this).attr('data-slot');
+    const itemId = state.equipment[slotName] || null;
+    const $slotItem = $(this).find('.slot-item').empty();
+    $(this).toggleClass('empty', !itemId);
+    if(itemId){
+      const it = state.itemsById[itemId];
+      const $el = $(`<div class="item ${it.rarity||''}" draggable="true" data-item-id="${it.id}" title="${it.name}" style="width:100%;height:100%;padding:6px;display:flex;align-items:center;justify-content:center"></div>`);
+      $el.append(`<div class="icon">${it.icon||'❔'}</div>`);
+      $slotItem.append($el);
+
+      // dragstart from equip -> inventory swap
+      $el.on('dragstart', function(e){
+        e.originalEvent.dataTransfer.setData('text/plain', it.id);
+        e.originalEvent.dataTransfer.setData('text/from-equip', slotName);
+      });
+
+      // clicking selects item
+      $el.on('click', function(e){
+        selected = { itemId: it.id, equipSlot: slotName, type: 'equip' };
+        updateDetails();
+      });
+
+      // double-click to unequip
+      $el.on('dblclick', function(){ unequipSlot(slotName); });
+    } else {
+      // set placeholder
+      $slotItem.text('');
+    }
+  });
+}
+
+// helpers
+function occupiedInventorySlots(){
+  return state.inventory.filter(s=>s.itemId).length;
+}
+
+function isEquipable(item){
+  return !!item.slot || item.type==='weapon' || item.type==='armor' || item.type==='ring';
+}
+function isConsumable(item){ return item.type === 'consumable'; }
+
+function findFirstEmptyInventorySlot(){
+  const s = state.inventory.find(s=>!s.itemId);
+  return s ? s.slotIndex : -1;
+}
+
+function selectInventoryItem(slotIndex,itemId){
+  selected = { itemId, slotIndex, type: 'inventory' };
+  updateDetails();
+}
+
+function updateDetails(){
+  if(!selected){
+    $('#preview-icon').text('🎒');
+    $('#preview-name').text('No item selected');
+    $('#preview-desc').text('Select an item from your inventory.');
+    $('#preview-stats').text('');
+    $('#selected-type').text('—');
+    $('#btn-equip, #btn-consume, #btn-trade').prop('disabled', true);
+    return;
+  }
+  const it = state.itemsById[selected.itemId];
+  $('#preview-icon').text(it.icon||'❔');
+  $('#preview-name').text(it.name);
+  $('#preview-desc').text(it.description||'');
+  const stats = it.stats ? Object.entries(it.stats).map(([k,v])=>`${k}: ${v}`).join(' • ') : '';
+  $('#preview-stats').text(stats);
+  $('#selected-type').text(it.type || '—');
+
+  // enable action buttons based on type
+  $('#btn-equip').prop('disabled', !isEquipable(it));
+  $('#btn-consume').prop('disabled', !isConsumable(it));
+  $('#btn-trade').prop('disabled', !(it.qty && it.qty > 0));
+}
+
+// equip logic
+function equipFromInventory(slotIndex, itemId){
+  const it = state.itemsById[itemId];
+  if(!it) return;
+  // determine target slot
+  let target = it.slot || (it.type === 'weapon' ? 'mainhand' : null);
+  if(it.type === 'ring'){
+    // prefer ring1 then ring2
+    if(!state.equipment['ring1']) target = 'ring1';
+    else if(!state.equipment['ring2']) target = 'ring2';
+    else target = 'ring1'; // swap ring1 by default
+  }
+  if(!target){
+    log(`No equip slot known for ${it.name}.`);
+    return;
+  }
+  // if target occupied, move that item into the inventory (swap)
+  const existing = state.equipment[target];
+  // remove item from its inventory slot
+  const invSlot = state.inventory.find(s => s.itemId === itemId);
+  if(invSlot) invSlot.itemId = null;
+  // equip item
+  state.equipment[target] = itemId;
+  if(existing){
+    // place existing item into original inventory slot or find first empty
+    const origSlot = invSlot ? invSlot.slotIndex : findFirstEmptyInventorySlot();
+    if(origSlot >= 0){
+      state.inventory[origSlot].itemId = existing;
+    } else {
+      // inventory full: try to put it into any slot (swap back)
+      state.inventory[0].itemId = existing;
+      log('Inventory full: forced swap into slot 0.');
+    }
+  }
+  saveState();
+  renderInventory();
+  renderEquipment();
+  updateDetails();
+  log(`Equipped ${it.name} to ${target}.`);
+  // simulate server call
+  simulateApi('equip', { itemId, toSlot: target }).done(()=>log('Server confirmed equip.'));
+}
+
+function unequipSlot(slotName){
+  const itemId = state.equipment[slotName];
+  if(!itemId) return;
+  const free = findFirstEmptyInventorySlot();
+  if(free < 0){
+    log('Cannot unequip: inventory is full.');
+    return;
+  }
+  state.inventory[free].itemId = itemId;
+  delete state.equipment[slotName];
+  saveState(); renderInventory(); renderEquipment(); updateDetails();
+  log(`Unequipped ${state.itemsById[itemId].name} from ${slotName}.`);
+  simulateApi('unequip', { itemId, fromSlot: slotName }).done(()=>log('Server confirmed unequip.'));
+}
+
+function consumeFromInventory(slotIndex,itemId, qty){
+  const it = state.itemsById[itemId];
+  if(!it || it.qty <= 0) return;
+  // reduce qty
+  const take = Math.min(qty, it.qty);
+  it.qty -= take;
+  if(it.qty <= 0){
+    // remove item from inventory slot(s)
+    state.inventory.forEach(s => { if(s.itemId === itemId) s.itemId = null; });
+  }
+  saveState(); renderInventory(); renderEquipment(); updateDetails();
+  log(`Consumed ${take}x ${it.name}.`);
+  simulateApi('consume', { itemId, qty: take }).done(()=>log('Server confirmed consume.'));
+}
+
+function handleDropToInventory(draggedItemId, destIndex){
+  // if dragging from equipment: get from-equip property (modern browsers allow multiple sets)
+  // jquery does not provide direct data; but we set data 'text/from-equip' for equip drags
+  // attempt to retrieve from the global drag source (we'll check if the dragged item is currently equipped)
+  if(!draggedItemId) return;
+  // if item was equipped, remove from equipment
+  const equipSlot = Object.keys(state.equipment).find(k => state.equipment[k] === draggedItemId);
+  if(equipSlot){
+    delete state.equipment[equipSlot];
+    // place into dest slot (swap if dest occupied)
+    const existing = state.inventory[destIndex].itemId;
+    state.inventory[destIndex].itemId = draggedItemId;
+    if(existing){
+      // place existing item back into equipment slot? prefer to move to first empty
+      const free = findFirstEmptyInventorySlot();
+      if(free >= 0) state.inventory[free].itemId = existing;
+      else log('Inventory full while swapping.');
+    }
+    saveState(); renderInventory(); renderEquipment(); updateDetails();
+    log(`Moved ${state.itemsById[draggedItemId].name} from equipment to inventory slot ${destIndex}.`);
+    simulateApi('unequip', { itemId: draggedItemId }).done(()=>log('Server confirmed unequip.'));
+    return;
+  }
+
+  // dragging from inventory: find origin slot
+  const origin = state.inventory.find(s => s.itemId === draggedItemId);
+  if(origin){
+    // simple swap
+    const tmp = state.inventory[destIndex].itemId;
+    state.inventory[destIndex].itemId = draggedItemId;
+    origin.itemId = tmp || null;
+    saveState(); renderInventory(); renderEquipment(); updateDetails();
+    log('Rearranged items in inventory.');
+    simulateApi('rearrange', { itemId: draggedItemId, toSlot: destIndex }).done(()=>log('Server confirmed move.'));
+    return;
+  }
+}
+
+function handleDropToEquip(draggedItemId, targetSlot){
+  if(!draggedItemId) return;
+  const it = state.itemsById[draggedItemId];
+  if(!it) return;
+  // if item is equipable to targetSlot?
+  // allow if it.slot===targetSlot or item.type matches (weapon -> mainhand)
+  if(it.slot && it.slot !== targetSlot && !(it.type==='ring' && targetSlot.startsWith('ring'))) {
+    log(`${it.name} cannot be equipped to ${targetSlot}.`);
+    return;
+  }
+  // remove from inventory (if present)
+  state.inventory.forEach(s => { if(s.itemId === draggedItemId) s.itemId = null; });
+  // swap if something already in slot
+  const existing = state.equipment[targetSlot];
+  if(existing){
+    const free = findFirstEmptyInventorySlot();
+    if(free >= 0){
+      state.inventory[free].itemId = existing;
+    } else {
+      // no space: swap back into origin or forced slot 0
+      state.inventory[0].itemId = existing;
+      log('Inventory full: forced swap into slot 0.');
+    }
+  }
+  state.equipment[targetSlot] = draggedItemId;
+  saveState(); renderInventory(); renderEquipment(); updateDetails();
+  log(`Equipped ${it.name} to ${targetSlot}.`);
+  simulateApi('equip', { itemId: draggedItemId, toSlot: targetSlot }).done(()=>log('Server confirmed equip.'));
+}
+
+/* Simulated API helper — replace with real $.ajax calls to your backend */
+function simulateApi(action, payload){
+  log(`[simulated API] ${action} ${JSON.stringify(payload)}`);
+  const d = $.Deferred();
+  setTimeout(()=> d.resolve({ok:true, action, payload}), 500 + Math.random()*400);
+  return d.promise();
+}
+
+/* event bindings */
+$(function(){
+  loadState();
+  renderInventory();
+  renderEquipment();
+  updateDetails();
+
+  // equip drop target handling
+  $('.equip-slot').on('dragover', function(e){ e.preventDefault(); $(this).addClass('drop-target'); });
+  $('.equip-slot').on('dragleave', function(e){ $(this).removeClass('drop-target'); });
+  $('.equip-slot').on('drop', function(e){
+    e.preventDefault(); $(this).removeClass('drop-target');
+    const draggedId = e.originalEvent.dataTransfer.getData('text/plain');
+    const target = $(this).attr('data-slot');
+    handleDropToEquip(draggedId, target);
+  });
+
+  // click on equip slot: if has item select it, else if selected item equip there
+  $('.equip-slot').on('click', function(e){
+    const slot = $(this).attr('data-slot');
+    const itemId = state.equipment[slot];
+    if(itemId){
+      selected = { itemId, equipSlot: slot, type: 'equip' };
+      updateDetails();
+    } else if(selected && selected.type === 'inventory'){
+      // try to equip selected to this slot
+      equipFromInventory(selected.slotIndex, selected.itemId);
+    }
+  });
+
+  // action buttons
+  $('#btn-equip').on('click', function(){
+    if(!selected) return;
+    if(selected.type === 'inventory'){
+      equipFromInventory(selected.slotIndex, selected.itemId);
+    } else if(selected.type === 'equip'){
+      // switch to another slot? ignore
+    }
+  });
+  $('#btn-consume').on('click', function(){
+    if(!selected) return;
+    if(selected.type === 'inventory'){
+      consumeFromInventory(selected.slotIndex, selected.itemId, 1);
+    } else {
+      log('Select consumable from inventory to consume.');
+    }
+  });
+
+  $('#btn-trade').on('click', function(){
+    if(!selected) return;
+    $('#tradeModal').fadeIn(120);
+    $('#tradeItemTitle').text(state.itemsById[selected.itemId].name);
+    $('#tradeQty').val(1);
+    $('#tradeTarget').val('');
+  });
+
+  $('#tradeCancel').on('click', ()=>$('#tradeModal').fadeOut(120));
+  $('#tradeConfirm').on('click', function(){
+    const target = $('#tradeTarget').val().trim();
+    const qty = Number($('#tradeQty').val()) || 1;
+    $('#tradeModal').fadeOut(120);
+    if(!target){ log('Trade cancelled: no target specified.'); return; }
+    // perform trade: reduce qty, possibly remove item
+    const it = state.itemsById[selected.itemId];
+    if(!it || it.qty < qty){ log('Not enough items to trade.'); return; }
+    it.qty -= qty;
+    if(it.qty <= 0){
+      state.inventory.forEach(s=>{ if(s.itemId === it.id) s.itemId = null; });
+    }
+    saveState(); renderInventory(); renderEquipment(); updateDetails();
+    log(`Traded ${qty}x ${it.name} to ${target}.`);
+    simulateApi('trade', { itemId: it.id, qty, to: target }).done(()=>log('Server confirmed trade.'));
+  });
+
+  // click outside to clear selection
+  $(document).on('click', function(e){
+    if(!$(e.target).closest('.item, .equip-slot, .modal, #btn-equip, #btn-consume, #btn-trade').length){
+      selected = null; updateDetails();
+    }
+  });
+
+  // keyboard equip (E)
+  $(document).on('keydown', function(e){
+    if(e.key.toLowerCase() === 'e' && selected && selected.type === 'inventory'){
+      equipFromInventory(selected.slotIndex, selected.itemId);
+    }
+    if(e.key === 'Escape'){ $('#tradeModal').fadeOut(120); }
+  });
+
+  // reset demo storage
+  $('#clearStorage').on('click', function(){
+    if(confirm('Reset demo inventory?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); }
+  });
+
+  // add some simple tooltips and hover highlights
+  $(document).on('mouseenter', '.inv-slot, .equip-slot', function(){ $(this).addClass('highlight'); });
+  $(document).on('mouseleave', '.inv-slot, .equip-slot', function(){ $(this).removeClass('highlight'); });
+
+  // small helper: click on empty inventory slot to move selected item there
+  $(document).on('click', '.inv-slot.empty', function(){
+    const dest = Number($(this).attr('data-slot-index'));
+    if(selected && selected.type === 'equip'){
+      // unequip into this slot
+      const fromSlot = selected.equipSlot;
+      const itemId = selected.itemId;
+      delete state.equipment[fromSlot];
+      state.inventory[dest].itemId = itemId;
+      saveState(); renderInventory(); renderEquipment(); selected=null; updateDetails();
+      log(`Moved ${state.itemsById[itemId].name} from ${fromSlot} to inventory slot ${dest}.`);
+    }
+  });
+
+});
+
+</script>
+</body>
+</html>
