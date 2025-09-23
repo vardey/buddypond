@@ -1,3 +1,5 @@
+import inventoryClient from './lib/inventoryClient.js';
+
 export default class Inventory {
   // constructor is required, it is called when the app is loaded
   constructor(bp, options = {}) {
@@ -17,6 +19,14 @@ export default class Inventory {
   async open() {
     if (!this.win) {
       this.win = await this.bp.window(this.window());
+      this.client = inventoryClient;
+
+      // get inventory for this user
+      this.client.apiRequest('/all', 'GET').then(result => {
+        console.log('Inventory result:', result);
+      }).catch(err => {
+        console.error('Inventory error:', err);
+      });
     }
     return this.win;
   }

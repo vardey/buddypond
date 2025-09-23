@@ -1,6 +1,7 @@
 export default {
   // 🎣 Rods & Tools
   "golden rod": {
+    key: "golden-rod",
     rarity: "legendary",
     rarityBoost: {
       rare: 1.5,
@@ -11,6 +12,7 @@ export default {
   },
 
   "basic rod": {
+    key: "basic-rod",
     rarity: "common",
     rarityBoost: {},
     mutationBoost: 0,
@@ -19,6 +21,7 @@ export default {
   },
 
   "reinforced rod": {
+    key: "reinforced-rod",
     rarity: "uncommon",
     rarityBoost: {
       uncommon: 1.25,
@@ -30,6 +33,7 @@ export default {
   },
 
   "cyber rod": {
+    key: "cyber-rod",
     rarity: "epic",
     rarityBoost: {
       rare: 1.4,
@@ -42,6 +46,7 @@ export default {
 
   // 🪱 Baits & Boosters
   "bait": {
+    key: "bait",
     rarity: "common",
     rarityBoost: {
       uncommon: 1.25,
@@ -52,6 +57,7 @@ export default {
   },
 
   "radioactive bait": {
+    key: "radioactive-bait",
     rarity: "rare",
     rarityBoost: {
       rare: 1.2
@@ -62,6 +68,7 @@ export default {
   },
 
   "mystery chum": {
+    key: "mystery-chum",
     rarity: "uncommon",
     rarityBoost: {
       rare: 1.1,
@@ -74,6 +81,7 @@ export default {
 
   // 🎩 Wearables
   "lucky hat": {
+    key: "lucky-hat",
     rarity: "uncommon",
     mutationBoost: 0.05,
     description: "Increases the chance of catching mutated fish by 5%",
@@ -81,6 +89,7 @@ export default {
   },
 
   "pirate eyepatch": {
+    key: "pirate-eyepatch",
     rarity: "rare",
     rarityBoost: {
       rare: 1.3
@@ -91,6 +100,7 @@ export default {
   },
 
   "angler's cloak": {
+    key: "anglers-cloak",
     rarity: "epic",
     rarityBoost: {
       legendary: 1.5
@@ -102,6 +112,7 @@ export default {
 
   // 💍 Charms & Trinkets
   "lucky coin": {
+    key: "lucky-coin",
     rarity: "uncommon",
     mutationBoost: 0.03,
     description: "Keeps turning up heads. Boosts mutation chances slightly.",
@@ -109,6 +120,7 @@ export default {
   },
 
   "cursed charm": {
+    key: "cursed-charm",
     rarity: "rare",
     rarityBoost: {
       rare: 1.1,
@@ -120,6 +132,7 @@ export default {
   },
 
   "totem of the deep": {
+    key: "totem-of-the-deep",
     rarity: "legendary",
     rarityBoost: {
       rare: 2.0,

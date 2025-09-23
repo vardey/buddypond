@@ -2,6 +2,7 @@ export default [
   // 🐟 Common Fish
   {
     name: "Common Carp",
+    key: "common-carp",
     rarity: "common",
     weight: 60,
     minWeight: 1,
@@ -10,6 +11,7 @@ export default [
   },
   {
     name: "Bluegill",
+    key: "bluegill",
     rarity: "common",
     weight: 50,
     minWeight: 0.5,
@@ -18,6 +20,7 @@ export default [
   },
   {
     name: "Smallmouth Bass",
+    key: "smallmouth-bass",
     rarity: "common",
     weight: 45,
     minWeight: 1,
@@ -26,6 +29,7 @@ export default [
   },
   {
     name: "Perch",
+    key: "perch",
     rarity: "common",
     weight: 40,
     minWeight: 0.5,
@@ -36,6 +40,7 @@ export default [
   // 🐠 Uncommon Fish
   {
     name: "Spotted Trout",
+    key: "spotted-trout",
     rarity: "uncommon",
     weight: 25,
     minWeight: 2,
@@ -44,6 +49,7 @@ export default [
   },
   {
     name: "Catfish",
+    key: "catfish",
     rarity: "uncommon",
     weight: 20,
     minWeight: 3,
@@ -52,6 +58,7 @@ export default [
   },
   {
     name: "Koi",
+    key: "koi",
     rarity: "uncommon",
     weight: 18,
     minWeight: 2,
@@ -60,6 +67,7 @@ export default [
   },
   {
     name: "Lionfish",
+    key: "lionfish",
     rarity: "uncommon",
     weight: 15,
     minWeight: 1,
@@ -70,6 +78,7 @@ export default [
   // 🦈 Rare Fish
   {
     name: "Electric Eel",
+    key: "electric-eel",
     rarity: "rare",
     weight: 10,
     minWeight: 5,
@@ -78,6 +87,7 @@ export default [
   },
   {
     name: "Hammerhead Shark",
+    key: "hammerhead-shark",
     rarity: "rare",
     weight: 7,
     minWeight: 20,
@@ -86,6 +96,7 @@ export default [
   },
   {
     name: "Giant Squid",
+    key: "giant-squid",
     rarity: "rare",
     weight: 5,
     minWeight: 80,
@@ -94,6 +105,7 @@ export default [
   },
   {
     name: "Ghost Fish",
+    key: "ghost-fish",
     rarity: "rare",
     weight: 4,
     minWeight: 1,
@@ -104,6 +116,7 @@ export default [
   // 🧜‍♂️ Legendary Sea Creatures
   {
     name: "Ancient Leviathan",
+    key: "ancient-leviathan",
     rarity: "legendary",
     weight: 1,
     minWeight: 100,
@@ -112,6 +125,7 @@ export default [
   },
   {
     name: "Sea Serpent",
+    key: "sea-serpent",
     rarity: "legendary",
     weight: 0.5,
     minWeight: 120,
@@ -120,6 +134,7 @@ export default [
   },
   {
     name: "Kraken",
+    key: "kraken",
     rarity: "legendary",
     weight: 0.3,
     minWeight: 200,
@@ -128,6 +143,7 @@ export default [
   },
   {
     name: "Mermaid",
+    key: "mermaid",
     rarity: "legendary",
     weight: 0.2,
     minWeight: 50,
@@ -136,6 +152,7 @@ export default [
   },
   {
     name: "Coelacanth",
+    key: "coelacanth",
     rarity: "legendary",
     weight: 0.1,
     minWeight: 5,

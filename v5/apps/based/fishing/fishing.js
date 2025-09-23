@@ -1,4 +1,5 @@
 import api from './lib/api.js';
+import fishingClient from './lib/fishingClient.js';
 
 export default class Fishing {
   // constructor is required, it is called when the app is loaded
@@ -20,7 +21,7 @@ export default class Fishing {
   async open() {
     if (!this.win) {
       this.win = await this.bp.window(this.window());
-
+      this.client = fishingClient;
 
       const fishData = api.Fish;
 
@@ -50,6 +51,21 @@ export default class Fishing {
             }
           }
         }
+      });
+
+      $('.fishing-cast', this.win.content).on('click', async (e) => {
+        //TODO: POST not GET...
+        this.client.apiRequest('/cast', 'GET').then(result => {
+          console.log('Fishing cast result:', result);
+          let resultsDiv = $('.fishing-results', this.win.content);
+          let resultHtml = `<p>You caught a <strong>${result.name}</strong> (Rarity: ${result.rarity})</p>`;
+          if (result.mutation) {
+            resultHtml += `<p>Mutation occurred! You also caught a <strong>${result.mutation.name}</strong> (Rarity: ${result.mutation.rarity})</p>`;
+          }
+          resultsDiv.prepend(resultHtml);
+        }).catch(err => {
+          console.error('Fishing cast error:', err);
+        });
       });
 
       console.log('Fishing window opened', api);
