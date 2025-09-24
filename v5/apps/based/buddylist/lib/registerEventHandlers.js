@@ -75,7 +75,7 @@ export default function registerEventHandlers() {
 
             this.data.profileState.buddylist[b] = buddy.profile;
             // console.log('renderOrUpdateBuddyInBuddyList', buddy);
-            // this.renderOrUpdateBuddyInBuddyList(buddy);
+            this.renderOrUpdateBuddyInBuddyList(buddy);
         }
 
         if (buddylist[this.bp.me]) {
