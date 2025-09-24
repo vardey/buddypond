@@ -26,11 +26,17 @@ export default function checkForLinksInMessage(message) {
       const urlObj = new URL(contentUrl);
       const pathname = urlObj.pathname; // just "/image.png" part
       const ext = pathname.split('.').pop().toLowerCase();
+      // console.log("URL extension:", pathname, ext);
       if (ext) {
         if (buddypond.supportedImageTypesExt.includes(ext)) {
           message.card.type = 'image';
         } else if (buddypond.supportedAudioTypesExt.includes(ext)) {
-          message.card.type = 'audio';
+          // devmode feature flag, upgraded audio to waveform if not prod
+          if(window.location.hostname !== 'buddypond.com') {
+            message.card.type = 'waveform';
+          } else {
+            message.card.type = 'audio';
+          }
         } else if (buddypond.supportedVideoTypesExt.includes(ext)) {
           message.card.type = 'video';
         }

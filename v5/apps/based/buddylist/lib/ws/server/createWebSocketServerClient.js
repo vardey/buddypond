@@ -85,19 +85,17 @@ export default function createWebSocketClient(reconnect = false) {
             } else {
               console.error('getProfile message received but no buddylist:', parseData);
             }
-
             break;
 
           case 'getBuddyList':
-            console.log('getBuddyList message received:', parseData.buddies);
-
+            // console.log('getBuddyList message received:', parseData.buddies);
             if (parseData && parseData.buddies) {
               bp.emit('profile::fullBuddyList', { buddylist: parseData.buddies });
             } else {
               console.error('getProfile message received but no buddylist:', parseData);
             }
-
             break
+
           case 'getProfile':
             // console.log('getProfile message received:', parseData);
 

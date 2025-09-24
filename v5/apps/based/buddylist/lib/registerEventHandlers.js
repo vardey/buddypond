@@ -64,7 +64,7 @@ export default function registerEventHandlers() {
             }, {});
         }
 
-        console.log('profile::buddy::full_profile', buddylist);
+        // console.log('profile::buddy::full_profile', buddylist);
         for (let b in buddylist) {
             let buddy = {
                 name: b,
@@ -74,8 +74,8 @@ export default function registerEventHandlers() {
             this.data.profileState.buddylist = this.data.profileState.buddylist || {};
 
             this.data.profileState.buddylist[b] = buddy.profile;
-            console.log('renderOrUpdateBuddyInBuddyList', buddy);
-            this.renderOrUpdateBuddyInBuddyList(buddy);
+            // console.log('renderOrUpdateBuddyInBuddyList', buddy);
+            // this.renderOrUpdateBuddyInBuddyList(buddy);
         }
 
         if (buddylist[this.bp.me]) {
@@ -264,9 +264,10 @@ export default function registerEventHandlers() {
             // console.log("CREATING NEW TIMER")
             // Set a new timeout to remove the typing message after very short pause
             // since there already is a delay from the server
+            let typingDuration = message.typingDuration || 500;
             this.showingIsTyping[typingIndicatorId] = setTimeout(() => {
                 typingIndicator.remove();
-            }, 500);
+            }, typingDuration);
             return;
         }
     })
