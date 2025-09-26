@@ -1,1 +1,130 @@
-/* add styles here */
+.fishing-app {
+  font-family: "Trebuchet MS", sans-serif;
+  background: linear-gradient(to bottom, #ccefff 0%, #87ceeb 100%);
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.fishing-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.fishing-header h1 {
+  font-size: 2em;
+  color: #004466;
+  text-shadow: 1px 1px 0px #fff;
+}
+
+.fishing-status {
+  display: block;
+  font-weight: bold;
+  color: #006600;
+  margin-top: 5px;
+}
+
+.fishing-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+  flex: 1;
+}
+
+.fishing-cast-section {
+  background: #ffffffaa;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fishing-cast {
+  background: #4caf50;
+  color: white;
+  font-size: 1.2em;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.fishing-cast:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+.fishing-results {
+  background: #eef9ff;
+  border: 1px solid #aee1ff;
+  padding: 10px;
+  width: 100%;
+  min-height: 80px;
+  border-radius: 8px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+.fishing-results p {
+  margin: 0 0 8px 0;
+  font-size: 1em;
+}
+
+.fishing-inventory-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#fishing-chart-fish-rarity {
+  width: 100%;
+  height: 200px;
+  margin-top: auto;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.fishing-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.fishing-equipped, 
+.fishing-items {
+  background: #ffffffdd;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.fishing-equipped h2,
+.fishing-items h2 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  color: #003366;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.fishing-item {
+  border: 1px solid #ddd;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+.fishing-item strong {
+  color: #222;
+}
+
+.fishing-item input[type="checkbox"] {
+  margin-right: 5px;
+}

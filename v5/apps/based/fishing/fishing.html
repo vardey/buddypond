@@ -1,8 +1,43 @@
-<h1>This be the fishing app</h1>
+<div class="fishing-app">
+  <header class="fishing-header">
+    <h1>🎣 Buddy Fishing</h1>
+    <span class="fishing-status"></span>
+  </header>
 
-<button class="fishing-cast">Cast</button>
+  <main class="fishing-main">
+    <!-- Casting section -->
+    <section class="fishing-cast-section">
+      <button class="fishing-cast">Cast Your Line!</button>
+      <div class="fishing-results"></div>
+      <!-- <canvas id="fishing-chart-fish-rarity"></canvas> -->
+      <div class="fishing-inventory">
+        <h3>Fishing Inventory</h3>
+        <button class="fishing-sell-all">Sell All</button>
+        <div class="fishing-inventory-list">
+          <!-- JS fills inventory -->
+        </div>
+      </div>
+    </section>
 
-<div class="fishing-results"></div>
-<!-- TODO add more charts here for Items, mutations, etc -->
-<canvas id="fishing-chart-fish-rarity"></canvas>
+    <!-- Sidebar: Equipped + Items -->
+    <aside class="fishing-sidebar">
+    <div class="fishing-settings">
+      <h2>Settings</h2>
+      <label for="auto-sell-fish">Auto-Sell Caught Fish:</label>
+      <input type="checkbox" id="auto-sell-fish" name="auto-sell-fish" />
+      <label for="auto-equip-items">Auto-Equip Items:</label>
+      <input type="checkbox" id="auto-equip-items" name="auto-equip-items" />
+    </div>
 
+      <div class="fishing-equipped">
+        <h2>Equipped</h2>
+        <!-- JS fills equipped rod -->
+      </div>
+
+      <div class="fishing-items">
+        <h2>Items</h2>
+        <!-- JS fills items -->
+      </div>
+    </aside>
+  </main>
+</div>

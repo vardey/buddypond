@@ -65,9 +65,11 @@ fishing.castFishingLine = function (itemsInput = []) {
     return {
       type: 'item',
       name: randomItem,
+      key: items[randomItem]?.key || randomItem,
       rarity: items[randomItem]?.rarity,
       metadata: items[randomItem] || {},
       durability: items[randomItem]?.durability || 0,
+      value: items[randomItem]?.value || 0,
       description: items[randomItem]?.effect || 'A useful fishing item!',
       itemsUsed: itemsInput
     };
@@ -101,6 +103,7 @@ fishing.castFishingLine = function (itemsInput = []) {
 
   return {
     type: 'fish',
+    key: fish.key,
     name: fish.name,
     rarity: fish.rarity,
     weight: parseFloat(weight),
